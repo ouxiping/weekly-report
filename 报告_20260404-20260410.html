@@ -496,19 +496,44 @@
         .mini-table td { padding: 6px 10px; border-top: 1px solid #f3f4f6; color: #374151; }
         .mini-table tr:hover { background: #fffbeb; }
         /* ========== 补丁表格专属样式 ========== */
-        .patch-table-wrap { border-radius: 8px; border: 1px solid #e9ecef; margin-bottom: 15px; overflow: hidden; }
-        .patch-table { table-layout: fixed; width: 100%; background: #fff; }
-        .patch-table th,
-        .patch-table td { padding: 6px 6px; vertical-align: middle; }
+        .patch-table-wrap { border-radius: 8px; border: 1px solid #e9ecef; margin-bottom: 15px; overflow-x: auto; }
+        .patch-table { table-layout: auto; width: 100%; min-width: 800px; background: #fff; border-collapse: collapse; }
+        .patch-table th { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: 600; padding: 10px 12px; text-align: center; font-size: 12px; white-space: nowrap; }
+        .patch-table td { padding: 10px 12px; vertical-align: middle; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+        .patch-table tbody tr:hover { background-color: #f8f9ff; }
+        /* 补丁日期列 */
         .patch-table th:nth-child(1),
-        .patch-table td:nth-child(1) { width: 82%; word-break: break-word; font-size: 12px; }
+        .patch-table td:nth-child(1) { text-align: center; color: #666; font-size: 12px; white-space: nowrap; }
+        /* 补丁类型列 */
         .patch-table th:nth-child(2),
-        .patch-table td:nth-child(2) { width: 5%; text-align: center; white-space: nowrap; }
+        .patch-table td:nth-child(2) { text-align: center; }
+        .patch-table td:nth-child(2) .type-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 500; white-space: nowrap; }
+        .type-bug { background: #fee2e2; color: #dc2626; }
+        .type-req { background: #dbeafe; color: #2563eb; }
+        /* Bug/需求编号列 */
         .patch-table th:nth-child(3),
-        .patch-table td:nth-child(3) { width: 6%; text-align: center; white-space: nowrap; }
+        .patch-table td:nth-child(3) { text-align: center; white-space: nowrap; font-weight: 600; color: #4338ca; }
+        /* 描述列 */
         .patch-table th:nth-child(4),
-        .patch-table td:nth-child(4) { width: 7%; text-align: center; white-space: nowrap; }
-        .patch-table td.patch-title { max-width: 0; }
+        .patch-table td:nth-child(4) { text-align: left; min-width: 300px; }
+        .patch-table td.patch-title { 
+            max-width: 500px; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        /* 补丁范围列 */
+        .patch-table th:nth-child(5),
+        .patch-table td:nth-child(5) { text-align: center; white-space: nowrap; }
+        .patch-table td:nth-child(5) .version-tag { 
+            display: inline-block; 
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white; 
+            padding: 2px 10px; 
+            border-radius: 12px; 
+            font-size: 11px; 
+            font-weight: 500; 
+        }
     </style>
 </head>
 <body>
@@ -926,49 +951,28 @@
             <div class="section-header" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;">
                 <div class="section-icon">🛠️</div>
                 <div class="section-info">
-                    <div class="section-title">补丁执行（3 条）</div>
-                    <div class="section-desc">本周共上线 3 个Bug修复补丁、0 个紧急需求补丁</div>
+                    <div class="section-title">补丁执行（4 条）</div>
                 </div>
             </div>
             <div class="section-body">
-                <!-- Bug修复 -->
-                <div class="intro-section">
-                    <h4>Bug修复补丁（3 条）</h4>
-                    <div class="patch-table-wrap">
-                        <table class="patch-table">
-                            <thead>
-                                <tr>
-                                    <th>任务名称</th>
-                                    <th>产品</th>
-                                    <th>版本</th>
-                                    <th>补丁日期</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td class="patch-title" title="[37406] 【河北王子羊】8.34版本，配送管理、订货管理批量添加商品，不能粘贴。">[37406] 【河北王子羊】8.34版本，配送管理、订货管理批量添加商品，不能粘贴。</td><td>ERP</td><td></td><td>2026-03-19</td></tr><tr><td class="patch-title" title="[39203] 【巴布豆】升级到37版本后，寄存单据管理修改取货门店，寄存提货门店范围无法选择">[39203] 【巴布豆】升级到37版本后，寄存单据管理修改取货门店，寄存提货门店范围无法选择</td><td>ERP</td><td>8.37版本</td><td>2026-04-08</td></tr><tr><td class="patch-title" title="[39232] 【巴中昂橙】小时达运费模版功能无法正常配置">[39232] 【巴中昂橙】小时达运费模版功能无法正常配置</td><td>ERP</td><td>8.33版本</td><td>2026-04-10</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+                
+                <div class="patch-table-wrap">
+                    <table class="patch-table">
+                        <thead>
+                            <tr>
+                                <th>补丁日期</th>
+                                <th>补丁类型</th>
+                                <th>Bug/需求编号</th>
+                                <th>描述</th>
+                                <th>补丁范围</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>2026-04-08</td><td><span class="type-badge type-bug">Bug修复</span></td><td>39369</td><td class="patch-title" title="【格瑞丽家】门店POS双屏视频及图片不显示">【格瑞丽家】门店POS双屏视频及图片不显示</td><td><span class="version-tag">8.37版本</span></td></tr><tr><td>2026-04-09</td><td><span class="type-badge type-req">紧急需求</span></td><td>6884</td><td class="patch-title" title="【定制】【君乐宝】线上联合新客活动">【定制】【君乐宝】线上联合新客活动</td><td><span class="version-tag">8.37版本</span></td></tr><tr><td>2026-04-10</td><td><span class="type-badge type-bug">Bug修复</span></td><td>39408</td><td class="patch-title" title="【君乐宝】【123baby】君乐宝老客下单联合新客，校验通过了（应该提示老客不允许参加活动）">【君乐宝】【123baby】君乐宝老客下单联合新客，校验通过了（应该提示老客不允许参加活动）</td><td><span class="version-tag">8.37版本</span></td></tr><tr><td>2026-04-10</td><td><span class="type-badge type-bug">Bug修复</span></td><td>39381</td><td class="patch-title" title="【6400】沃伦母婴盘点负库存问题">【6400】沃伦母婴盘点负库存问题</td><td><span class="version-tag">8.35版本</span></td></tr>
+                        </tbody>
+                    </table>
                 </div>
-                <!-- 紧急需求 -->
-                <div class="intro-section">
-                    <h4>紧急需求补丁（0 条）</h4>
-                    <div class="patch-table-wrap">
-                        <table class="patch-table">
-                            <thead>
-                                <tr>
-                                    <th>任务名称</th>
-                                    <th>产品</th>
-                                    <th>版本</th>
-                                    <th>补丁日期</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                
             </div>
         </div>
 
