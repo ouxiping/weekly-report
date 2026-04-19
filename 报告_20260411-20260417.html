@@ -496,35 +496,35 @@
         .mini-table td { padding: 6px 10px; border-top: 1px solid #f3f4f6; color: #374151; }
         .mini-table tr:hover { background: #fffbeb; }
         /* ========== 补丁表格专属样式 ========== */
-        .patch-table-wrap { border-radius: 8px; border: 1px solid #e9ecef; margin-bottom: 15px; overflow: hidden; }
-        .patch-table { table-layout: fixed; width: 100%; background: #fff; border-collapse: collapse; }
-        .patch-table th { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: 600; padding: 10px 8px; text-align: center; font-size: 12px; }
-        .patch-table td { padding: 10px 8px; vertical-align: middle; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+        .patch-table-wrap { border-radius: 8px; border: 1px solid #e9ecef; margin-bottom: 15px; overflow-x: auto; }
+        .patch-table { table-layout: auto; width: 100%; min-width: 800px; background: #fff; border-collapse: collapse; }
+        .patch-table th { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: 600; padding: 10px 12px; text-align: center; font-size: 12px; white-space: nowrap; }
+        .patch-table td { padding: 10px 12px; vertical-align: middle; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
         .patch-table tbody tr:hover { background-color: #f8f9ff; }
         /* 补丁日期列 */
         .patch-table th:nth-child(1),
-        .patch-table td:nth-child(1) { width: 10%; text-align: center; white-space: nowrap; color: #666; font-size: 12px; }
+        .patch-table td:nth-child(1) { text-align: center; color: #666; font-size: 12px; white-space: nowrap; }
         /* 补丁类型列 */
         .patch-table th:nth-child(2),
-        .patch-table td:nth-child(2) { width: 9%; text-align: center; }
-        .patch-table td:nth-child(2) .type-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 500; }
+        .patch-table td:nth-child(2) { text-align: center; }
+        .patch-table td:nth-child(2) .type-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 500; white-space: nowrap; }
         .type-bug { background: #fee2e2; color: #dc2626; }
         .type-req { background: #dbeafe; color: #2563eb; }
         /* Bug/需求编号列 */
         .patch-table th:nth-child(3),
-        .patch-table td:nth-child(3) { width: 10%; text-align: center; white-space: nowrap; font-weight: 600; color: #4338ca; }
+        .patch-table td:nth-child(3) { text-align: center; white-space: nowrap; font-weight: 600; color: #4338ca; }
         /* 描述列 */
         .patch-table th:nth-child(4),
-        .patch-table td:nth-child(4) { width: 56%; word-break: break-word; text-align: left; }
+        .patch-table td:nth-child(4) { text-align: left; min-width: 300px; }
         .patch-table td.patch-title { 
-            max-width: 0; 
+            max-width: 500px; 
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
         /* 补丁范围列 */
         .patch-table th:nth-child(5),
-        .patch-table td:nth-child(5) { width: 15%; text-align: center; white-space: nowrap; }
+        .patch-table td:nth-child(5) { text-align: center; white-space: nowrap; }
         .patch-table td:nth-child(5) .version-tag { 
             display: inline-block; 
             background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
