@@ -496,44 +496,23 @@
         .mini-table td { padding: 6px 10px; border-top: 1px solid #f3f4f6; color: #374151; }
         .mini-table tr:hover { background: #fffbeb; }
         /* ========== 补丁表格专属样式 ========== */
-        .patch-table-wrap { border-radius: 8px; border: 1px solid #e9ecef; margin-bottom: 15px; overflow-x: auto; }
-        .patch-table { table-layout: auto; width: 100%; min-width: 800px; background: #fff; border-collapse: collapse; }
-        .patch-table th { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: 600; padding: 10px 12px; text-align: center; font-size: 12px; white-space: nowrap; }
+        .patch-table-wrap { border-radius: 8px; border: 1px solid #e9ecef; margin-bottom: 15px; }
+        .patch-table { table-layout: fixed; width: 100%; background: #fff; border-collapse: collapse; }
+        .patch-table th { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: 600; padding: 10px 12px; text-align: center; font-size: 12px; }
         .patch-table td { padding: 10px 12px; vertical-align: middle; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
         .patch-table tbody tr:hover { background-color: #f8f9ff; }
-        /* 补丁日期列 */
-        .patch-table th:nth-child(1),
-        .patch-table td:nth-child(1) { text-align: center; color: #666; font-size: 12px; white-space: nowrap; }
-        /* 补丁类型列 */
-        .patch-table th:nth-child(2),
-        .patch-table td:nth-child(2) { text-align: center; }
-        .patch-table td:nth-child(2) .type-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 500; white-space: nowrap; }
+        /* 列宽分配: 日期85px, 类型85px, 编号85px, 版本85px, 描述自适应, 产品100px */
+        .patch-table th:nth-child(1), .patch-table td:nth-child(1) { width: 85px; text-align: center; color: #666; font-size: 12px; }
+        .patch-table th:nth-child(2), .patch-table td:nth-child(2) { width: 85px; text-align: center; }
+        .patch-table td:nth-child(2) .type-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 500; }
         .type-bug { background: #fee2e2; color: #dc2626; }
         .type-req { background: #dbeafe; color: #2563eb; }
-        /* Bug/需求编号列 */
-        .patch-table th:nth-child(3),
-        .patch-table td:nth-child(3) { text-align: center; white-space: nowrap; font-weight: 600; color: #4338ca; }
-        /* 描述列 */
-        .patch-table th:nth-child(4),
-        .patch-table td:nth-child(4) { text-align: left; min-width: 300px; }
-        .patch-table td.patch-title { 
-            max-width: 500px; 
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        /* 补丁范围列 */
-        .patch-table th:nth-child(5),
-        .patch-table td:nth-child(5) { text-align: center; white-space: nowrap; }
-        .patch-table td:nth-child(5) .version-tag { 
-            display: inline-block; 
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            color: white; 
-            padding: 2px 10px; 
-            border-radius: 12px; 
-            font-size: 11px; 
-            font-weight: 500; 
-        }
+        .patch-table th:nth-child(3), .patch-table td:nth-child(3) { width: 85px; text-align: center; font-weight: 600; color: #4338ca; }
+        .patch-table th:nth-child(4), .patch-table td:nth-child(4) { width: 85px; text-align: center; }
+        .patch-table td:nth-child(4) .version-tag { display: inline-block; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 500; }
+        .patch-table th:nth-child(5), .patch-table td:nth-child(5) { text-align: left; word-wrap: break-word; word-break: break-all; }
+        .patch-table td.patch-title { word-wrap: break-word; word-break: break-all; }
+        .patch-table th:nth-child(6), .patch-table td:nth-child(6) { width: 100px; text-align: center; }
     </style>
 </head>
 <body>
@@ -1061,7 +1040,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>2026-04-13 00:00:00</td><td><span class="type-badge type-req">BUG修复</span></td><td>39248</td><td><span class="version-tag">1.52版本</span></td><td class="patch-title" title="【韶关孕婴世家】工号：0701输入会员手机号15219964373查询会员提示：The used SELECT statements have a different number of columns">【韶关孕婴世家】工号：0701输入会员手机号15219964373查询会员提示：The used SELECT statements have a differ...</td><td>客员通APP</td></tr><tr><td>2026-04-13 00:00:00</td><td><span class="type-badge type-req">紧急需求</span></td><td>6960</td><td><span class="version-tag">8.37版本</span></td><td class="patch-title" title="【123baby】物流码盘点审核判断增加参数控制">【123baby】物流码盘点审核判断增加参数控制</td><td>SCRM</td></tr><tr><td>2026-04-15 00:00:00</td><td><span class="type-badge type-req">BUG修复</span></td><td>39287</td><td><span class="version-tag">9.16版本</span></td><td class="patch-title" title="【谷城小飞象】6972183442097订货时报错，商品已进行关联">【谷城小飞象】6972183442097订货时报错，商品已进行关联</td><td>ERP</td></tr><tr><td>2026-04-15 00:00:00</td><td><span class="type-badge type-req">BUG修复</span></td><td>39292</td><td><span class="version-tag">3.71版本</span></td><td class="patch-title" title="【皇家贝贝】线上环境已升级到37版本，但是小程序后台没有员工变更日志功能">【皇家贝贝】线上环境已升级到37版本，但是小程序后台没有员工变更日志功能</td><td>小程序-商城</td></tr><tr><td>2026-04-16 00:00:00</td><td><span class="type-badge type-req">BUG修复</span></td><td>39327</td><td><span class="version-tag">1.52版本</span></td><td class="patch-title" title="SCRM后台--会员管理--门店标签分布，根据归属门店筛选，门店分布数据信息错乱，出现不规模0，且导出门店数据后，表格表头字段顺序未按照标签顺序排序，数据亦与标签分布数据不匹配。">SCRM后台--会员管理--门店标签分布，根据归属门店筛选，门店分布数据信息错乱，出现不规模0，且导出门店数据后，表格表头字段顺序未按照标签顺序排序，数据亦与标...</td><td>SCRM</td></tr><tr><td>2026-04-16 00:00:00</td><td><span class="type-badge type-req">紧急需求</span></td><td>6884</td><td><span class="version-tag">8.37版本</span></td><td class="patch-title" title="【君乐宝】线上联合新客活动">【君乐宝】线上联合新客活动</td><td>ERP</td></tr><tr><td>2026-04-17 00:00:00</td><td><span class="type-badge type-req">BUG修复</span></td><td>39408</td><td><span class="version-tag">8.37版本</span></td><td class="patch-title" title="【君乐宝】【123baby】君乐宝老客下单联合新客，校验通过了（应该提示老客不允许参加活动）">【君乐宝】【123baby】君乐宝老客下单联合新客，校验通过了（应该提示老客不允许参加活动）</td><td>ERP</td></tr><tr><td>2026-04-17 00:00:00</td><td><span class="type-badge type-req">BUG修复</span></td><td>39381</td><td><span class="version-tag">8.35版本</span></td><td class="patch-title" title="【6400】沃伦母婴(南亚店)3月23日创建的南亚26.03盘点，负库存未录清零设置的是【否】，以6922577740681为例，存盘为-4，实盘为0，但是盘点审核后，在计划盘点盈亏查询表上此商品显示是【未盘】，导致该商品的库存在还是-4，这种情况的商品不止一个，请查看处理。">【6400】沃伦母婴(南亚店)3月23日创建的南亚26.03盘点，负库存未录清零设置的是【否】，以6922577740681为例，存盘为-4，实盘为0，但是盘点...</td><td>ERP</td></tr><tr><td>2026-04-17 00:00:00</td><td><span class="type-badge type-req">BUG修复</span></td><td>39369</td><td><span class="version-tag">8.37版本</span></td><td class="patch-title" title="39369 【格瑞丽家】客户反馈昨晚升级之后，门店POS双屏视频及图片都不显示了">39369 【格瑞丽家】客户反馈昨晚升级之后，门店POS双屏视频及图片都不显示了</td><td>POS</td></tr><tr><td>2026-04-17 00:00:00</td><td><span class="type-badge type-req">BUG修复</span></td><td>39417</td><td><span class="version-tag">2.12版本</span></td><td class="patch-title" title="【江苏童爸】客户PRM模块授权商品，在PRM总部系统中体现的数据不一致。">【江苏童爸】客户PRM模块授权商品，在PRM总部系统中体现的数据不一致。</td><td>PRM加盟商</td></tr>
+                            <tr><td>2026-04-13</td><td><span class="type-badge type-req">BUG修复</span></td><td>39248</td><td><span class="version-tag">1.52版本</span></td><td class="patch-title" title="【韶关孕婴世家】工号：0701输入会员手机号15219964373查询会员提示：The used SELECT statements have a different number of columns">【韶关孕婴世家】工号：0701输入会员手机号15219964373查询会员提示：The used SELECT statements have a different number of columns</td><td>客员通APP</td></tr><tr><td>2026-04-13</td><td><span class="type-badge type-req">紧急需求</span></td><td>6960</td><td><span class="version-tag">8.37版本</span></td><td class="patch-title" title="【123baby】物流码盘点审核判断增加参数控制">【123baby】物流码盘点审核判断增加参数控制</td><td>SCRM</td></tr><tr><td>2026-04-15</td><td><span class="type-badge type-req">BUG修复</span></td><td>39287</td><td><span class="version-tag">9.16版本</span></td><td class="patch-title" title="【谷城小飞象】6972183442097订货时报错，商品已进行关联">【谷城小飞象】6972183442097订货时报错，商品已进行关联</td><td>ERP</td></tr><tr><td>2026-04-15</td><td><span class="type-badge type-req">BUG修复</span></td><td>39292</td><td><span class="version-tag">3.71版本</span></td><td class="patch-title" title="【皇家贝贝】线上环境已升级到37版本，但是小程序后台没有员工变更日志功能">【皇家贝贝】线上环境已升级到37版本，但是小程序后台没有员工变更日志功能</td><td>小程序-商城</td></tr><tr><td>2026-04-16</td><td><span class="type-badge type-req">BUG修复</span></td><td>39327</td><td><span class="version-tag">1.52版本</span></td><td class="patch-title" title="SCRM后台--会员管理--门店标签分布，根据归属门店筛选，门店分布数据信息错乱，出现不规模0，且导出门店数据后，表格表头字段顺序未按照标签顺序排序，数据亦与标签分布数据不匹配。">SCRM后台--会员管理--门店标签分布，根据归属门店筛选，门店分布数据信息错乱，出现不规模0，且导出门店数据后，表格表头字段顺序未按照标签顺序排序，数据亦与标签分布数据不匹配。</td><td>SCRM</td></tr><tr><td>2026-04-16</td><td><span class="type-badge type-req">紧急需求</span></td><td>6884</td><td><span class="version-tag">8.37版本</span></td><td class="patch-title" title="【君乐宝】线上联合新客活动">【君乐宝】线上联合新客活动</td><td>ERP</td></tr><tr><td>2026-04-17</td><td><span class="type-badge type-req">BUG修复</span></td><td>39408</td><td><span class="version-tag">8.37版本</span></td><td class="patch-title" title="【君乐宝】【123baby】君乐宝老客下单联合新客，校验通过了（应该提示老客不允许参加活动）">【君乐宝】【123baby】君乐宝老客下单联合新客，校验通过了（应该提示老客不允许参加活动）</td><td>ERP</td></tr><tr><td>2026-04-17</td><td><span class="type-badge type-req">BUG修复</span></td><td>39381</td><td><span class="version-tag">8.35版本</span></td><td class="patch-title" title="【6400】沃伦母婴(南亚店)3月23日创建的南亚26.03盘点，负库存未录清零设置的是【否】，以6922577740681为例，存盘为-4，实盘为0，但是盘点审核后，在计划盘点盈亏查询表上此商品显示是【未盘】，导致该商品的库存在还是-4，这种情况的商品不止一个，请查看处理。">【6400】沃伦母婴(南亚店)3月23日创建的南亚26.03盘点，负库存未录清零设置的是【否】，以6922577740681为例，存盘为-4，实盘为0，但是盘点审核后，在计划盘点盈亏查询表上此商品显示是【未盘】，导致该商品的库存在还是-4，这种情况的商品不止一个，请查看处理。</td><td>ERP</td></tr><tr><td>2026-04-17</td><td><span class="type-badge type-req">BUG修复</span></td><td>39369</td><td><span class="version-tag">8.37版本</span></td><td class="patch-title" title="39369 【格瑞丽家】客户反馈昨晚升级之后，门店POS双屏视频及图片都不显示了">39369 【格瑞丽家】客户反馈昨晚升级之后，门店POS双屏视频及图片都不显示了</td><td>POS</td></tr><tr><td>2026-04-17</td><td><span class="type-badge type-req">BUG修复</span></td><td>39417</td><td><span class="version-tag">2.12版本</span></td><td class="patch-title" title="【江苏童爸】客户PRM模块授权商品，在PRM总部系统中体现的数据不一致。">【江苏童爸】客户PRM模块授权商品，在PRM总部系统中体现的数据不一致。</td><td>PRM加盟商</td></tr>
                         </tbody>
                     </table>
                 </div>
