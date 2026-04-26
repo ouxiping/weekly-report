@@ -521,7 +521,7 @@
 
                 <li><a href="#section6">💡 改进建议</a></li>
                 <li><a href="#section7">🛠️ 补丁执行</a></li>
-                <li><a href="#section7">📋 本周问题明细</a></li>
+                <li><a href="#section8">📋 本周问题明细</a></li>
             </ul>
         </div>
 
@@ -987,8 +987,8 @@
             </div>
         </div>
 
-        <!-- ========== 第七章：附录（本周问题明细） ========== -->
-        <div class="section-card collapsed" id="section7">
+        <!-- ========== 第八章：附录（本周问题明细） ========== -->
+        <div class="section-card collapsed" id="section8">
             <div class="section-header purple" onclick="toggleSectionCollapse(this.parentElement)">
                 <div class="section-icon">📋</div>
                 <div class="section-info">
@@ -1079,7 +1079,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             var navLinks = document.querySelectorAll('.toc-nav a');
             window.addEventListener('scroll', function() {
-                var sections = ['section1', 'section2', 'section3', 'section4', 'section5', 'section6', 'section7'];
+                var sections = ['section1', 'section2', 'section3', 'section4', 'section5', 'section6', 'section7', 'section8'];
                 var scrollPos = window.pageYOffset + 100;
                 sections.forEach(function(id) {
                     var section = document.getElementById(id);
