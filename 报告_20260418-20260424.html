@@ -602,14 +602,46 @@
                 </div>
             </div>
             <div class="section-body">
-                <!-- 章节引导语 -->
-                <div class="notice-box blue" style="margin-bottom: 20px;">
-                    <h4>📊 本周问题分析结论</h4>
-                    <p>
-                        本周<span class="highlight">6个严重问题已全部解决</span>。
-                        引入问题共<span class="warning">10个</span>，
-                        其中<span class="highlight">需求引入占80%</span>。
-                        <span class="highlight">8.37版本</span>问题最多（4个），建议重点复盘。</p><p><strong>🔴 高风险版本预警：</strong>8.37版本（4个）、9.16版本（3个）、8.36版本（1个）需发布前重点回归测试。
+                <!-- ========== 严重问题分析 ========== -->
+                <div class="summary-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 20px;">
+                    <div class="summary-item" style="background: linear-gradient(135deg, #fee2e2, #fecaca); border: 1px solid #ef4444;">
+                        <div class="summary-label">🔴 严重问题总数</div>
+                        <div class="summary-value" style="color: #991b1b; font-size: 28px;">6 条</div>
+                        <div class="summary-value" style="color: #991b1b; font-size: 12px;">✅ 全部处理</div>
+                    </div>
+                    <div class="summary-item" style="background: linear-gradient(135deg, #fef3c7, #fde68a); border: 1px solid #f59e0b;">
+                        <div class="summary-label">🟡 引入问题总数</div>
+                        <div class="summary-value" style="color: #92400e; font-size: 28px;">10 条</div>
+                        <div class="summary-value" style="color: #92400e; font-size: 12px;">Bug引入 2 + 需求引入 8</div>
+                    </div>
+                    <div class="summary-item" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); border: 1px solid #3b82f6;">
+                        <div class="summary-label">🔵 问题类型</div>
+                        <div class="summary-value" style="color: #1e40af; font-size: 14px;">代码错误(5条)、安装部署(1条)</div>
+                    </div>
+                    <div class="summary-item" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); border: 1px solid #10b981;">
+                        <div class="summary-label">🟢 高风险版本</div>
+                        <div class="summary-value" style="color: #065f46; font-size: 14px;">8.37版本(4)</div>
+                    </div>
+                </div>
+                
+                <!-- 严重问题分析结论 -->
+                <div class="notice-box red" style="margin-bottom: 15px;">
+                    <h4>📊 严重问题分析结论</h4>
+                    <p>本周严重问题共 <strong>6 条</strong>，
+                    其中 <strong>0 条待处理</strong>。
+                    
+                    <br>📈 问题类型分布：代码错误(5条)、安装部署(1条)
+                    </p>
+                </div>
+
+                <!-- 引入问题分析结论 -->
+                <div class="notice-box yellow" style="margin-bottom: 15px;">
+                    <h4>📊 引入问题分析结论</h4>
+                    <p>引入问题共 <strong>10 条</strong>，
+                    其中 <strong>Bug引入 2 条（' + str(round(len(bug_intro)/(len(bug_intro)+len(req_intro))*100)) + '%）</strong>、
+                    <strong>需求引入 8 条（' + str(round(len(req_intro)/(len(bug_intro)+len(req_intro))*100)) + '%）</strong>。
+                    <br>🔴 <strong>高风险版本：</strong>8.37版本（4个）、9.16版本（3个）、8.36版本（1个），建议发布前重点回归测试。
+                    <br>📦 <strong>高风险产品：</strong>ERP（6个）、POS（4个）
                     </p>
                 </div>
 
@@ -617,14 +649,10 @@
                 <div class="collapsible" onclick="toggleCollapse(this)">
                     <div class="collapsible-header">
                         <div class="toggle-icon">▶</div>
-                        <div class="section-title">严重问题（6 条）</div>
+                        <div class="section-title">严重问题详情（6 条）</div>
                         <div class="section-meta"><span class="traffic-light-label light-green">✅ 全部处理</span></div>
                     </div>
                     <div class="collapsible-content">
-                        <div class="notice-box red" style="margin-bottom: 15px;">
-                            <h4>说明</h4>
-                            <p>严重问题指严重程度为致命(1) 或 严重(2) 的问题，需要重点关注并复盘根因</p>
-                        </div>
                         <div class="charts-row">
                             <div class="chart-box half">
                                 <div class="chart-title">严重问题-处理状态</div>
@@ -649,7 +677,7 @@
                 <div class="collapsible" onclick="toggleCollapse(this)">
                     <div class="collapsible-header">
                         <div class="toggle-icon">▶</div>
-                        <div class="section-title">引入问题（10 条）</div>
+                        <div class="section-title">引入问题详情（10 条）</div>
                         <div class="section-meta"><span class="traffic-light-label light-yellow">Bug 2 + 需求 8</span></div>
                     </div>
                     <div class="collapsible-content">
