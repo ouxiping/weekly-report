@@ -1060,8 +1060,11 @@
 
         // ========== V26新增：折叠功能 ==========
         function toggleCollapse(el) {
-            el.classList.toggle('active');
+            var header = el.querySelector('.collapsible-header');
             var content = el.querySelector('.collapsible-content');
+            if (header) {
+                header.classList.toggle('active');
+            }
             if (content) {
                 content.classList.toggle('open');
             }
