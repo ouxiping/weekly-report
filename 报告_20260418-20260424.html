@@ -518,8 +518,9 @@
                 <li><a href="#section2">📈 趋势分析</a></li>
                 <li><a href="#section3">🎯 重点问题</a></li>
                 <li><a href="#section4">📦 未解决问题看板</a></li>
-                <li><a href="#section5">💡 改进建议</a></li>
-                <li><a href="#section6">🛠️ 补丁执行</a></li>
+                <li><a href="#section5">🔍 根因分类总结</a></li>
+                <li><a href="#section6">💡 改进建议</a></li>
+                <li><a href="#section7">🛠️ 补丁执行</a></li>
                 <li><a href="#section7">📋 本周问题明细</a></li>
             </ul>
         </div>
@@ -892,8 +893,26 @@
             </div>
         </div>
 
-        <!-- ========== 第五章：改进建议 ========== -->
+        <!-- ========== 第五章：根因分类总结 ========== -->
         <div class="section-card" id="section5">
+            <div class="section-header" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); color: white;">
+                <div class="section-icon">🔍</div>
+                <div class="section-info">
+                    <div class="section-title">根因分类总结</div>
+                    <div class="section-desc">引入问题根因分析，帮助发现共性问题和改进方向</div>
+                </div>
+            </div>
+            <div class="section-body">
+                
+                <div class="summary-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                <div class="summary-item" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe; border: 1px solid #3b82f6;"><div class="summary-label">🔵 数据兼容问题（2条）</div><div class="summary-value" style="color: #1e40af;">问题编号: 39519, 39557</div></div><div class="summary-item" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0; border: 1px solid #10b981;"><div class="summary-label">🟢 逻辑缺陷（1条）</div><div class="summary-value" style="color: #065f46;">问题编号: 39530</div></div><div class="summary-item" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe; border: 1px solid #3b82f6;"><div class="summary-label">🔵 代码合并/重构（2条）</div><div class="summary-value" style="color: #1e40af;">问题编号: 39651, 39401</div></div><div class="summary-item" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0; border: 1px solid #10b981;"><div class="summary-label">🟢 接口/组件问题（1条）</div><div class="summary-value" style="color: #065f46;">问题编号: 39477</div></div><div class="summary-item" style="background: linear-gradient(135deg, #fee2e2, #fecaca; border: 1px solid #ef4444;"><div class="summary-label">🔴 其他问题（4条）</div><div class="summary-value" style="color: #991b1b;">问题编号: 39528, 39470, 39424, 39602</div></div>
+                </div>
+                <div class="intro-section" style="margin-top: 15px;"><h4 style="color: #3b82f6;">🔵 数据兼容问题（2条）</h4><div class="table-container"><table><thead><tr><th>编号</th><th>产品</th><th>版本</th><th>关联问题</th><th>根因摘要</th></tr></thead><tbody><tr><td><a href="http://zentao.hckj.cn/bug-view-39519.html" target="_blank">39519</a></td><td>ERP</td><td>9.16版本</td><td>6691</td><td title="9.16版本6691需求开发引入，定时任务同步商品资料没有兼容历史数据，当品牌、品类的名称重复时会出现问题9.17版本解决并合入9.16分支补丁修复">9.16版本6691需求开发引入，定时任务同步商品资料没有兼容历史数据，当品牌、品类的名称重复时会出现问题9.17版本解...</td></tr><tr><td><a href="http://zentao.hckj.cn/bug-view-39557.html" target="_blank">39557</a></td><td>POS</td><td>9.16版本</td><td>6770</td><td title="9.16版本6770需求开发引入，在处理退货流程时，对“礼品卡回收状态”的判断逻辑存在缺陷，导致用户无法正常完成后续的退货操作：1、在判断一笔退货单是否可以取消时，系统仅检查了 goods_send_">9.16版本6770需求开发引入，在处理退货流程时，对“礼品卡回收状态”的判断逻辑存在缺陷，导致用户无法正常完成后续的退...</td></tr></tbody></table></div></div><div class="intro-section" style="margin-top: 15px;"><h4 style="color: #10b981;">🟢 逻辑缺陷（1条）</h4><div class="table-container"><table><thead><tr><th>编号</th><th>产品</th><th>版本</th><th>关联问题</th><th>根因摘要</th></tr></thead><tbody><tr><td><a href="http://zentao.hckj.cn/bug-view-39530.html" target="_blank">39530</a></td><td>ERP</td><td>9.16版本</td><td>6691</td><td title="9.16版本6691需求开发引入，ERP的最低售价非必填，PRM同步ERP的商品信息时将最低售价字段同步成空，supplier_goods_price_view视图查询要求price、sales_pr">9.16版本6691需求开发引入，ERP的最低售价非必填，PRM同步ERP的商品信息时将最低售价字段同步成空，suppl...</td></tr></tbody></table></div></div><div class="intro-section" style="margin-top: 15px;"><h4 style="color: #3b82f6;">🔵 代码合并/重构（2条）</h4><div class="table-container"><table><thead><tr><th>编号</th><th>产品</th><th>版本</th><th>关联问题</th><th>根因摘要</th></tr></thead><tbody><tr><td><a href="http://zentao.hckj.cn/bug-view-39651.html" target="_blank">39651</a></td><td>POS</td><td>8.37版本</td><td>39494</td><td title="8.37版本39494bug修改引入，版本门店参数“是否开启防伪码”未开启，展示了序列号">8.37版本39494bug修改引入，版本门店参数“是否开启防伪码”未开启，展示了序列号...</td></tr><tr><td><a href="http://zentao.hckj.cn/bug-view-39401.html" target="_blank">39401</a></td><td>POS</td><td>8.37版本</td><td>6829</td><td title="8.37版本6829需求开发引入：solution_param参数缓存未获取导致">8.37版本6829需求开发引入：solution_param参数缓存未获取导致...</td></tr></tbody></table></div></div><div class="intro-section" style="margin-top: 15px;"><h4 style="color: #10b981;">🟢 接口/组件问题（1条）</h4><div class="table-container"><table><thead><tr><th>编号</th><th>产品</th><th>版本</th><th>关联问题</th><th>根因摘要</th></tr></thead><tbody><tr><td><a href="http://zentao.hckj.cn/bug-view-39477.html" target="_blank">39477</a></td><td>ERP</td><td>8.35版本</td><td>6180</td><td title="8.35版本6180需求开发引入，换分页组件没考虑分页接口的传值问题基线8.38版本解决，已合入8.37分支智信云枢9.17版本解决，已合入9.16分支补丁修复">8.35版本6180需求开发引入，换分页组件没考虑分页接口的传值问题基线8.38版本解决，已合入8.37分支智信云枢9....</td></tr></tbody></table></div></div><div class="intro-section" style="margin-top: 15px;"><h4 style="color: #ef4444;">🔴 其他问题（4条）</h4><div class="table-container"><table><thead><tr><th>编号</th><th>产品</th><th>版本</th><th>关联问题</th><th>根因摘要</th></tr></thead><tbody><tr><td><a href="http://zentao.hckj.cn/bug-view-39528.html" target="_blank">39528</a></td><td>ERP</td><td>8.36版本</td><td>38413</td><td title="8.36版本38413bug修改引入">8.36版本38413bug修改引入...</td></tr><tr><td><a href="http://zentao.hckj.cn/bug-view-39470.html" target="_blank">39470</a></td><td>ERP</td><td>8.17版本</td><td>5453</td><td title="8.17版本 5453 需求开发引入，返厂导入商品，默认返厂价取的导入价格，在提交后又重新取了默认返厂价8.38版本解决：导入商品，默认返厂价优先取例外再取档案，已合入8.37分支">8.17版本 5453 需求开发引入，返厂导入商品，默认返厂价取的导入价格，在提交后又重新取了默认返厂价8.38版本解决...</td></tr><tr><td><a href="http://zentao.hckj.cn/bug-view-39424.html" target="_blank">39424</a></td><td>ERP</td><td>8.37版本</td><td>6797</td><td title="8.37版本6797需求开发引入8.38版本解决：设置码类型时，如果支持物料，则需要查询SRM数据">8.37版本6797需求开发引入8.38版本解决：设置码类型时，如果支持物料，则需要查询SRM数据...</td></tr><tr><td><a href="http://zentao.hckj.cn/bug-view-39602.html" target="_blank">39602</a></td><td>POS</td><td>8.37版本</td><td>6829</td><td title="8.37版本6829需求开发引入，8.38版本解决并已合入8.37分支">8.37版本6829需求开发引入，8.38版本解决并已合入8.37分支...</td></tr></tbody></table></div></div>
+            </div>
+        </div>
+
+        <!-- ========== 第六章：改进建议 ========== -->
+        <div class="section-card" id="section6">
             <div class="section-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;">
                 <div class="section-icon">💡</div>
                 <div class="section-info">
@@ -918,8 +937,8 @@
             </div>
         </div>
 
-        <!-- ========== 第六章：补丁执行 ========== -->
-        <div class="section-card" id="section6">
+        <!-- ========== 第七章：补丁执行 ========== -->
+        <div class="section-card" id="section7">
             <div class="section-header" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;">
                 <div class="section-icon">🛠️</div>
                 <div class="section-info">
