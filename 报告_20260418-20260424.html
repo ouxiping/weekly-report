@@ -496,11 +496,7 @@
         .mini-table td { padding: 6px 10px; border-top: 1px solid #f3f4f6; color: #374151; }
         .mini-table tr:hover { background: #fffbeb; }
         /* ========== 补丁表格专属样式 ========== */
-        .patch-table-wrap { border-radius: 8px; border: 1px solid #e9ecef; margin-bottom: 15px; overflow-x: auto; }
-        .patch-table { table-layout: auto; width: 100%; background: #fff; border-collapse: collapse; }
-        .patch-table th { background: #4a5568; color: white; padding: 8px 10px; font-weight: 500; text-align: left; border-bottom: 2px solid #dee2e6; }
-        .patch-table td { padding: 8px 10px; vertical-align: middle; border-bottom: 1px solid #e9ecef; text-align: left; }
-        .patch-table td.center { text-align: center; }
+        .patch-table { table-layout: auto; width: 100%; border-collapse: collapse; font-size: 12px; }
         .patch-table td.nowrap { white-space: nowrap; }
         .patch-table td.version-col { white-space: nowrap; text-align: center; }
         .patch-table td.range-col { text-align: center; }
@@ -933,7 +929,7 @@
                 <!-- Bug修复 -->
                 <div class="intro-section">
                     <h4>Bug修复补丁（4 条）</h4>
-                    <div class="patch-table-wrap">
+                    <div class="table-container">
                         <table class="patch-table">
                             <thead>
                                 <tr>
@@ -954,7 +950,7 @@
                 <!-- 紧急需求 -->
                 <div class="intro-section">
                     <h4>紧急需求补丁（3 条）</h4>
-                    <div class="patch-table-wrap">
+                    <div class="table-container">
                         <table class="patch-table">
                             <thead>
                                 <tr>
