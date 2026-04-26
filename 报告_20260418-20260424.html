@@ -496,9 +496,11 @@
         .mini-table td { padding: 6px 10px; border-top: 1px solid #f3f4f6; color: #374151; }
         .mini-table tr:hover { background: #fffbeb; }
         /* ========== 补丁表格专属样式 ========== */
-        .patch-table { table-layout: auto; width: 100%; border-collapse: collapse; font-size: 12px; }
-        .patch-table td.nowrap { white-space: nowrap; }
-        .patch-table td.version-col { white-space: nowrap; text-align: center; }
+        .patch-table { table-layout: auto !important; width: auto !important; min-width: 100%; border-collapse: collapse; font-size: 12px; }
+        .patch-table th,
+        .patch-table td { max-width: none !important; width: auto !important; white-space: normal !important; word-break: break-word; }
+        .patch-table td.nowrap { white-space: nowrap !important; }
+        .patch-table td.version-col { white-space: nowrap !important; text-align: center; }
         .patch-table td.range-col { text-align: center; }
     </style>
 </head>
