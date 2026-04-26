@@ -638,7 +638,7 @@
                         引入问题共<span class="warning">10个</span>，
                         其中<span class="highlight">需求引入占80%</span>，
                         致命/严重3条，已解决8条，已关闭2条。
-                        <span class="highlight">8.37版本</span>问题最多（4个），建议重点复盘。</p><p><strong>🔴 高风险版本预警：</strong>8.37版本（4个）、8.38版本（1个）、9.17版本（0个）需发布前重点回归测试。
+                        <span class="highlight">8.37版本</span>问题最多（4个），建议重点复盘。</p><p><strong>🔴 高风险版本预警：</strong>8.37版本（4个）、8.38版本（0个）、9.17版本（0个）需发布前重点回归测试。
                     </p>
                 </div>
 
@@ -704,13 +704,6 @@
                                         <td style="text-align:center;"><span class="count-badge" style="background:#ffc10720;color:#ffc107;">3条</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>8.38版本</strong></td>
-                                        <td style="text-align:center;font-size:16px;">🟢</td>
-                                        <td style="text-align:center;"><span title="需求引入" style="color:#3b82f6;">▲1</span></td>
-                                        <td style="color:#ccc;text-align:center;">-</td>
-                                        <td style="text-align:center;"><span class="count-badge" style="background:#28a74520;color:#28a745;">1条</span></td>
-                                    </tr>
-                                    <tr>
                                         <td><strong>8.37版本</strong></td>
                                         <td style="text-align:center;font-size:16px;">🟡</td>
                                         <td style="text-align:center;"><span title="需求引入" style="color:#3b82f6;">▲1</span></td>
@@ -726,6 +719,13 @@
                                     </tr>
                                     <tr>
                                         <td><strong>8.35版本</strong></td>
+                                        <td style="text-align:center;font-size:16px;">🟢</td>
+                                        <td style="text-align:center;"><span title="需求引入" style="color:#3b82f6;">▲1</span></td>
+                                        <td style="color:#ccc;text-align:center;">-</td>
+                                        <td style="text-align:center;"><span class="count-badge" style="background:#28a74520;color:#28a745;">1条</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>8.17版本</strong></td>
                                         <td style="text-align:center;font-size:16px;">🟢</td>
                                         <td style="text-align:center;"><span title="需求引入" style="color:#3b82f6;">▲1</span></td>
                                         <td style="color:#ccc;text-align:center;">-</td>
@@ -767,7 +767,7 @@
 <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39530.html" target="_blank">39530</a></td><td class="desc-cell" title="【智信云枢-中台】采购在PRM改价的时候报错了，提示系统运行异常，检查到空指针，可能是数据未正确初始化引用对象为空（何荀已定位出原因）">【智信云枢-中台】采购在PRM改价的时候报错了，提示系统运行...</td><td>ERP</td><td>9.16版本</td><td><span class="tag ">一般</span></td><td>已关闭</td><td><span class="tag tag-req">需求 6691</span><br><span style="color:#666;font-size:11px;">【智信云枢】PRM（合伙人中台）商品资料及价格同步</span></td><td class="cause-cell">9.16版本6691需求开发引入，ERP的最低售价非必填，PRM同步ERP的商品信息时将最低售价字段同步成空，supplier_goods_price_view视图查询要求price、sales_price、min_price不能为空否则查不出数据，导致更新时从视图中查询不到数据出现空指针问题9.17版本解决：PRM同步ERP商品信息时针对这三个字段增加为空判断，如果为空则赋值为0，已合入9.16分支并补丁修复</td></tr>
 <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39519.html" target="_blank">39519</a></td><td class="desc-cell" title="【智信云枢-直营环境】6954665213517这个商品在直营环境改了发货价，但是没有同步到中台（何荀已定位出原因）">【智信云枢-直营环境】6954665213517这个商品在直...</td><td>ERP</td><td>9.16版本</td><td><span class="tag tag-high">严重</span></td><td>已关闭</td><td><span class="tag tag-req">需求 6691</span><br><span style="color:#666;font-size:11px;">【智信云枢】PRM（合伙人中台）商品资料及价格同步</span></td><td class="cause-cell">9.16版本6691需求开发引入，定时任务同步商品资料没有兼容历史数据，当品牌、品类的名称重复时会出现问题9.17版本解决并合入9.16分支补丁修复</td></tr>
 <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39477.html" target="_blank">39477</a></td><td class="desc-cell" title="【智信云枢-直营环境】大转盘每页显示的数据和选择展示的条数不对等，客户反馈的活动数据应该比显示的要多。">【智信云枢-直营环境】大转盘每页显示的数据和选择展示的条数不...</td><td>ERP</td><td>8.35版本</td><td><span class="tag ">一般</span></td><td>已解决</td><td><span class="tag tag-req">需求 6180</span><br><span style="color:#666;font-size:11px;">【小飞象|123baby|拉古芭】抽奖活动：优化防重机制</span></td><td class="cause-cell">8.35版本6180需求开发引入，换分页组件没考虑分页接口的传值问题基线8.38版本解决，已合入8.37分支智信云枢9.17版本解决，已合入9.16分支补丁修复</td></tr>
-<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39470.html" target="_blank">39470</a></td><td class="desc-cell" title="【123baby】新增强制返厂单，模板导入商品显示默认返厂价和表格填写的返厂价一致，没有取档案里的价格。">【123baby】新增强制返厂单，模板导入商品显示默认返厂价...</td><td>ERP</td><td>8.38版本</td><td><span class="tag ">一般</span></td><td>已解决</td><td><span class="tag tag-req">需求 5453</span><br><span style="color:#666;font-size:11px;">【通用局点】仓储导入功能重构</span></td><td class="cause-cell">8.17版本 5453 需求开发引入，返厂导入商品，默认返厂价取的导入价格，在提交后又重新取了默认返厂价8.38版本解决：导入商品，默认返厂价优先取例外再取档案，已合入8.37分支</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39470.html" target="_blank">39470</a></td><td class="desc-cell" title="【123baby】新增强制返厂单，模板导入商品显示默认返厂价和表格填写的返厂价一致，没有取档案里的价格。">【123baby】新增强制返厂单，模板导入商品显示默认返厂价...</td><td>ERP</td><td>8.17版本</td><td><span class="tag ">一般</span></td><td>已解决</td><td><span class="tag tag-req">需求 5453</span><br><span style="color:#666;font-size:11px;">【通用局点】仓储导入功能重构</span></td><td class="cause-cell">8.17版本 5453 需求开发引入，返厂导入商品，默认返厂价取的导入价格，在提交后又重新取了默认返厂价8.38版本解决：导入商品，默认返厂价优先取例外再取档案，已合入8.37分支</td></tr>
 <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39424.html" target="_blank">39424</a></td><td class="desc-cell" title="【合生元】【中山宝贝屋】POS销售录入了物料的序列号，但是识别为非在库码">【合生元】【中山宝贝屋】POS销售录入了物料的序列号，但是识...</td><td>ERP</td><td>8.37版本</td><td><span class="tag ">一般</span></td><td>已解决</td><td><span class="tag tag-req">需求 6797</span><br><span style="color:#666;font-size:11px;">【合生元】【企鹅宝贝】【亲子坊】【中山宝贝屋】【小儿郎】合生元序列号录入准确率比</span></td><td class="cause-cell">8.37版本6797需求开发引入8.38版本解决：设置码类型时，如果支持物料，则需要查询SRM数据</td></tr>
 <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39602.html" target="_blank">39602</a></td><td class="desc-cell" title="【河北曲周爱尚婴】版本更新为37后寄存界面显示不合理">【河北曲周爱尚婴】版本更新为37后寄存界面显示不合理</td><td>POS</td><td>8.37版本</td><td><span class="tag ">一般</span></td><td>已解决</td><td><span class="tag tag-req">需求 6829</span><br><span style="color:#666;font-size:11px;">【版本合并】POS代码合并</span></td><td class="cause-cell">8.37版本6829需求开发引入，8.38版本解决并已合入8.37分支</td></tr>
 <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39557.html" target="_blank">39557</a></td><td class="desc-cell" title="【智信云枢-直营环境】S26011683230115720021（原销售单号），退货提示：保存退款单据失败:本单赠送礼品卡状态已变更，请重新发起退款，避免门店损失。">【智信云枢-直营环境】S260116832301157200...</td><td>POS</td><td>9.16版本</td><td><span class="tag tag-high">严重</span></td><td>已解决</td><td><span class="tag tag-req">需求 6770</span><br><span style="color:#666;font-size:11px;">【智信云枢】礼品券回收：参与促销赠券的原单退货要回收礼品券...</span></td><td class="cause-cell">9.16版本6770需求开发引入，在处理退货流程时，对"礼品卡回收状态"的判断逻辑存在缺陷，导致用户无法正常完成后续的退货操作；9.17版本解决，待合入9.16分支</td></tr>
