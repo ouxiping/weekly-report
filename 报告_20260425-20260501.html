@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>线上问题分析报告（20260411-20260417）</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Microsoft YaHei', Arial, sans-serif; background: #6c757d; min-height: 100vh; color: #333; line-height: 1.6; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
+
+        .page-header { text-align: center; margin-bottom: 30px; }
+        .page-header h1 { color: white; font-size: 32px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); margin-bottom: 10px; }
+        .page-header .subtitle { color: rgba(255,255,255,0.9); font-size: 15px; }
+
+        /* ========== 顶部本周问题概览大卡片 ========== */
+        .overview-banner { background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); margin-bottom: 20px; overflow: hidden; }
+        .overview-banner-header { background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%); color: white; padding: 18px 25px; display: flex; align-items: center; gap: 12px; }
+        .overview-banner-title { font-size: 18px; font-weight: bold; }
+        .overview-banner-sub { font-size: 12px; opacity: 0.85; margin-top: 2px; }
+        .overview-kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; }
+        .overview-kpi-item { padding: 20px 15px; text-align: center; border-right: 1px solid #f0f0f0; position: relative; }
+        .overview-kpi-item:last-child { border-right: none; }
+        .overview-kpi-num { font-size: 36px; font-weight: 900; line-height: 1; margin-bottom: 6px; }
+        .overview-kpi-label { font-size: 12px; color: #888; font-weight: 500; }
+        .overview-kpi-sub { font-size: 11px; color: #aaa; margin-top: 4px; }
+        .kpi-new .overview-kpi-num { color: #1a73e8; }
+        .kpi-resolved .overview-kpi-num { color: #10b981; }
+        .kpi-closed .overview-kpi-num { color: #6366f1; }
+        .kpi-serious .overview-kpi-num { color: #dc3545; }
+        .kpi-intro .overview-kpi-num { color: #f59e0b; }
+
+        /* ========== 合并版核心结论样式 ========== */
+        #section1 { background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); margin-bottom: 20px; overflow: hidden; }
+        .merged-header { background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%); color: white; padding: 14px 20px; display: flex; align-items: center; gap: 10px; }
+        .merged-kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); border-bottom: 1px solid #eee; }
+        .merged-kpi-item { padding: 18px 12px; text-align: center; border-right: 1px solid #f0f0f0; }
+        .merged-kpi-item:last-child { border-right: none; }
+        .merged-kpi-num { font-size: 32px; font-weight: 900; line-height: 1; margin-bottom: 4px; }
+        .merged-kpi-label { font-size: 12px; color: #888; font-weight: 500; margin-bottom: 4px; }
+        .merged-kpi-tag { font-size: 11px; margin-top: 4px; }
+        .kpi-new .merged-kpi-num { color: #1a73e8; }
+        .kpi-resolved .merged-kpi-num { color: #10b981; }
+        .kpi-closed .merged-kpi-num { color: #6366f1; }
+        .kpi-serious .merged-kpi-num { color: #dc3545; }
+        .kpi-total .merged-kpi-num { color: #333; }
+        .merged-conclusions { padding: 0; }
+        .merged-concl { display: flex; align-items: flex-start; padding: 12px 20px; border-bottom: 1px solid #f5f5f5; }
+        .merged-concl:last-child { border-bottom: none; }
+        .concl-label { width: 90px; flex-shrink: 0; font-size: 13px; font-weight: 600; padding-top: 2px; }
+        .concl-text { flex: 1; font-size: 13px; line-height: 1.6; color: #444; }
+        .concl-blue { background: linear-gradient(90deg, #e8f4fd 0%, transparent 100%); }
+        .concl-blue .concl-label { color: #1a73e8; }
+        .concl-orange { background: linear-gradient(90deg, #fff3e0 0%, transparent 100%); }
+        .concl-orange .concl-label { color: #e65100; }
+        .concl-danger { border-left: 3px solid #f59e0b; }
+        .concl-green { background: linear-gradient(90deg, #e8f5e9 0%, transparent 100%); }
+        .concl-green .concl-label { color: #2e7d32; }
+        .c-highlight { color: #1a73e8; font-weight: 600; }
+        .c-pos { color: #10b981; font-weight: 600; }
+        .c-warn { color: #f59e0b; font-weight: 600; }
+        .tag-yellow { background: #fff3cd; color: #856404; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+        .tag-green { background: #d4edda; color: #155724; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+        .tag-red { background: #f8d7da; color: #721c24; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+        .tag-blue { background: #cfe2ff; color: #084298; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+        .tag-purple { background: #e2e3f3; color: #37376b; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+        .tag-gray { background: #e9ecef; color: #495057; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+        .kpi-badge { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 10px; margin-top: 5px; font-weight: 600; }
+        .badge-green { background: #d1fae5; color: #065f46; }
+        .badge-red { background: #fee2e2; color: #991b1b; }
+        .badge-blue { background: #dbeafe; color: #1e40af; }
+        .badge-yellow { background: #fef3c7; color: #92400e; }
+        .badge-purple { background: #ede9fe; color: #5b21b6; }
+
+        /* ========== V2新增：效率看板样式 ========== */
+        .efficiency-card { background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); margin-bottom: 20px; overflow: hidden; }
+        .efficiency-header { background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%); color: white; padding: 16px 25px; display: flex; align-items: center; gap: 12px; }
+        .efficiency-title { font-size: 17px; font-weight: bold; }
+        .efficiency-body { padding: 20px 25px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; }
+        .eff-item { background: #f8f9fa; border-radius: 12px; padding: 16px 15px; text-align: center; border-top: 3px solid transparent; }
+        .eff-item.green-top { border-top-color: #10b981; }
+        .eff-item.blue-top { border-top-color: #1a73e8; }
+        .eff-item.purple-top { border-top-color: #7c3aed; }
+        .eff-item.orange-top { border-top-color: #f59e0b; }
+        .eff-item.red-top { border-top-color: #dc3545; }
+        .eff-num { font-size: 28px; font-weight: 900; color: #333; line-height: 1.1; }
+        .eff-unit { font-size: 13px; color: #666; margin-top: 3px; }
+        .eff-label { font-size: 11px; color: #999; margin-top: 5px; }
+        .progress-bar-wrap { background: #e9ecef; border-radius: 6px; height: 8px; margin-top: 10px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; border-radius: 6px; transition: width 0.8s; }
+        .fill-green { background: #10b981; }
+        .fill-purple { background: #7c3aed; }
+        .fill-blue { background: #1a73e8; }
+
+        /* ========== V2新增：核心结论摘要样式 ========== */
+        .summary-card { background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); margin-bottom: 30px; overflow: hidden; }
+        .summary-header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 20px 25px; display: flex; align-items: center; gap: 15px; }
+        .summary-icon { width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .summary-title { font-size: 20px; font-weight: bold; }
+        .summary-desc { font-size: 13px; opacity: 0.9; margin-top: 3px; }
+        .summary-body { padding: 25px; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+        .summary-item { background: #f8f9fa; border-radius: 12px; padding: 15px; border-left: 4px solid #10b981; }
+        .summary-item.alert { background: #fef3c7; border-left-color: #f59e0b; }
+        .summary-item.danger { background: #f8d7da; border-left-color: #dc3545; }
+        .summary-item.info { background: #e0e7ff; border-left-color: #6366f1; }
+        .summary-label { font-size: 12px; color: #666; margin-bottom: 5px; font-weight: 600; }
+        .summary-value { font-size: 16px; color: #333; font-weight: bold; }
+        .summary-value .highlight { color: #dc3545; font-size: 20px; }
+        .summary-value .positive { color: #10b981; }
+        .summary-value .warning { color: #f59e0b; }
+
+        /* ========== V2新增：趋势图样式 ========== */
+        .trend-section { background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); margin-bottom: 30px; overflow: hidden; }
+        .trend-header { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; padding: 15px 25px; display: flex; align-items: center; gap: 15px; }
+        .trend-body { padding: 20px 25px; }
+        .trend-chart-wrapper { height: 200px; }
+
+        .section-card { background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); margin-bottom: 30px; overflow: hidden; }
+        .section-card.collapsed .section-body { display: none; }
+        .section-card.collapsed { opacity: 0.85; }
+        .section-header { padding: 25px 30px; display: flex; align-items: center; gap: 15px; cursor: pointer; }
+        .section-header:hover { filter: brightness(1.05); }
+        .section-header.blue { background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%); color: white; }
+        .section-header.orange { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; }
+        .section-header.purple { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); color: white; }
+        .section-icon { width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; }
+        .section-info { flex: 1; }
+        .section-title { font-size: 22px; font-weight: bold; }
+        .section-desc { font-size: 13px; opacity: 0.9; margin-top: 3px; }
+        .section-badge { background: rgba(255,255,255,0.25); padding: 6px 15px; border-radius: 20px; font-size: 14px; font-weight: 600; }
+
+        .section-body { padding: 25px 30px; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 25px; }
+        .stat-card { background: #f8f9fa; border-radius: 12px; padding: 15px 10px; text-align: center; cursor: pointer; transition: all 0.3s; border: 2px solid transparent; }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); border-color: #1a73e8; }
+        .stat-card.serious { background: #f8d7da; }
+        .stat-card.serious:hover { border-color: #dc3545; }
+        .stat-card.pending { background: #fff3cd; }
+        .stat-card.pending:hover { border-color: #f59e0b; }
+        .stat-card-value { font-size: 24px; font-weight: bold; color: #1a73e8; }
+        .stat-card.serious .stat-card-value { color: #dc3545; }
+        .stat-card.pending .stat-card-value { color: #f59e0b; }
+        .stat-card-label { font-size: 11px; color: #666; margin-top: 5px; }
+        .stat-card-sub { font-size: 10px; color: #999; margin-top: 3px; }
+
+        .charts-row { display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+        .chart-box { flex: 1; min-width: 300px; background: #f8f9fa; border-radius: 12px; padding: 15px; }
+        .chart-box.full { max-width: 100%; }
+        .chart-box.half { flex: 1; min-width: 250px; }
+        .chart-title { font-size: 14px; font-weight: 600; color: #333; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 2px solid #1a73e8; display: inline-block; }
+        .chart-wrapper { position: relative; height: 220px; width: 100%; }
+        .chart-wrapper.large { height: 600px; }
+        .chart-wrapper.small { height: 180px; }
+
+        .table-container { border-radius: 8px; overflow-x: auto; border: 1px solid #e9ecef; margin-bottom: 15px; -webkit-overflow-scrolling: touch; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th { background: #4a5568; color: white; padding: 10px 8px; text-align: left; font-weight: 500; }
+        td { padding: 8px; border-bottom: 1px solid #e9ecef; vertical-align: middle; }
+        tr:hover { background: #f8f9fa; }
+        tr:last-child td { border-bottom: none; }
+
+        .tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 500; }
+        .tag-bug { background: #ffecb3; color: #f57c00; }
+        .tag-req { background: #e8f5e9; color: #388e3c; }
+        .tag-history { background: #e3f2fd; color: #1976d2; }
+        .tag-serious { background: #f8d7da; color: #721c24; }
+        .tag-high { background: #fff3cd; color: #856404; }
+
+        .bug-id { color: #1a73e8; text-decoration: none; font-weight: 600; }
+        .bug-id:hover { text-decoration: underline; }
+
+        .dept-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
+        .dept-card { padding: 15px 10px; border-radius: 12px; color: white; cursor: pointer; transition: all 0.3s; text-align: center; }
+        .dept-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
+        .dept-card.rd { background: #667eea; }
+        .dept-card.product { background: #f5576c; }
+        .dept-card.ops { background: #4facfe; color: #333; }
+        .dept-card.customer { background: #fa709a; }
+        .dept-card.other { background: #94a3b8; color: #333; }
+        .dept-name { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+        .dept-count { font-size: 20px; font-weight: bold; }
+        .dept-pct { font-size: 11px; opacity: 0.9; }
+
+        .detail-view { display: none; }
+        .detail-header { display: flex; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e9ecef; }
+        .detail-title { font-size: 16px; font-weight: 600; color: #333; flex: 1; }
+        .back-btn { padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+        .back-btn:hover { background: #5a6268; }
+
+        .notice-box { background: #e7f3ff; border-left: 4px solid #1a73e8; border-radius: 0 8px 8px 0; padding: 12px 15px; margin-bottom: 15px; font-size: 13px; color: #1a73e8; }
+        .notice-box.red { background: #f8d7da; border-left-color: #dc3545; color: #721c24; }
+        .notice-box.green { background: #e8f5e9; border-left-color: #28a745; color: #2e7d32; }
+        .notice-box.orange { background: #fff3cd; border-left-color: #f59e0b; color: #856404; }
+        .notice-box h4 { font-size: 13px; margin-bottom: 5px; }
+
+        .intro-section { margin-bottom: 25px; }
+        .intro-section h4 { margin: 15px 0 10px; color: #333; font-size: 15px; font-weight: 600; }
+        
+        /* 引入明细表格 - 自适应列宽 */
+        .intro-table { margin-bottom: 15px; }
+        .intro-detail-table { 
+            width: 100%; 
+            table-layout: auto; 
+            border-collapse: separate; 
+            border-spacing: 0;
+            font-size: 13px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .intro-detail-table th { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: white; 
+            padding: 12px 10px; 
+            text-align: left; 
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .intro-detail-table td { 
+            padding: 10px; 
+            border-bottom: 1px solid #e5e7eb; 
+            vertical-align: middle;
+            max-width: 300px;
+        }
+        .intro-detail-table tr:hover td { background: #f8f9ff; }
+        .intro-detail-table tr:last-child td { border-bottom: none; }
+        .intro-detail-table .desc-cell {
+            max-width: 280px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .intro-detail-table .cause-cell {
+            max-width: 250px;
+            font-size: 12px;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        .clickable-row { cursor: pointer; }
+        .clickable-row:hover { background: #e8f0fe !important; }
+        .clickable-row td:first-child { font-weight: 600; color: #1a73e8; }
+        .view-btn { background: #e8f0fe; color: #1a73e8; padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer; border: none; transition: all 0.2s; }
+        .view-btn:hover { background: #1a73e8; color: white; }
+        
+        /* Tab页签按钮样式 */
+        .tab-buttons { margin-bottom: 15px; }
+        .tab-btn { background: #f1f3f4; color: #5f6368; padding: 8px 16px; border: none; border-radius: 20px; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+        .tab-btn:hover { background: #e8eaed; color: #202124; }
+        .tab-btn.active { background: #1a73e8; color: white; font-weight: 500; }
+        
+        /* 明细展开区域标题栏 */
+        .detail-title-bar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 15px; border-radius: 8px; font-size: 14px; font-weight: 500; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .detail-close-btn { background: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.5); color: white; padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+        .detail-close-btn:hover { background: rgba(255,255,255,0.5); }
+        .pending-tab-panel { animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* ========== V2新增：改进建议样式 ========== */
+        .improvement-box { background: #ecfdf5; border-radius: 12px; padding: 15px 20px; margin-top: 15px; border: 1px solid #10b981; }
+        .improvement-box h5 { color: #065f46; font-size: 14px; margin-bottom: 10px; }
+        .improvement-list { list-style: none; padding: 0; margin: 0; }
+        .improvement-list li { color: #047857; font-size: 13px; padding: 5px 0; padding-left: 20px; position: relative; }
+        .improvement-list li::before { content: "✓"; position: absolute; left: 0; color: #10b981; font-weight: bold; }
+        .intro-table-container { margin-bottom: 15px; overflow-x: auto; }
+        .intro-version-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+        .intro-version-table th { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 12px; text-align: left; font-weight: 500; }
+        .intro-version-table td { padding: 10px 12px; border-bottom: 1px solid #e5e7eb; vertical-align: middle; }
+        .intro-version-table tr:hover { background-color: #f9fafb; }
+        .intro-version-table .count-badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-weight: 600; font-size: 12px; }
+        .intro-version-table .improvement-cell { color: #047857; font-size: 12px; }
+        .intro-cross-table th:first-child, .intro-cross-table td:first-child { position: sticky; left: 0; background: #fff; z-index: 1; border-right: 2px solid #e5e7eb; }
+        .intro-cross-table th:first-child { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .intro-cross-table tfoot td { border-top: 2px solid #d1d5db; font-size: 13px; }
+
+        /* ========== V2新增：根本原因样式 ========== */
+        .root-cause { background: #fef3c7; border-radius: 8px; padding: 8px 12px; margin-top: 5px; font-size: 11px; color: #92400e; }
+        .prevention { background: #e0e7ff; border-radius: 8px; padding: 8px 12px; margin-top: 5px; font-size: 11px; color: #4338ca; }
+
+        .page-footer { text-align: center; color: rgba(255,255,255,0.8); padding: 20px; font-size: 13px; }
+        .page-meta { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 15px; margin-top: 10px; display: inline-block; }
+        .page-meta-item { margin: 3px 0; font-size: 12px; }
+
+        /* 引入问题图表美化样式 */
+        .intro-chart-container { background: #fef3c7; border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 2px solid #f59e0b; }
+        .intro-chart-container .chart-title { border-bottom-color: #f59e0b; color: #92400e; }
+        .intro-chart-container .chart-wrapper { height: 160px; }
+
+        /* 处理人分布图表美化 */
+        .handler-chart-container { background: #e0e7ff; border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 2px solid #6366f1; }
+        .handler-chart-container .chart-title { border-bottom-color: #6366f1; color: #4338ca; }
+
+        /* ========== V26新增：折叠功能样式 ========== */
+        .collapsible {
+            cursor: pointer;
+            user-select: none;
+        }
+        .collapsible-header {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .collapsible-header:hover {
+            background: #e9ecef;
+            border-color: #1a73e8;
+        }
+        .collapsible-header .toggle-icon {
+            width: 28px;
+            height: 28px;
+            background: #1a73e8;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 16px;
+            transition: transform 0.3s;
+        }
+        .collapsible-header.active .toggle-icon {
+            transform: rotate(90deg);
+        }
+        .collapsible-header .section-title {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        .collapsible-header .section-meta {
+            font-size: 12px;
+            color: #666;
+            margin-right: 10px;
+        }
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            padding: 0 10px;
+        }
+        .collapsible-content.open {
+            max-height: 5000px;
+            padding: 15px 10px;
+        }
+
+        /* 红黄绿灯样式 */
+        .traffic-light {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .traffic-light .light {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .traffic-light .light.green { background: #10b981; }
+        .traffic-light .light.yellow { background: #f59e0b; }
+        .traffic-light .light.red { background: #dc3545; }
+        .traffic-light-label {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        .light-green { background: #d1fae5; color: #065f46; }
+        .light-yellow { background: #fef3c7; color: #92400e; }
+        .light-red { background: #fee2e2; color: #991b1b; }
+
+        /* 章节导航 */
+        .toc-nav {
+            position: sticky;
+            top: 10px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        .toc-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 0;
+            padding: 0;
+        }
+        .toc-nav li a {
+            color: #666;
+            text-decoration: none;
+            font-size: 13px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .toc-nav li a:hover {
+            background: #e8f0fe;
+            color: #1a73e8;
+        }
+        .toc-nav li a.active {
+            background: #1a73e8;
+            color: white;
+        }
+        
+        /* ========== 部门-处理人两级折叠树 ========== */
+        .tree-container { padding: 10px 0; }
+        .tree-dept { margin-bottom: 8px; }
+        .tree-dept-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .tree-dept-header:hover {
+            filter: brightness(1.1);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .tree-arrow {
+            margin-right: 10px;
+            font-size: 12px;
+            transition: transform 0.2s;
+        }
+        .tree-dept-name { flex: 1; }
+        .tree-dept-count {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        .tree-dept-content {
+            margin-left: 20px;
+            margin-top: 5px;
+            border-left: 2px solid #e0e0e0;
+            padding-left: 15px;
+        }
+        .tree-handler {
+            margin: 5px 0;
+        }
+        .tree-handler-header {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tree-handler-header:hover {
+            background: #e9ecef;
+        }
+        .tree-handler-name { flex: 1; color: #495057; }
+        .tree-handler-count {
+            background: #dee2e6;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            color: #6c757d;
+            margin-right: 10px;
+        }
+
+        /* ========== 移动端适配 ========== */
+        @media screen and (max-width: 768px) {
+            body { font-size: 14px; }
+            .container { padding: 10px; min-width: unset; }
+            .page-header h1 { font-size: 18px; }
+            .page-header .subtitle { font-size: 11px; }
+            .toc-nav { padding: 8px 12px; }
+            .toc-nav ul { gap: 8px; }
+            .toc-nav li a { font-size: 11px; padding: 4px 8px; }
+            .summary-body, .section-body, .efficiency-body, .trend-body { padding: 15px; }
+            .section-card { padding: 12px 15px; }
+            .collapsible-header { padding: 12px 15px; }
+            .collapsible-header .section-title { font-size: 14px; }
+            .collapsible-content.open { padding: 10px 5px; }
+            .efficiency-body { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+            .eff-item { padding: 12px; }
+            .eff-num { font-size: 24px; }
+            .eff-unit { font-size: 12px; }
+            .tab-btn { padding: 6px 12px; font-size: 11px; }
+            table { font-size: 12px; }
+            table th, table td { padding: 8px 6px; }
+            .intro-version-table { font-size: 12px; }
+            .intro-version-table th, .intro-version-table td { padding: 8px 6px; }
+            .chart-title { font-size: 13px; }
+            .improvement-box { padding: 12px 15px; }
+            .improvement-list li { font-size: 12px; }
+            .toc-nav { overflow-x: auto; }
+            .toc-nav ul { flex-wrap: nowrap; }
+            /* 合并版核心结论移动端适配 */
+            .merged-kpi-row { grid-template-columns: repeat(3, 1fr); }
+            .merged-kpi-item:nth-child(4), .merged-kpi-item:nth-child(5) { border-top: 1px solid #f0f0f0; }
+            .merged-kpi-num { font-size: 26px; }
+            .merged-concl { flex-direction: column; }
+            .concl-label { width: auto; margin-bottom: 4px; }
+        }
+
+        /* ========== 补丁执行样式 ========== */
+        .stat-row { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
+        .stat-card { background: linear-gradient(135deg, #fff7ed, #ffedd5); border-radius: 10px; padding: 15px 20px; text-align: center; flex: 1; min-width: 100px; border: 1px solid #fed7aa; }
+        .stat-card-num { font-size: 28px; font-weight: 700; color: #c2410c; }
+        .stat-card-label { font-size: 12px; color: #9a3412; margin-top: 4px; }
+        .mini-table-wrap { background: #fff; border-radius: 8px; border: 1px solid #e5e7eb; overflow: hidden; }
+        .mini-table-title { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 8px 12px; font-size: 13px; font-weight: 500; }
+        .mini-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .mini-table th { background: #fef3c7; padding: 6px 10px; text-align: left; color: #92400e; }
+        .mini-table td { padding: 6px 10px; border-top: 1px solid #f3f4f6; color: #374151; }
+        .mini-table tr:hover { background: #fffbeb; }
+        /* ========== 补丁表格专属样式 ========== */
+        .patch-table-wrap { border-radius: 8px; border: 1px solid #e9ecef; margin-bottom: 15px; overflow-x: auto; }
+        .patch-table { table-layout: auto; width: 100%; background: #fff; border-collapse: collapse; }
+        .patch-table th,
+        .patch-table td { padding: 6px 8px; vertical-align: middle; border: 1px solid #e9ecef; }
+        .patch-table th { background: #f8f9fa; font-weight: 600; white-space: nowrap; text-align: center; }
+        .patch-table td { text-align: left; }
+        .patch-table td.center { text-align: center; }
+        .patch-table td.nowrap { white-space: nowrap; }
+        .patch-table td.version-col { white-space: nowrap; text-align: center; }
+        .patch-table td.range-col { text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>📊 线上问题分析报告</h1>
+            <div class="subtitle">统计时间段：2026年4月25日 至 2026年5月1日</div>
+        </div>
+
+        <!-- ========== 章节导航 ========== -->
+        <div class="toc-nav">
+            <ul>
+                <li><a href="#section1">📌 核心结论</a></li>
+                <li><a href="#section2">📈 趋势分析</a></li>
+                <li><a href="#section3">🎯 重点问题</a></li>
+                <li><a href="#section4">📦 未解决问题看板</a></li>
+                <li><a href="#section5">💡 改进建议</a></li>
+                <li><a href="#section6">🛠️ 补丁执行</a></li>
+                <li><a href="#section7">📋 本周问题明细</a></li>
+            </ul>
+        </div>
+
+        <!-- ========== 核心结论（合并版） ========== -->
+        <div id="section1">
+            <div class="merged-header">
+                <span style="font-size:18px;">📊</span>
+                <span style="font-size:16px;font-weight:bold;">核心结论</span>
+            </div>
+            <!-- 5个数字卡片 -->
+            <div class="merged-kpi-row">
+                <div class="merged-kpi-item kpi-new">
+                    <div class="merged-kpi-num">44</div>
+                    <div class="merged-kpi-label">本周新增</div>
+                    <div class="merged-kpi-tag"><span class="tag-yellow">⚠️ 偏高</span></div>
+                </div>
+                <div class="merged-kpi-item kpi-resolved">
+                    <div class="merged-kpi-num">32</div>
+                    <div class="merged-kpi-label">本期已解决</div>
+                    <div class="merged-kpi-tag"><span class="tag-blue">本周32+历史0</span></div>
+                </div>
+                <div class="merged-kpi-item kpi-closed">
+                    <div class="merged-kpi-num">8</div>
+                    <div class="merged-kpi-label">本期已关闭</div>
+                    <div class="merged-kpi-tag"><span class="tag-purple">本周8+历史0</span></div>
+                </div>
+                <div class="merged-kpi-item kpi-serious">
+                    <div class="merged-kpi-num">4</div>
+                    <div class="merged-kpi-label">严重问题</div>
+                    <div class="merged-kpi-tag"><span class="tag-green">✅ 已处理</span></div>
+                </div>
+                <div class="merged-kpi-item kpi-total">
+                    <div class="merged-kpi-num" style="color:#333;">0</div>
+                    <div class="merged-kpi-label">问题总览</div>
+                    <div class="merged-kpi-tag"><span class="tag-gray">待解决</span></div>
+                </div>
+            </div>
+            <!-- 三行结论 -->
+            <div class="merged-conclusions">
+                <div class="merged-concl concl-blue">
+                    <div class="concl-label">📈 整体情况</div>
+                    <div class="concl-text">新增<span class="c-highlight">44</span>（含<span class="c-highlight">4严重✓</span>），处理率<span class="c-pos">73%</span>，平均解决<span class="c-pos">18.8h</span>（严重<span class="c-pos">16.0h</span>）</div>
+                </div>
+                <div class="merged-concl concl-orange ">
+                    <div class="concl-label">⚠️ 风险聚焦</div>
+                    <div class="concl-text">引入<span class="c-warn">0个</span>问题，需求引入占0%，8.37版本为重灾区（0个）</div>
+                </div>
+                <div class="merged-concl concl-green">
+                    <div class="concl-label">📉 积压清理</div>
+                    <div class="concl-text">净增加<span class="c-pos">36个</span>，历史积压消化<span class="c-pos">0条</span>，待解决降至<span class="c-pos">0</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 第二章：趋势分析（近6周新增/关闭趋势） ========== -->
+        <div class="trend-section" id="section2">
+            <div class="trend-header">
+                <div class="summary-icon">📈</div>
+                <div class="section-info">
+                    <div class="summary-title">趋势分析</div>
+                    <div class="summary-desc">近6周问题新增与关闭趋势</div>
+                </div>
+            </div>
+            <div class="trend-body">
+                <div class="trend-chart-wrapper">
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 第三章：重点问题 ========== -->
+        <div class="section-card" id="section3">
+            <div class="section-header blue">
+                <div class="section-icon">🎯</div>
+                <div class="section-info">
+                    <div class="section-title">重点问题</div>
+                    <div class="section-desc">严重问题 + 引入问题</div>
+                </div>
+            </div>
+            <div class="section-body">
+                <!-- 章节引导语 -->
+                <div class="notice-box blue" style="margin-bottom: 20px;">
+                    <h4>📊 本周问题分析结论</h4>
+                    <p>
+                        本周<span class="highlight">4个严重问题已全部解决</span>。
+                        引入问题共<span class="warning">0个</span>，
+                        其中<span class="highlight">需求引入占0%</span>，
+                        致命/严重0条，已解决0条，已关闭0条。
+                        需加强发布流程管控。
+                    </p>
+                </div>
+
+                <!-- 严重问题折叠 -->
+                <div class="collapsible" onclick="toggleCollapse(this)">
+                    <div class="collapsible-header">
+                        <div class="toggle-icon">▶</div>
+                        <div class="section-title">严重问题（4 条）</div>
+                        <div class="section-meta"><span class="traffic-light-label light-green">✅ 全部处理</span></div>
+                    </div>
+                    <div class="collapsible-content">
+                        <div class="notice-box red" style="margin-bottom: 15px;">
+                            <h4>说明</h4>
+                            <p>严重问题指严重程度为致命(1) 或 严重(2) 的问题，需要重点关注并复盘根因</p>
+                        </div>
+                        <div class="charts-row">
+                            <div class="chart-box half">
+                                <div class="chart-title">严重问题-处理状态</div>
+                                <div class="chart-wrapper small"><canvas id="seriousStatusChart"></canvas></div>
+                            </div>
+                            <div class="chart-box half">
+                                <div class="chart-title">严重问题-问题类型</div>
+                                <div class="chart-wrapper small"><canvas id="seriousTypeChart"></canvas></div>
+                            </div>
+                        </div>
+                        <h4 style="margin: 15px 0 10px;">严重问题列表</h4>
+                        <div class="table-container">
+                            <table>
+                                <thead><tr><th>编号</th><th>标题</th><th>产品</th><th>问题类型</th><th>严重程度</th><th>处理状态</th><th>责任部门</th><th>创建时间</th><th>根因分析</th></tr></thead>
+                                <tbody>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39882.html" target="_blank">39882</a></td><td title="【智信云枢-直营环境】9000甘清总仓，操作移除控货商品，移除不成功，以8809523280935为例">【智信云枢-直营环境】9000甘清总仓，操作移除控货商品，移除不成功，...</td><td>ERP</td><td>代码错误</td><td><span class="tag tag-high">严重</span></td><td>已解决</td><td>研发</td><td>2026-04-30</td><td>2024年5月份从老页面迁移到新前端时引入，当用户选择要移除的商品时，系统获取的索引与用户实际点击的商品不匹配导致本来要移除A商品实际移除的是B商品基线8.38版本、智信云枢9.17版本解决，小飞象生产环境已补丁修复</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39826.html" target="_blank">39826</a></td><td title="【云南临沧汀晨孕婴】客户SCRM后台的标签和客群，4月28日均未跑数据">【云南临沧汀晨孕婴】客户SCRM后台的标签和客群，4月28日均未跑数据...</td><td>SCRM</td><td>数据问题</td><td><span class="tag tag-high">严重</span></td><td>已解决</td><td>研发</td><td>2026-04-28</td><td>锁表导致定时任务异常</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39720.html" target="_blank">39720</a></td><td title="【邢台小儿郎】POS销售后，商品丢失">【邢台小儿郎】POS销售后，商品丢失...</td><td>POS</td><td>数据问题</td><td><span class="tag tag-high">严重</span></td><td>已解决</td><td>研发</td><td>2026-04-26</td><td>电脑硬件问题导致读写乱码，已跟客户沟通更换电脑</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39714.html" target="_blank">39714</a></td><td title="【喜阳阳】6073工号所属天水分公司，数据权限配置是所在公司及以下，新生儿/孕妈认证审核能看到所有门店审核，这样容易发生区域之间翘客，引起不必要的纠纷">【喜阳阳】6073工号所属天水分公司，数据权限配置是所在公司及以下，新...</td><td>ERP</td><td>产品缺陷</td><td><span class="tag tag-high">严重</span></td><td>已关闭</td><td>产品</td><td>2026-04-25</td><td>之前应该认为是后台审核，没有加接口门店权限控制8.38版本优化：与产品确认，接口增加门店权限控制，升级后基线默认只能查询当前门店权限范围内的认证单</td></tr>                                </tbody></table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 引入问题折叠 -->
+                <div class="collapsible" onclick="toggleCollapse(this)">
+                    <div class="collapsible-header">
+                        <div class="toggle-icon">▶</div>
+                        <div class="section-title">引入问题（0 条）</div>
+                        <div class="section-meta"><span class="traffic-light-label light-yellow">Bug 0 + 需求 0</span></div>
+                    </div>
+                    <div class="collapsible-content">
+                        <!-- 产品×版本横表 -->
+                        <div class="intro-table-container">
+                            <div class="chart-title">产品 vs 版本风险矩阵</div>
+                            <table class="intro-version-table intro-cross-table">
+                                <thead>
+                                    <tr>
+                                        <th style="white-space:nowrap;">引入版本</th>
+                                        <th style="white-space:nowrap;">风险</th>
+                                        <th style="white-space:nowrap;">合计</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot>
+                                    <tr style="background:#f3f4f6;font-weight:600;">
+                                        <td colspan="2">产品合计</td>
+                                        <td style="text-align:center;">0</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <div style="font-size:12px;color:#888;margin-top:8px;">
+                                <span style="color:#dc3545;">●数字</span> = Bug修改引入 &nbsp;
+                                <span style="color:#3b82f6;">▲数字</span> = 需求开发引入 &nbsp;
+                                🔴≥5条&nbsp; 🟡3-4条&nbsp; 🟢1-2条
+                            </div>
+                        </div>
+                        <div class="intro-section">
+                            <h4>Bug引入明细（0 条）</h4>
+                            <div class="table-container intro-table">
+                                <table class="intro-detail-table">
+                                    <thead><tr><th>编号</th><th>问题描述</th><th>产品</th><th>引入版本</th><th>严重程度</th><th>处理状态</th><th>关联问题</th><th>根因分析</th></tr></thead>
+                                    <tbody>
+                                    </tbody></table>
+                            </div>
+                        </div>
+                        <div class="intro-section">
+                            <h4>需求引入明细（0 条）</h4>
+                            <div class="table-container intro-table">
+                                <table class="intro-detail-table">
+                                    <thead><tr><th>编号</th><th>问题描述</th><th>产品</th><th>引入版本</th><th>严重程度</th><th>处理状态</th><th>关联需求</th><th>根因分析</th></tr></thead>
+                                    <tbody>
+                                    </tbody></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 第四章：未解决问题看板 ========== -->
+        <div class="section-card" id="section4">
+            <div class="section-header orange">
+                <div class="section-icon">📦</div>
+                <div class="section-info">
+                    <div class="section-title">未解决问题看板</div>
+                    <div class="section-desc">截止本周五（2026年5月1日）未解决问题统计</div>
+                </div>
+                <div class="section-badge">0 条未解决</div>
+            </div>
+
+            <div class="section-body">
+                <div class="stats-grid">
+                    <div class="stat-card pending" onclick="showOverviewTab('dim-prod')">
+                        <div class="stat-card-value">0</div>
+                        <div class="stat-card-label">问题总数</div>
+                        <div class="stat-card-sub">点击查看</div>
+                    </div>
+                    <div class="stat-card" onclick="showOverviewTab('dim-prod')">
+                        <div class="stat-card-value">0</div>
+                        <div class="stat-card-label">涉及产品</div>
+                        <div class="stat-card-sub">点击查看</div>
+                    </div>
+                    <div class="stat-card" onclick="showOverviewTab('dim-dept')">
+                        <div class="stat-card-value">0</div>
+                        <div class="stat-card-label">涉及部门</div>
+                        <div class="stat-card-sub">点击查看</div>
+                    </div>
+                    <div class="stat-card serious" onclick="showOverviewTab('dim-severity')">
+                        <div class="stat-card-value">0</div>
+                        <div class="stat-card-label">严重问题</div>
+                        <div class="stat-card-sub">致命/严重，点击查看</div>
+                    </div>
+                    <div class="stat-card" onclick="showOverviewTab('dim-status')">
+                        <div class="stat-card-value" style="color:#dc3545;">0</div>
+                        <div class="stat-card-label">激活问题</div>
+                        <div class="stat-card-sub">激活，点击查看</div>
+                    </div>
+                    <div class="stat-card" onclick="showOverviewTab('dim-status')">
+                        <div class="stat-card-value">0</div>
+                        <div class="stat-card-label">已解决问题</div>
+                        <div class="stat-card-sub">待验证，点击查看</div>
+                    </div>
+                </div>
+
+                <!-- 未解决问题看板 - 6个Tab页签展示明细 -->
+                <div style="margin-top: 20px;">
+                    <!-- Tab切换按钮 -->
+                    <div class="tab-buttons" style="display:flex;gap:8px;margin-bottom:15px;flex-wrap:wrap;">
+                        <button class="tab-btn active" onclick="showPendingTab('prod', this)">📦 按产品</button>
+                        <button class="tab-btn" onclick="showPendingTab('handler', this)">🏢 按部门/处理人</button>
+                        <button class="tab-btn" onclick="showPendingTab('sev', this)">⚠️ 按严重程度</button>
+                        <button class="tab-btn" onclick="showPendingTab('status', this)">📊 按状态</button>
+                    </div>
+                    
+                    <!-- Tab内容面板 -->
+                    <div id="pendingTabContent">
+                        <!-- 按产品明细 - 两层：列表 → Bug明细 -->
+                        <div class="pending-tab-panel" id="tab-prod">
+                            <div class="table-container" id="prodListArea">
+                                <table>
+                                    <thead><tr><th>产品名称</th><th>问题数量</th><th>占比</th><th>查看明细</th></tr></thead>
+                                    <tbody>
+                                    </tbody></table>
+                            </div>
+                            
+                            <!-- 产品Bug明细 -->
+                            <div id="prodDetailArea" style="display:none;margin-top:15px;">
+                                <div class="detail-title-bar" id="prodDetailTitle"><span></span><button class="detail-close-btn" onclick="backToProdList()">← 返回列表</button></div>
+                                <div class="table-container">
+                                    <table>
+                                        <thead><tr><th>编号</th><th>标题</th><th>问题类型</th><th>严重程度</th><th>处理状态</th><th>责任部门</th><th>处理人</th><th>创建时间</th></tr></thead>
+                                        <tbody id="prodDetailBody"></tbody>
+                                    </table>
+                                </div>
+                                <div style="margin-top:15px;text-align:center;"><button class="detail-close-btn" onclick="backToProdList()">← 返回列表</button></div>
+                            </div>
+                        </div>
+
+                        <!-- 按严重程度明细 - 两层：列表 → Bug明细 -->
+                        <div class="pending-tab-panel" id="tab-sev" style="display:none;">
+                            <div class="table-container" id="sevListArea">
+                                <table>
+                                    <thead><tr><th>严重程度</th><th>问题数量</th><th>占比</th><th>查看明细</th></tr></thead>
+                                    <tbody>
+                                    </tbody></table>
+                            </div>
+                            
+                            <!-- 严重程度Bug明细 -->
+                            <div id="sevDetailArea" style="display:none;margin-top:15px;">
+                                <div class="detail-title-bar" id="sevDetailTitle"><span></span><button class="detail-close-btn" onclick="backToSevList()">← 返回列表</button></div>
+                                <div class="table-container">
+                                    <table>
+                                        <thead><tr><th>编号</th><th>标题</th><th>产品</th><th>问题类型</th><th>严重程度</th><th>处理状态</th><th>责任部门</th><th>处理人</th><th>创建时间</th></tr></thead>
+                                        <tbody id="sevDetailBody"></tbody>
+                                    </table>
+                                </div>
+                                <div style="margin-top:15px;text-align:center;"><button class="detail-close-btn" onclick="backToSevList()">← 返回列表</button></div>
+                            </div>
+                        </div>
+
+                        <!-- 按状态明细 - 两层：列表 → Bug明细 -->
+                        <div class="pending-tab-panel" id="tab-status" style="display:none;">
+                            <div class="table-container" id="statusListArea">
+                                <table>
+                                    <thead><tr><th>问题状态</th><th>问题数量</th><th>占比</th><th>查看明细</th></tr></thead>
+                                    <tbody>
+<tr><td>激活</td><td>0</td><td>0.00%</td><td><button class="view-btn" onclick="showStatusDetail(&quot;active&quot;)">查看明细</button></td></tr><tr><td>已解决</td><td>0</td><td>0.00%</td><td><button class="view-btn" onclick="showStatusDetail(&quot;resolved&quot;)">查看明细</button></td></tr>                                    </tbody></table>
+                            </div>
+                            
+                            <!-- 状态Bug明细 -->
+                            <div id="statusDetailArea" style="display:none;margin-top:15px;">
+                                <div class="detail-title-bar" id="statusDetailTitle"><span></span><button class="detail-close-btn" onclick="backToStatusList()">← 返回列表</button></div>
+                                <div class="table-container">
+                                    <table>
+                                        <thead><tr><th>编号</th><th>标题</th><th>产品</th><th>问题类型</th><th>严重程度</th><th>处理状态</th><th>责任部门</th><th>处理人</th><th>创建时间</th></tr></thead>
+                                        <tbody id="statusDetailBody"></tbody>
+                                    </table>
+                                </div>
+                                <div style="margin-top:15px;text-align:center;"><button class="detail-close-btn" onclick="backToStatusList()">← 返回列表</button></div>
+                            </div>
+                        </div>
+
+                        <!-- 按部门-处理人明细（两级折叠） -->
+                        <div class="pending-tab-panel" id="tab-handler" style="display:none;">
+                            <div class="dept-handler-tree" id="deptHandlerTree"></div>
+                            <div id="handlerDetailArea" style="display:none;margin-top:15px;">
+                                <div class="detail-title-bar" id="handlerDetailTitle"><span></span><button class="detail-close-btn" onclick="backToHandlerList()">← 返回列表</button></div>
+                                <div class="table-container">
+                                    <table>
+                                        <thead><tr><th>编号</th><th>标题</th><th>产品</th><th>问题类型</th><th>严重程度</th><th>处理状态</th><th>责任部门</th><th>处理人</th><th>创建时间</th></tr></thead>
+                                        <tbody id="handlerDetailBody"></tbody>
+                                    </table>
+                                </div>
+                                <div style="margin-top:15px;text-align:center;"><button class="detail-close-btn" onclick="backToHandlerList()">← 返回列表</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 第五章：改进建议 ========== -->
+        <div class="section-card" id="section5">
+            <div class="section-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;">
+                <div class="section-icon">💡</div>
+                <div class="section-info">
+                    <div class="section-title">改进建议</div>
+                </div>
+            </div>
+            <div class="section-body">
+                <div class="summary-grid">
+                    <div class="summary-item" style="background: linear-gradient(135deg, #fee2e2, #fecaca); border: 1px solid #ef4444;">
+                        <div class="summary-label">🔴 重点问题复盘</div>
+                        <div class="summary-value" style="color: #991b1b;">及时完成严重问题及引入问题复盘，避免同类问题重复发生</div>
+                    </div>
+                    <div class="summary-item" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); border: 1px solid #3b82f6;">
+                        <div class="summary-label">🔵 发布与脚本规范</div>
+                        <div class="summary-value" style="color: #1e40af;">建立发布前checklist与快速评审机制，保障补丁质量与可追溯性</div>
+                    </div>
+                    <div class="summary-item" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); border: 1px solid #10b981;">
+                        <div class="summary-label">🟢 ERP质量专项</div>
+                        <div class="summary-value" style="color: #065f46;">完成高频问题根因分析，从源头减少ERP系统问题</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 第六章：补丁执行 ========== -->
+        <div class="section-card" id="section6">
+            <div class="section-header" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;">
+                <div class="section-icon">🛠️</div>
+                <div class="section-info">
+                    <div class="section-title">补丁执行（1 条）</div>
+                    <div class="section-desc">本周共上线 1 个Bug修复补丁、0 个紧急需求补丁</div>
+                </div>
+            </div>
+            <div class="section-body">
+                <!-- Bug修复 -->
+                <div class="intro-section">
+                    <h4>Bug修复补丁（1 条）</h4>
+                    <div class="patch-table-wrap">
+                        <table class="patch-table">
+                            <thead>
+                                <tr>
+                                    <th>补丁日期</th>
+                                    <th>Bug编号</th>
+                                    <th>问题描述</th>
+                                    <th>产品</th>
+                                    <th>补丁版本</th>
+                                    <th>补丁范围</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="center nowrap"></td><td class="center nowrap">-</td><td title="请在 补丁导入_YYYYMMDD-YYYYMMDD.xlsx 中添加补丁数据">请在 补丁导入_YYYYMMDD-YYYYMMDD.xlsx 中添加补丁数据</td><td></td><td class="center version-col"></td><td class="center range-col"></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- 紧急需求 -->
+                <div class="intro-section">
+                    <h4>紧急需求补丁（0 条）</h4>
+                    <div class="patch-table-wrap">
+                        <table class="patch-table">
+                            <thead>
+                                <tr>
+                                    <th>补丁日期</th>
+                                    <th>需求编号</th>
+                                    <th>需求名称</th>
+                                    <th>产品</th>
+                                    <th>补丁版本</th>
+                                    <th>补丁范围</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 第七章：附录（本周问题明细） ========== -->
+        <div class="section-card collapsed" id="section7">
+            <div class="section-header purple" onclick="toggleSectionCollapse(this.parentElement)">
+                <div class="section-icon">📋</div>
+                <div class="section-info">
+                    <div class="section-title">附录：本周问题明细</div>
+                    <div class="section-desc">本周新增/已解决/已关闭问题明细（点击展开）</div>
+                </div>
+            </div>
+            <div class="section-body">
+                <div class="collapsible" onclick="toggleCollapse(this)">
+                    <div class="collapsible-header">
+                        <div class="toggle-icon">▶</div>
+                        <div class="section-title">本周新增问题列表（44 条）</div>
+                    </div>
+                    <div class="collapsible-content">
+                        <div class="table-container">
+                            <table>
+                                <thead><tr><th>编号</th><th>标题</th><th>产品</th><th>问题类型</th><th>严重程度</th><th>责任部门</th><th>创建时间</th></tr></thead>
+                                <tbody>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39898.html" target="_blank">39898</a></td><td title="【贵港超宝母婴】4月18日【8006】市区南江店的【800601】市区南江店A收银账号缴款单上核对金额为5211元，销售支付查询报表的金额为5295元，POS的最后一笔销售记录与缴款时间很相差不到1分钟，导致缴款单没有记录到最后一笔销售金额。请帮处理。">【贵港超宝母婴】4月18日【8006】市区南江店的【800601】市区南江店A收</td><td>主干_202604月迭代</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-05-01</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39897.html" target="_blank">39897</a></td><td title="【美兰健瑞儿】会员15208987090，服务卡号S900323606为半年卡，但是有效期天数有196天，按半年算应该181天。">【美兰健瑞儿】会员15208987090，服务卡号S900323606为半年卡，</td><td>ERP</td><td>非问题</td><td><span class="tag ">一般</span></td><td>客成</td><td>2026-04-30</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39895.html" target="_blank">39895</a></td><td title="【泸州丽婴坊】ID202604302000102748，pda操作确认收货提示提交失败，麻烦核实">【泸州丽婴坊】ID202604302000102748，pda操作确认收货提示提</td><td>客员通APP</td><td>重复问题</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-30</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39892.html" target="_blank">39892</a></td><td title="【智信云枢-直营环境】在门店管理根据仓库筛选查询搜索不到9000这个仓。">【智信云枢-直营环境】在门店管理根据仓库筛选查询搜索不到9000这个仓。</td><td>ERP</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-30</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39889.html" target="_blank">39889</a></td><td title="【沙河爱尚婴】17732964520这个会员不满足【整体新客】 这个动态标签的规则，但是还是打上了标签，麻烦请核实">【沙河爱尚婴】17732964520这个会员不满足【整体新客】 这个动态标签的规</td><td>SCRM</td><td>重复问题</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-30</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39882.html" target="_blank">39882</a></td><td title="【智信云枢-直营环境】9000甘清总仓，操作移除控货商品，移除不成功，以8809523280935为例">【智信云枢-直营环境】9000甘清总仓，操作移除控货商品，移除不成功，以8809</td><td>ERP</td><td>代码错误</td><td><span class="tag tag-high">严重</span></td><td>研发</td><td>2026-04-30</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39881.html" target="_blank">39881</a></td><td title="【智信云枢-直营环境】小程序后台订单导出，提示请求失败">【智信云枢-直营环境】小程序后台订单导出，提示请求失败</td><td>小程序-商城</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-30</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39877.html" target="_blank">39877</a></td><td title="【基线主干】升级后，仓储单据详情中，商品名称为黑色，升级前是蓝色，为引导客户可以点击">【基线主干】升级后，仓储单据详情中，商品名称为黑色，升级前是蓝色，为引导客户可以</td><td>ERP</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-30</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39874.html" target="_blank">39874</a></td><td title="【智信云枢-直营环境】盘点计划182647 已审核，但是计划盘点盈亏查询界面查不到数据">【智信云枢-直营环境】盘点计划182647 已审核，但是计划盘点盈亏查询界面查不</td><td>ERP</td><td>平台问题</td><td><span class="tag ">一般</span></td><td>产品</td><td>2026-04-29</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39873.html" target="_blank">39873</a></td><td title="【美兰健瑞儿】返厂单： RF20260310100017101517  返厂金额填写错误，需要修改为默认返厂价。">【美兰健瑞儿】返厂单： RF20260310100017101517  返厂金额</td><td>ERP</td><td>数据问题</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-29</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39871.html" target="_blank">39871</a></td><td title="【妈仔谷】客户希望指掌天下传过来的单据，在原有备注上增加订货政策">【妈仔谷】客户希望指掌天下传过来的单据，在原有备注上增加订货政策</td><td>ERP</td><td>优化需求</td><td><span class="tag ">一般</span></td><td>产品</td><td>2026-04-29</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39870.html" target="_blank">39870</a></td><td title="【智信云枢-童话谷】供应商21586登录SCM， 有审核发货权限，但是操作不了审核发货，没有发货按钮">【智信云枢-童话谷】供应商21586登录SCM， 有审核发货权限，但是操作不了审</td><td>ERP</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-29</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39869.html" target="_blank">39869</a></td><td title="【智信云枢-PRM】发货查询界面同一个订货部门，显示的名称不一样">【智信云枢-PRM】发货查询界面同一个订货部门，显示的名称不一样</td><td>ERP</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-29</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39868.html" target="_blank">39868</a></td><td title="【棒棒糖】以工号060087为例，导出库存查询-批次明细数据时，部门编码为空，经常出现这种情况，再次下载就会出现">【棒棒糖】以工号060087为例，导出库存查询-批次明细数据时，部门编码为空，经</td><td>ERP</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-29</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39865.html" target="_blank">39865</a></td><td title="【伊利】【123baby】WMS扫码00462546200638605069是飞鹤，但是在华创侧查询是伊利，导致将错误的听码上报给伊利了">【伊利】【123baby】WMS扫码00462546200638605069是飞</td><td>SRM品牌商</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-29</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39858.html" target="_blank">39858</a></td><td title="【昂橙】销售单S202412172330240116102916，这笔单据能查到寄存是数据，但是在销售查询里查不到数据。">【昂橙】销售单S202412172330240116102916，这笔单据能查到</td><td>ERP</td><td>割接数据</td><td><span class="tag ">一般</span></td><td>客成</td><td>2026-04-29</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39846.html" target="_blank">39846</a></td><td title="【多哆宝】服务卡号：S800006670、服务核销单号：2026042817503438319346661，服务卡指定了服务小类，核销门店不在服务小类的门店范围内，核销后展示的小类为空">【多哆宝】服务卡号：S800006670、服务核销单号：202604281750</td><td>ERP</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-28</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39845.html" target="_blank">39845</a></td><td title="【大小美】进入通用门店设置界面报错：未匹配到业务树或字典对应的数据,配置名称=TICKETCHILDPAY。以admin工号为例。">【大小美】进入通用门店设置界面报错：未匹配到业务树或字典对应的数据,配置名称=T</td><td>ERP</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-28</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39844.html" target="_blank">39844</a></td><td title="【智信云枢-直营环境】销售单S2601314180033160209410001在销售查询界面和360视图界面，，显示的门店不一样">【智信云枢-直营环境】销售单S2601314180033160209410001</td><td>ERP</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-28</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39843.html" target="_blank">39843</a></td><td title="【四川汉源童泰】参数设置不隐藏会员号，销售小票的会员号是完整的。但是销售退货小票隐藏了中间会员号，请核实">【四川汉源童泰】参数设置不隐藏会员号，销售小票的会员号是完整的。但是销售退货小票</td><td>POS</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-28</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39841.html" target="_blank">39841</a></td><td title="【乖宝儿】积分规则修改结束日期为开始日期同一天，提交报错“开始日期不能大于结束日期”">【乖宝儿】积分规则修改结束日期为开始日期同一天，提交报错“开始日期不能大于结束日</td><td>ERP</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-28</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39836.html" target="_blank">39836</a></td><td title="示例：个微：may，添加企业导购6人好友（归属导购：晓娟），SCRM后台有大量标签，但是企业微信管理员在客户联系列表查看此好友时无标签展示，归属导购企微联系人列表中也无标签展示，仅员工：嘉琪可以在她企微的客户中查看标签。">示例：个微：may，添加企业导购6人好友（归属导购：晓娟），SCRM后台有大量标</td><td>SCRM</td><td>非问题</td><td><span class="tag ">一般</span></td><td>客成</td><td>2026-04-28</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39832.html" target="_blank">39832</a></td><td title="【巴中昂橙】客员通操作盘点，只提示一个商品不存在，没有详细提示信息">【巴中昂橙】客员通操作盘点，只提示一个商品不存在，没有详细提示信息</td><td>客员通APP</td><td>割接数据</td><td><span class="tag ">一般</span></td><td>客成</td><td>2026-04-28</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39826.html" target="_blank">39826</a></td><td title="【云南临沧汀晨孕婴】客户SCRM后台的标签和客群，4月28日均未跑数据">【云南临沧汀晨孕婴】客户SCRM后台的标签和客群，4月28日均未跑数据</td><td>SCRM</td><td>数据问题</td><td><span class="tag tag-high">严重</span></td><td>研发</td><td>2026-04-28</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39817.html" target="_blank">39817</a></td><td title="【大小美】26041606510000015545看不到是谁操作了备货，现在客户没办法发货，麻烦修改为待提货状态。">【大小美】26041606510000015545看不到是谁操作了备货，现在客户</td><td>小程序-商城</td><td>数据问题</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-28</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39799.html" target="_blank">39799</a></td><td title="【123baby】S260416500350211320003这笔退货单输入防伪码是原单S260416500350209290002的防伪码，但是在物流码同步日志查询里面展示这笔单失败。">【123baby】S260416500350211320003这笔退货单输入防伪</td><td>ERP</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-27</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39795.html" target="_blank">39795</a></td><td title="【昂橙母婴】pos打印小票没有反应，测试页能正常打印，日志报错信息是SyntaxError: Unexpected token 酉 in JSON at position 404">【昂橙母婴】pos打印小票没有反应，测试页能正常打印，日志报错信息是Syntax</td><td>POS</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-27</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39783.html" target="_blank">39783</a></td><td title="【广元那屋宝贝】会员在购买超级会员时，显示的开卡门店为空。">【广元那屋宝贝】会员在购买超级会员时，显示的开卡门店为空。</td><td>小程序-商城</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-27</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39781.html" target="_blank">39781</a></td><td title="【广元那屋宝贝】会员18781239000，购买超级会员赠送的服务券，兑换服务卡时显示实收260，但服务卡金额显示金额为0元。">【广元那屋宝贝】会员18781239000，购买超级会员赠送的服务券，兑换服务卡</td><td>ERP</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-27</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39762.html" target="_blank">39762</a></td><td title="【成都阿贝阿妈】报名活动【阿贝阿妈&amp;飞鹤VIP会员专享草莓采摘活动】设置了报名名额活动上限30人，实际该活动报名数有31人，也限制了每人报名次数上限【1】。麻烦看看原因。">【成都阿贝阿妈】报名活动【阿贝阿妈&amp;飞鹤VIP会员专享草莓采摘活动】设置</td><td>小程序-商城</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-27</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39753.html" target="_blank">39753</a></td><td title="【中山宝贝屋】服务卡：2026048000369限制了每人限购张数1，订单号：26042517570000062531购买了两张服务卡,自动发货失败">【中山宝贝屋】服务卡：2026048000369限制了每人限购张数1，订单号：2</td><td>小程序-商城</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-27</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39746.html" target="_blank">39746</a></td><td title="【棒棒糖】升级以后，部分退货输入数量，点击删除，数量自动变成1，无法删除，只能键盘修改数量或者鼠标全选中数量再删除">【棒棒糖】升级以后，部分退货输入数量，点击删除，数量自动变成1，无法删除，只能键</td><td>POS</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-27</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39745.html" target="_blank">39745</a></td><td title="【优比熊】营销活动编号：20000200000428是0424创建的，但是一直待执行状态，任务管理菜单打开报错xxl-rpc 调用远程失败(Connection refused), 请求 url : http://127.0.0.1:8710/arm-job-admin/job/info/page?current=1&amp;size=20">【优比熊】营销活动编号：20000200000428是0424创建的，但是一直待</td><td>SCRM</td><td>安装部署</td><td><span class="tag ">一般</span></td><td>运维</td><td>2026-04-27</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39735.html" target="_blank">39735</a></td><td title="【喜阳阳】购物车有一行条码为空，数量为1的数据，导致结算金额为空，删除就可以了，客户需要我们排查下什么情况下会出现这个。">【喜阳阳】购物车有一行条码为空，数量为1的数据，导致结算金额为空，删除就可以了，</td><td>POS</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-26</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39732.html" target="_blank">39732</a></td><td title="【河北邯郸天天孕婴】新增优惠券分摊重算后台一直显示重算中">【河北邯郸天天孕婴】新增优惠券分摊重算后台一直显示重算中</td><td>ERP</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-26</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39728.html" target="_blank">39728</a></td><td title="【义乌梦开始】按单收货收门店直入单据，提示报错">【义乌梦开始】按单收货收门店直入单据，提示报错</td><td>ERP</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-26</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39720.html" target="_blank">39720</a></td><td title="【邢台小儿郎】POS销售后，商品丢失">【邢台小儿郎】POS销售后，商品丢失</td><td>POS</td><td>数据问题</td><td><span class="tag tag-high">严重</span></td><td>研发</td><td>2026-04-26</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39714.html" target="_blank">39714</a></td><td title="【喜阳阳】6073工号所属天水分公司，数据权限配置是所在公司及以下，新生儿/孕妈认证审核能看到所有门店审核，这样容易发生区域之间翘客，引起不必要的纠纷">【喜阳阳】6073工号所属天水分公司，数据权限配置是所在公司及以下，新生儿/孕妈</td><td>ERP</td><td>产品缺陷</td><td><span class="tag tag-high">严重</span></td><td>产品</td><td>2026-04-25</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39708.html" target="_blank">39708</a></td><td title="【爱婴谷】-商品：6923300163593，门店：8008，盘点计划编号：	100772，入库成本一直是0，门店成本配置是取最近批次，但是盘点盈亏成本却算的有值。">【爱婴谷】-商品：6923300163593，门店：8008，盘点计划编号：	1</td><td>ERP</td><td>非问题</td><td><span class="tag ">一般</span></td><td>客成</td><td>2026-04-25</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39707.html" target="_blank">39707</a></td><td title="【襄阳童泰】同一笔退货单，S26042400230216120937点本店查询展示的原单销售导购和本机查询展示本次退货导购，展示的导购不一致">【襄阳童泰】同一笔退货单，S26042400230216120937点本店查询展</td><td>POS</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-25</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39699.html" target="_blank">39699</a></td><td title="【宝贝熊】自助付款订单：S26042410010217195629，待付款状态没有自动取消">【宝贝熊】自助付款订单：S26042410010217195629，待付款状态没</td><td>POS</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-25</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39698.html" target="_blank">39698</a></td><td title="【江苏常州溧阳恒达爱婴】会员账本查询报表不展示会员余额。以18651205975为例（割接进来的会员不展示，正常的会员展示）">【江苏常州溧阳恒达爱婴】会员账本查询报表不展示会员余额。以18651205975</td><td>ERP</td><td>非问题</td><td><span class="tag ">一般</span></td><td>客成</td><td>2026-04-25</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39697.html" target="_blank">39697</a></td><td title="【四川汉源童泰孕婴】昨晚上切换数据，将返利通过账本割接进去后，前台门店POS上不显示返利余额，只有在结算页面点击会员卡才会显示">【四川汉源童泰孕婴】昨晚上切换数据，将返利通过账本割接进去后，前台门店POS上不</td><td>POS</td><td>安装部署</td><td><span class="tag ">一般</span></td><td>运维</td><td>2026-04-25</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39690.html" target="_blank">39690</a></td><td title="【智信云枢-直营环境】会员18211766210昨天结账时死机了，会员名下的优惠券T10011929 ，显示使用2张，只能看到一笔销售单，202604242047651161434091521这张券码没有生成销售单据，需要修复下">【智信云枢-直营环境】会员18211766210昨天结账时死机了，会员名下的优惠</td><td>ERP</td><td>数据问题</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-04-25</td></tr>                                </tbody></table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapsible" onclick="toggleCollapse(this)">
+                    <div class="collapsible-header">
+                        <div class="toggle-icon">▶</div>
+                        <div class="section-title">本期已解决问题列表（32 条）</div>
+                    </div>
+                    <div class="collapsible-content">
+                        <div class="table-container">
+                            <table>
+                                <thead><tr><th>编号</th><th>标题</th><th>产品</th><th>问题类型</th><th>创建时间</th><th>解决时间</th><th>来源</th></tr></thead>
+                                <tbody>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39898.html" target="_blank">39898</a></td><td title="【贵港超宝母婴】4月18日【8006】市区南江店的【800601】市区南江店A收银账号缴款单上核对金额为5211元，销售支付查询报表的金额为5295元，POS的最后一笔销售记录与缴款时间很相差不到1分钟，导致缴款单没有记录到最后一笔销售金额。请帮处理。">【贵港超宝母婴】4月18日【8006】市区南江店的【800601】市区南江店A收</td><td>主干_202604月迭代</td><td>代码错误</td><td>2026-05-01</td><td>2026-05-01</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39897.html" target="_blank">39897</a></td><td title="【美兰健瑞儿】会员15208987090，服务卡号S900323606为半年卡，但是有效期天数有196天，按半年算应该181天。">【美兰健瑞儿】会员15208987090，服务卡号S900323606为半年卡，</td><td>ERP</td><td>非问题</td><td>2026-04-30</td><td>2026-04-30</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39882.html" target="_blank">39882</a></td><td title="【智信云枢-直营环境】9000甘清总仓，操作移除控货商品，移除不成功，以8809523280935为例">【智信云枢-直营环境】9000甘清总仓，操作移除控货商品，移除不成功，以8809</td><td>ERP</td><td>代码错误</td><td>2026-04-30</td><td>2026-04-30</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39877.html" target="_blank">39877</a></td><td title="【基线主干】升级后，仓储单据详情中，商品名称为黑色，升级前是蓝色，为引导客户可以点击">【基线主干】升级后，仓储单据详情中，商品名称为黑色，升级前是蓝色，为引导客户可以</td><td>ERP</td><td>代码错误</td><td>2026-04-30</td><td>2026-04-30</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39874.html" target="_blank">39874</a></td><td title="【智信云枢-直营环境】盘点计划182647 已审核，但是计划盘点盈亏查询界面查不到数据">【智信云枢-直营环境】盘点计划182647 已审核，但是计划盘点盈亏查询界面查不</td><td>ERP</td><td>平台问题</td><td>2026-04-29</td><td>2026-04-30</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39873.html" target="_blank">39873</a></td><td title="【美兰健瑞儿】返厂单： RF20260310100017101517  返厂金额填写错误，需要修改为默认返厂价。">【美兰健瑞儿】返厂单： RF20260310100017101517  返厂金额</td><td>ERP</td><td>数据问题</td><td>2026-04-29</td><td>2026-04-29</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39870.html" target="_blank">39870</a></td><td title="【智信云枢-童话谷】供应商21586登录SCM， 有审核发货权限，但是操作不了审核发货，没有发货按钮">【智信云枢-童话谷】供应商21586登录SCM， 有审核发货权限，但是操作不了审</td><td>ERP</td><td>代码错误</td><td>2026-04-29</td><td>2026-04-30</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39869.html" target="_blank">39869</a></td><td title="【智信云枢-PRM】发货查询界面同一个订货部门，显示的名称不一样">【智信云枢-PRM】发货查询界面同一个订货部门，显示的名称不一样</td><td>ERP</td><td>代码错误</td><td>2026-04-29</td><td>2026-04-30</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39858.html" target="_blank">39858</a></td><td title="【昂橙】销售单S202412172330240116102916，这笔单据能查到寄存是数据，但是在销售查询里查不到数据。">【昂橙】销售单S202412172330240116102916，这笔单据能查到</td><td>ERP</td><td>割接数据</td><td>2026-04-29</td><td>2026-04-29</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39845.html" target="_blank">39845</a></td><td title="【大小美】进入通用门店设置界面报错：未匹配到业务树或字典对应的数据,配置名称=TICKETCHILDPAY。以admin工号为例。">【大小美】进入通用门店设置界面报错：未匹配到业务树或字典对应的数据,配置名称=T</td><td>ERP</td><td>代码错误</td><td>2026-04-28</td><td>2026-04-28</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39841.html" target="_blank">39841</a></td><td title="【乖宝儿】积分规则修改结束日期为开始日期同一天，提交报错“开始日期不能大于结束日期”">【乖宝儿】积分规则修改结束日期为开始日期同一天，提交报错“开始日期不能大于结束日</td><td>ERP</td><td>代码错误</td><td>2026-04-28</td><td>2026-04-28</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39799.html" target="_blank">39799</a></td><td title="【123baby】S260416500350211320003这笔退货单输入防伪码是原单S260416500350209290002的防伪码，但是在物流码同步日志查询里面展示这笔单失败。">【123baby】S260416500350211320003这笔退货单输入防伪</td><td>ERP</td><td>代码错误</td><td>2026-04-27</td><td>2026-04-28</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39732.html" target="_blank">39732</a></td><td title="【河北邯郸天天孕婴】新增优惠券分摊重算后台一直显示重算中">【河北邯郸天天孕婴】新增优惠券分摊重算后台一直显示重算中</td><td>ERP</td><td>代码错误</td><td>2026-04-26</td><td>2026-04-27</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39728.html" target="_blank">39728</a></td><td title="【义乌梦开始】按单收货收门店直入单据，提示报错">【义乌梦开始】按单收货收门店直入单据，提示报错</td><td>ERP</td><td>代码错误</td><td>2026-04-26</td><td>2026-04-30</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39714.html" target="_blank">39714</a></td><td title="【喜阳阳】6073工号所属天水分公司，数据权限配置是所在公司及以下，新生儿/孕妈认证审核能看到所有门店审核，这样容易发生区域之间翘客，引起不必要的纠纷">【喜阳阳】6073工号所属天水分公司，数据权限配置是所在公司及以下，新生儿/孕妈</td><td>ERP</td><td>产品缺陷</td><td>2026-04-25</td><td>2026-04-27</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39708.html" target="_blank">39708</a></td><td title="【爱婴谷】-商品：6923300163593，门店：8008，盘点计划编号：	100772，入库成本一直是0，门店成本配置是取最近批次，但是盘点盈亏成本却算的有值。">【爱婴谷】-商品：6923300163593，门店：8008，盘点计划编号：	1</td><td>ERP</td><td>非问题</td><td>2026-04-25</td><td>2026-04-27</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39698.html" target="_blank">39698</a></td><td title="【江苏常州溧阳恒达爱婴】会员账本查询报表不展示会员余额。以18651205975为例（割接进来的会员不展示，正常的会员展示）">【江苏常州溧阳恒达爱婴】会员账本查询报表不展示会员余额。以18651205975</td><td>ERP</td><td>非问题</td><td>2026-04-25</td><td>2026-04-27</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39690.html" target="_blank">39690</a></td><td title="【智信云枢-直营环境】会员18211766210昨天结账时死机了，会员名下的优惠券T10011929 ，显示使用2张，只能看到一笔销售单，202604242047651161434091521这张券码没有生成销售单据，需要修复下">【智信云枢-直营环境】会员18211766210昨天结账时死机了，会员名下的优惠</td><td>ERP</td><td>数据问题</td><td>2026-04-25</td><td>2026-04-25</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39843.html" target="_blank">39843</a></td><td title="【四川汉源童泰】参数设置不隐藏会员号，销售小票的会员号是完整的。但是销售退货小票隐藏了中间会员号，请核实">【四川汉源童泰】参数设置不隐藏会员号，销售小票的会员号是完整的。但是销售退货小票</td><td>POS</td><td>代码错误</td><td>2026-04-28</td><td>2026-04-29</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39795.html" target="_blank">39795</a></td><td title="【昂橙母婴】pos打印小票没有反应，测试页能正常打印，日志报错信息是SyntaxError: Unexpected token 酉 in JSON at position 404">【昂橙母婴】pos打印小票没有反应，测试页能正常打印，日志报错信息是Syntax</td><td>POS</td><td>代码错误</td><td>2026-04-27</td><td>2026-04-28</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39746.html" target="_blank">39746</a></td><td title="【棒棒糖】升级以后，部分退货输入数量，点击删除，数量自动变成1，无法删除，只能键盘修改数量或者鼠标全选中数量再删除">【棒棒糖】升级以后，部分退货输入数量，点击删除，数量自动变成1，无法删除，只能键</td><td>POS</td><td>代码错误</td><td>2026-04-27</td><td>2026-04-27</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39707.html" target="_blank">39707</a></td><td title="【襄阳童泰】同一笔退货单，S26042400230216120937点本店查询展示的原单销售导购和本机查询展示本次退货导购，展示的导购不一致">【襄阳童泰】同一笔退货单，S26042400230216120937点本店查询展</td><td>POS</td><td>代码错误</td><td>2026-04-25</td><td>2026-04-27</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39699.html" target="_blank">39699</a></td><td title="【宝贝熊】自助付款订单：S26042410010217195629，待付款状态没有自动取消">【宝贝熊】自助付款订单：S26042410010217195629，待付款状态没</td><td>POS</td><td>代码错误</td><td>2026-04-25</td><td>2026-04-29</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39697.html" target="_blank">39697</a></td><td title="【四川汉源童泰孕婴】昨晚上切换数据，将返利通过账本割接进去后，前台门店POS上不显示返利余额，只有在结算页面点击会员卡才会显示">【四川汉源童泰孕婴】昨晚上切换数据，将返利通过账本割接进去后，前台门店POS上不</td><td>POS</td><td>安装部署</td><td>2026-04-25</td><td>2026-04-25</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39817.html" target="_blank">39817</a></td><td title="【大小美】26041606510000015545看不到是谁操作了备货，现在客户没办法发货，麻烦修改为待提货状态。">【大小美】26041606510000015545看不到是谁操作了备货，现在客户</td><td>小程序-商城</td><td>数据问题</td><td>2026-04-28</td><td>2026-04-28</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39783.html" target="_blank">39783</a></td><td title="【广元那屋宝贝】会员在购买超级会员时，显示的开卡门店为空。">【广元那屋宝贝】会员在购买超级会员时，显示的开卡门店为空。</td><td>小程序-商城</td><td>代码错误</td><td>2026-04-27</td><td>2026-04-28</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39753.html" target="_blank">39753</a></td><td title="【中山宝贝屋】服务卡：2026048000369限制了每人限购张数1，订单号：26042517570000062531购买了两张服务卡,自动发货失败">【中山宝贝屋】服务卡：2026048000369限制了每人限购张数1，订单号：2</td><td>小程序-商城</td><td>代码错误</td><td>2026-04-27</td><td>2026-04-28</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39895.html" target="_blank">39895</a></td><td title="【泸州丽婴坊】ID202604302000102748，pda操作确认收货提示提交失败，麻烦核实">【泸州丽婴坊】ID202604302000102748，pda操作确认收货提示提</td><td>客员通APP</td><td>重复问题</td><td>2026-04-30</td><td>2026-04-30</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39832.html" target="_blank">39832</a></td><td title="【巴中昂橙】客员通操作盘点，只提示一个商品不存在，没有详细提示信息">【巴中昂橙】客员通操作盘点，只提示一个商品不存在，没有详细提示信息</td><td>客员通APP</td><td>割接数据</td><td>2026-04-28</td><td>2026-04-28</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39889.html" target="_blank">39889</a></td><td title="【沙河爱尚婴】17732964520这个会员不满足【整体新客】 这个动态标签的规则，但是还是打上了标签，麻烦请核实">【沙河爱尚婴】17732964520这个会员不满足【整体新客】 这个动态标签的规</td><td>SCRM</td><td>重复问题</td><td>2026-04-30</td><td>2026-04-30</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39826.html" target="_blank">39826</a></td><td title="【云南临沧汀晨孕婴】客户SCRM后台的标签和客群，4月28日均未跑数据">【云南临沧汀晨孕婴】客户SCRM后台的标签和客群，4月28日均未跑数据</td><td>SCRM</td><td>数据问题</td><td>2026-04-28</td><td>2026-04-28</td><td><span class="tag tag-history">本周已解决</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39745.html" target="_blank">39745</a></td><td title="【优比熊】营销活动编号：20000200000428是0424创建的，但是一直待执行状态，任务管理菜单打开报错xxl-rpc 调用远程失败(Connection refused), 请求 url : http://127.0.0.1:8710/arm-job-admin/job/info/page?current=1&amp;size=20">【优比熊】营销活动编号：20000200000428是0424创建的，但是一直待</td><td>SCRM</td><td>安装部署</td><td>2026-04-27</td><td>2026-04-27</td><td><span class="tag tag-history">本周已解决</span></td></tr>                                </tbody></table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapsible" onclick="toggleCollapse(this)">
+                    <div class="collapsible-header">
+                        <div class="toggle-icon">▶</div>
+                        <div class="section-title">本期已关闭问题列表（8 条）</div>
+                    </div>
+                    <div class="collapsible-content">
+                        <div class="table-container">
+                            <table>
+                                <thead><tr><th>编号</th><th>标题</th><th>产品</th><th>问题类型</th><th>创建时间</th><th>关闭时间</th><th>来源</th></tr></thead>
+                                <tbody>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39858.html" target="_blank">39858</a></td><td title="【昂橙】销售单S202412172330240116102916，这笔单据能查到寄存是数据，但是在销售查询里查不到数据。">【昂橙】销售单S202412172330240116102916，这笔单据能查到</td><td>ERP</td><td>割接数据</td><td>2026-04-29</td><td>2026-04-29</td><td><span class="tag tag-history">本周已关闭</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39845.html" target="_blank">39845</a></td><td title="【大小美】进入通用门店设置界面报错：未匹配到业务树或字典对应的数据,配置名称=TICKETCHILDPAY。以admin工号为例。">【大小美】进入通用门店设置界面报错：未匹配到业务树或字典对应的数据,配置名称=T</td><td>ERP</td><td>代码错误</td><td>2026-04-28</td><td>2026-04-29</td><td><span class="tag tag-history">本周已关闭</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39732.html" target="_blank">39732</a></td><td title="【河北邯郸天天孕婴】新增优惠券分摊重算后台一直显示重算中">【河北邯郸天天孕婴】新增优惠券分摊重算后台一直显示重算中</td><td>ERP</td><td>代码错误</td><td>2026-04-26</td><td>2026-04-30</td><td><span class="tag tag-history">本周已关闭</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39714.html" target="_blank">39714</a></td><td title="【喜阳阳】6073工号所属天水分公司，数据权限配置是所在公司及以下，新生儿/孕妈认证审核能看到所有门店审核，这样容易发生区域之间翘客，引起不必要的纠纷">【喜阳阳】6073工号所属天水分公司，数据权限配置是所在公司及以下，新生儿/孕妈</td><td>ERP</td><td>产品缺陷</td><td>2026-04-25</td><td>2026-04-29</td><td><span class="tag tag-history">本周已关闭</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39698.html" target="_blank">39698</a></td><td title="【江苏常州溧阳恒达爱婴】会员账本查询报表不展示会员余额。以18651205975为例（割接进来的会员不展示，正常的会员展示）">【江苏常州溧阳恒达爱婴】会员账本查询报表不展示会员余额。以18651205975</td><td>ERP</td><td>非问题</td><td>2026-04-25</td><td>2026-04-28</td><td><span class="tag tag-history">本周已关闭</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39690.html" target="_blank">39690</a></td><td title="【智信云枢-直营环境】会员18211766210昨天结账时死机了，会员名下的优惠券T10011929 ，显示使用2张，只能看到一笔销售单，202604242047651161434091521这张券码没有生成销售单据，需要修复下">【智信云枢-直营环境】会员18211766210昨天结账时死机了，会员名下的优惠</td><td>ERP</td><td>数据问题</td><td>2026-04-25</td><td>2026-04-29</td><td><span class="tag tag-history">本周已关闭</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39697.html" target="_blank">39697</a></td><td title="【四川汉源童泰孕婴】昨晚上切换数据，将返利通过账本割接进去后，前台门店POS上不显示返利余额，只有在结算页面点击会员卡才会显示">【四川汉源童泰孕婴】昨晚上切换数据，将返利通过账本割接进去后，前台门店POS上不</td><td>POS</td><td>安装部署</td><td>2026-04-25</td><td>2026-04-30</td><td><span class="tag tag-history">本周已关闭</span></td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39817.html" target="_blank">39817</a></td><td title="【大小美】26041606510000015545看不到是谁操作了备货，现在客户没办法发货，麻烦修改为待提货状态。">【大小美】26041606510000015545看不到是谁操作了备货，现在客户</td><td>小程序-商城</td><td>数据问题</td><td>2026-04-28</td><td>2026-04-29</td><td><span class="tag tag-history">本周已关闭</span></td></tr>                                </tbody></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ZENTAO_URL = "http://zentao.hckj.cn";
+        const TYPE_NAMES = {"codeerror": "代码错误", "codeimprovement": "代码改进", "codeimprove": "代码改进", "designdefect": "设计缺陷", "performance": "性能问题", "puzzle": "疑难问题", "hard": "疑难问题", "wcx": "无法重现", "cfwt": "重复问题", "config": "配置相关", "nobug": "非问题", "czwt": "操作问题", "gjsj": "割接数据", "youhua": "优化需求", "cpqx": "产品缺陷", "install": "安装部署", "othersystem": "系统问题", "otherplat": "平台问题", "data": "数据问题", "automation": "自动化", "standard": "标准问题", "bugin": "Bug引入", "taskin": "任务引入", "sjrc": "数据入仓", "others": "其他", "?": "未知"};
+        const pendingProdData = {};
+        const pendingDeptData = {"产品研发部": [], "产品运营部": [], "公域运营部": [], "客户成功部": [], "工程能力部": [], "市场销售部": [], "总经办": [], "未分配": []};
+        const pendingTypeData = {};
+        const pendingSevData = {};
+        const pendingStatusData = {"active": [], "resolved": []};
+        const pendingHandlerData = {};
+        const pendingDeptHandlerData = {"产品研发部": {"total": 0, "handlers": {}}, "产品运营部": {"total": 0, "handlers": {}}, "公域运营部": {"total": 0, "handlers": {}}, "客户成功部": {"total": 0, "handlers": {}}, "工程能力部": {"total": 0, "handlers": {}}, "市场销售部": {"total": 0, "handlers": {}}, "总经办": {"total": 0, "handlers": {}}, "未分配": {"total": 0, "handlers": {}}};
+
+        // ========== V2新增：趋势图数据 ==========
+        const trendWeeks = ["\u7b2c12\u5468", "\u7b2c13\u5468", "\u7b2c14\u5468", "\u7b2c15\u5468", "\u7b2c16\u5468", "\u7b2c17\u5468"];
+        const trendNew = [0, 0, 0, 0, 0, 0];
+        const trendClosed = [0, 0, 0, 0, 0, 0];
+
+        // ========== V26新增：折叠功能 ==========
+        function toggleCollapse(el) {
+            el.classList.toggle('active');
+            var content = el.querySelector('.collapsible-content');
+            if (content) {
+                content.classList.toggle('open');
+            }
+        }
+
+        // section折叠/展开
+        function toggleSectionCollapse(el) {
+            el.classList.toggle('collapsed');
+        }
+
+        // ========== 章节导航高亮 ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            var navLinks = document.querySelectorAll('.toc-nav a');
+            window.addEventListener('scroll', function() {
+                var sections = ['section1', 'section2', 'section3', 'section4', 'section5', 'section6', 'section7'];
+                var scrollPos = window.pageYOffset + 100;
+                sections.forEach(function(id) {
+                    var section = document.getElementById(id);
+                    if (section) {
+                        var top = section.offsetTop;
+                        var height = section.offsetHeight;
+                        if (scrollPos >= top && scrollPos < top + height) {
+                            navLinks.forEach(function(link) {
+                                link.classList.remove('active');
+                                if (link.getAttribute('href') === '#' + id) {
+                                    link.classList.add('active');
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        });
+
+        // ========== Tab页签切换功能 ==========
+        // 从看板统计卡片跳转
+        function showOverviewTab(dim) {
+            var tabMap = {
+                'dim-prod': ['prod', '按产品'],
+                'dim-dept': ['handler', '按部门/处理人'],
+                'dim-severity': ['sev', '按严重程度'],
+                'dim-status': ['status', '按状态']
+            };
+            var info = tabMap[dim];
+            if (!info) return;
+            
+            // 找到对应tab按钮并触发点击
+            var btns = document.querySelectorAll('.tab-btn');
+            for (var i = 0; i < btns.length; i++) {
+                var btn = btns[i];
+                if (btn.textContent.includes(info[1]) || btn.textContent.includes(info[1].replace('按', ''))) {
+                    btn.click();
+                    // 滚动到看板区域
+                    document.getElementById('section4').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    break;
+                }
+            }
+        }
+        
+        function showPendingTab(tabId, btn) {
+            console.log('Tab切换:', tabId);
+            // 切换按钮样式
+            document.querySelectorAll('.tab-btn').forEach(function(b) {
+                b.classList.remove('active');
+            });
+            btn.classList.add('active');
+            
+            // 切换面板显示
+            document.querySelectorAll('.pending-tab-panel').forEach(function(panel) {
+                panel.style.display = 'none';
+            });
+            var targetPanel = document.getElementById('tab-' + tabId);
+            if (targetPanel) {
+                targetPanel.style.display = 'block';
+                console.log('面板已显示:', 'tab-' + tabId);
+            } else {
+                console.error('未找到面板:', 'tab-' + tabId);
+            }
+            
+            // 重置当前Tab内的所有层级显示
+            resetTabState(tabId);
+        }
+        
+        function resetTabState(tabId) {
+            // 重置产品Tab
+            if (document.getElementById('prodListArea')) document.getElementById('prodListArea').style.display = 'block';
+            if (document.getElementById('prodDetailArea')) document.getElementById('prodDetailArea').style.display = 'none';
+            // 重置严重程度Tab
+            if (document.getElementById('sevListArea')) document.getElementById('sevListArea').style.display = 'block';
+            if (document.getElementById('sevDetailArea')) document.getElementById('sevDetailArea').style.display = 'none';
+            // 重置状态Tab
+            if (document.getElementById('statusListArea')) document.getElementById('statusListArea').style.display = 'block';
+            if (document.getElementById('statusDetailArea')) document.getElementById('statusDetailArea').style.display = 'none';
+            // 重置处理人Tab（部门树显示，详情隐藏）
+            if (document.getElementById('deptHandlerTree')) document.getElementById('deptHandlerTree').style.display = 'block';
+            if (document.getElementById('handlerDetailArea')) document.getElementById('handlerDetailArea').style.display = 'none';
+        }
+
+        // ========== 两层下钻导航 ==========
+        // 产品下钻：列表 → Bug明细
+        function showProdDetail(prod) {
+            var bugs = pendingProdData[prod] || [];
+            document.getElementById('prodListArea').style.display = 'none';
+            document.getElementById('prodDetailArea').style.display = 'block';
+            renderDetail('prod', '产品 - ' + prod + '（' + bugs.length + ' 条）', bugs);
+        }
+        
+        function backToProdList() {
+            document.getElementById('prodDetailArea').style.display = 'none';
+            document.getElementById('prodListArea').style.display = 'block';
+        }
+        
+        // 严重程度下钻：列表 → Bug明细
+        function showSevDetail(sev) {
+            var bugs = pendingSevData[sev] || [];
+            var sevName = {1: '致命', 2: '严重', 3: '一般', 4: '提示'}[sev] || sev;
+            document.getElementById('sevListArea').style.display = 'none';
+            document.getElementById('sevDetailArea').style.display = 'block';
+            renderDetail('sev', '严重程度 - ' + sevName + '（' + bugs.length + ' 条）', bugs);
+        }
+        
+        function backToSevList() {
+            document.getElementById('sevDetailArea').style.display = 'none';
+            document.getElementById('sevListArea').style.display = 'block';
+        }
+        
+        // 状态下钻：列表 → Bug明细
+        function showStatusDetail(status) {
+            var bugs = pendingStatusData[status] || [];
+            var statusName = {active: '激活', resolved: '已解决', closed: '已关闭'}[status] || status;
+            document.getElementById('statusListArea').style.display = 'none';
+            document.getElementById('statusDetailArea').style.display = 'block';
+            renderDetail('status', '状态 - ' + statusName + '（' + bugs.length + ' 条）', bugs);
+        }
+        
+        function backToStatusList() {
+            document.getElementById('statusDetailArea').style.display = 'none';
+            document.getElementById('statusListArea').style.display = 'block';
+        }
+        
+        function showDeptDetail(dept) {
+            var bugs = pendingDeptData[dept] || [];
+            renderDetail('dept', '责任部门 - ' + dept + '（' + bugs.length + ' 条）', bugs);
+        }
+        
+        function hideDetail(dim) {
+            document.getElementById(dim + 'DetailArea').style.display = 'none';
+        }
+
+        // ========== 部门-处理人两级折叠 ==========
+        function renderDeptHandlerTree() {
+            var container = document.getElementById('deptHandlerTree');
+            if (!container) return;
+            
+            var html = '<div class="tree-container">';
+            var deptHandler = pendingDeptHandlerData || {};
+            var total = 0;
+            
+            // 按问题数排序部门，跳过问题数为0的部门
+            var depts = Object.keys(deptHandler)
+                .filter(function(dept) { return (deptHandler[dept].total || 0) > 0; })
+                .sort(function(a, b) { return (deptHandler[b].total || 0) - (deptHandler[a].total || 0); });
+            
+            for (var i = 0; i < depts.length; i++) {
+                var dept = depts[i];
+                var deptInfo = deptHandler[dept] || {};
+                var handlers = deptInfo.handlers || {};
+                var deptTotal = deptInfo.total || 0;
+                total += deptTotal;
+                
+                html += '<div class="tree-dept">';
+                html += '<div class="tree-dept-header" onclick="toggleDept(this)">';
+                html += '<span class="tree-arrow">▶</span>';
+                html += '<span class="tree-dept-name">' + dept + '</span>';
+                html += '<span class="tree-dept-count">' + deptTotal + ' 条</span>';
+                html += '</div>';
+                html += '<div class="tree-dept-content" style="display:none;">';
+                
+                // 按问题数排序处理人，跳过问题数为0的处理人
+                var handlerNames = Object.keys(handlers)
+                    .filter(function(h) { return (handlers[h].length || 0) > 0; })
+                    .sort(function(a, b) { return (handlers[b].length || 0) - (handlers[a].length || 0); });
+                
+                for (var j = 0; j < handlerNames.length; j++) {
+                    var handler = handlerNames[j];
+                    var bugs = handlers[handler] || [];
+                    html += '<div class="tree-handler">';
+                    html += '<div class="tree-handler-header" onclick="toggleHandler(this)">';
+                    html += '<span class="tree-arrow">▶</span>';
+                    html += '<span class="tree-handler-name">' + (handler || '未分配') + '</span>';
+                    html += '<span class="tree-handler-count">' + bugs.length + ' 条</span>';
+                    html += '<button class="view-btn" onclick="showHandlerBugs(\'' + escapeHtml(handler) + '\',\'' + escapeHtml(dept) + '\')">查看明细</button>';
+                    html += '</div>';
+                    html += '</div>';
+                }
+                html += '</div></div>';
+            }
+            html += '</div>';
+            container.innerHTML = html;
+        }
+        
+        function escapeHtml(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+        }
+        
+        function toggleDept(el) {
+            var content = el.nextElementSibling;
+            var arrow = el.querySelector('.tree-arrow');
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                arrow.textContent = '▼';
+            } else {
+                content.style.display = 'none';
+                arrow.textContent = '▶';
+            }
+        }
+        
+        function toggleHandler(el) {
+            // 如果有handler的bug列表，可以展开显示
+            var content = el.nextElementSibling;
+            if (content && content.classList.contains('tree-handler-content')) {
+                var arrow = el.querySelector('.tree-arrow');
+                if (content.style.display === 'none') {
+                    content.style.display = 'block';
+                    arrow.textContent = '▼';
+                } else {
+                    content.style.display = 'none';
+                    arrow.textContent = '▶';
+                }
+            }
+        }
+        
+        function showHandlerBugs(handler, dept) {
+            console.log('showHandlerBugs called:', {handler: handler, dept: dept});
+            var deptInfo = pendingDeptHandlerData[dept] || {};
+            console.log('deptInfo:', deptInfo);
+            var handlers = deptInfo.handlers || {};
+            console.log('handlers:', handlers);
+            var bugs = handlers[handler] || [];
+            console.log('bugs count:', bugs.length);
+            // 隐藏部门树，显示详情区域
+            document.getElementById('deptHandlerTree').style.display = 'none';
+            document.getElementById('handlerDetailArea').style.display = 'block';
+            renderDetail('handler', dept + ' - ' + (handler || '未分配') + '（' + bugs.length + ' 条）', bugs);
+        }
+        
+        function backToHandlerList() {
+            document.getElementById('handlerDetailArea').style.display = 'none';
+            document.getElementById('deptHandlerTree').style.display = 'block';
+        }
+
+        function renderDetail(dim, title, bugs) {
+            document.getElementById(dim + 'DetailTitle').querySelector('span').textContent = title;
+            var html = '';
+            for (var i = 0; i < bugs.length; i++) {
+                var b = bugs[i];
+                // 根据维度不同，字段顺序有所调整
+                if (dim === 'prod') {
+                    html += '<tr><td><a class="bug-id" href="' + ZENTAO_URL + '/bug-view-' + b.id + '.html" target="_blank">' + b.id + '</a></td><td title="' + b.title + '">' + b.title.substring(0, 40) + '</td><td>' + (TYPE_NAMES[b.type] || b.type) + '</td><td><span class="tag ' + b.sev_class + '">' + b.severity + '</span></td><td>' + b.status + '</td><td>' + b.dept + '</td><td>' + (b.handler || '未分配') + '</td><td>' + b.date + '</td></tr>';
+                } else if (dim === 'dept') {
+                    html += '<tr><td><a class="bug-id" href="' + ZENTAO_URL + '/bug-view-' + b.id + '.html" target="_blank">' + b.id + '</a></td><td title="' + b.title + '">' + b.title.substring(0, 40) + '</td><td>' + b.product + '</td><td>' + (TYPE_NAMES[b.type] || b.type) + '</td><td><span class="tag ' + b.sev_class + '">' + b.severity + '</span></td><td>' + b.status + '</td><td>' + (b.handler || '未分配') + '</td><td>' + b.date + '</td></tr>';
+                } else if (dim === 'sev') {
+                    html += '<tr><td><a class="bug-id" href="' + ZENTAO_URL + '/bug-view-' + b.id + '.html" target="_blank">' + b.id + '</a></td><td title="' + b.title + '">' + b.title.substring(0, 40) + '</td><td>' + b.product + '</td><td>' + (TYPE_NAMES[b.type] || b.type) + '</td><td><span class="tag ' + b.sev_class + '">' + b.severity + '</span></td><td>' + b.status + '</td><td>' + b.dept + '</td><td>' + (b.handler || '未分配') + '</td><td>' + b.date + '</td></tr>';
+                } else if (dim === 'status') {
+                    html += '<tr><td><a class="bug-id" href="' + ZENTAO_URL + '/bug-view-' + b.id + '.html" target="_blank">' + b.id + '</a></td><td title="' + b.title + '">' + b.title.substring(0, 40) + '</td><td>' + b.product + '</td><td>' + (TYPE_NAMES[b.type] || b.type) + '</td><td><span class="tag ' + b.sev_class + '">' + b.severity + '</span></td><td>' + b.status + '</td><td>' + b.dept + '</td><td>' + (b.handler || '未分配') + '</td><td>' + b.date + '</td></tr>';
+                } else if (dim === 'handler') {
+                    html += '<tr><td><a class="bug-id" href="' + ZENTAO_URL + '/bug-view-' + b.id + '.html" target="_blank">' + b.id + '</a></td><td title="' + b.title + '">' + b.title.substring(0, 40) + '</td><td>' + b.product + '</td><td>' + (TYPE_NAMES[b.type] || b.type) + '</td><td><span class="tag ' + b.sev_class + '">' + b.severity + '</span></td><td>' + b.status + '</td><td>' + b.dept + '</td><td>' + (b.handler || '未分配') + '</td><td>' + b.date + '</td></tr>';
+                }
+            }
+            document.getElementById(dim + 'DetailBody').innerHTML = html || '<tr><td colspan="9">暂无数据</td></tr>';
+            // 显示详情区域
+            var detailArea = document.getElementById(dim + 'DetailArea');
+            if (detailArea) {
+                detailArea.style.display = 'block';
+                detailArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // ========== 图表初始化 ==========
+        var colors = ['#4f46e5', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316', '#84cc16'];
+        var chartFont = { family: "'Microsoft YaHei', Arial", size: 11 };
+        var chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { boxWidth: 12, padding: 8, font: chartFont } },
+                tooltip: { callbacks: { label: function(ctx) {
+                    var total = 44;
+                    var val = ctx.parsed !== undefined ? ctx.parsed : ctx.parsed.y;
+                    return ctx.label + ': ' + val + ' 条 (' + (total > 0 ? Math.round(val/total*100) : 0) + '%)';
+                } } }
+            }
+        };
+
+        // ========== V2新增：趋势图 ==========
+        new Chart(document.getElementById('trendChart'), {
+            type: 'line',
+            data: {
+                labels: trendWeeks,
+                datasets: [
+                    {
+                        label: '新增问题',
+                        data: trendNew,
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: '关闭问题',
+                        data: trendClosed,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', labels: { boxWidth: 12, padding: 15, font: chartFont } },
+                    tooltip: { mode: 'index', intersect: false }
+                },
+                scales: {
+                    y: { beginAtZero: true, title: { display: true, text: '问题数量' } }
+                }
+            }
+        });
+
+        // ========== 初始化部门-处理人树 ==========
+        try {
+            renderDeptHandlerTree();
+        } catch(e) {
+            console.error('renderDeptHandlerTree error:', e);
+        }
+
+        new Chart(document.getElementById('seriousStatusChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['已解决', '已关闭'],
+                datasets: [{ data: [3, 1], backgroundColor: ['#dc3545', '#ffc107', '#28a745', '#17a2b8'] }]
+            },
+            options: chartOptions
+        });
+
+        new Chart(document.getElementById('seriousTypeChart'), {
+            type: 'doughnut',
+            data: { labels: ['代码错误', '产品缺陷', '数据问题'], datasets: [{ label: '问题数量', data: [1, 1, 2], backgroundColor: '#dc3544' }] },
+            options: chartOptions
+        });
+    </script>
+</body>
+</html>
