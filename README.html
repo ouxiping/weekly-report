@@ -15,38 +15,29 @@
         .report-item a { color: #667eea; text-decoration: none; font-size: 18px; font-weight: 500; }
         .report-item a:hover { text-decoration: underline; }
         .report-date { color: #6c757d; font-size: 14px; }
-        .empty { text-align: center; color: #6c757d; padding: 40px; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>📊 线上问题周报</h1>
-        <div class="report-list" id="reportList">
-            <div class="empty">加载中...</div>
+        <div class="report-list">
+            <div class="report-item">
+                <a href="报告_20260425-20260501.html" target="_blank">📄 2026-04-25 ~ 2026-05-01</a>
+                <span class="report-date">报告_20260425-20260501.html</span>
+            </div>
+            <div class="report-item">
+                <a href="报告_20260418-20260424.html" target="_blank">📄 2026-04-18 ~ 2026-04-24</a>
+                <span class="report-date">报告_20260418-20260424.html</span>
+            </div>
+            <div class="report-item">
+                <a href="报告_20260411-20260417.html" target="_blank">📄 2026-04-11 ~ 2026-04-17</a>
+                <span class="report-date">报告_20260411-20260417.html</span>
+            </div>
+            <div class="report-item">
+                <a href="报告_20260404-20260410.html" target="_blank">📄 2026-04-04 ~ 2026-04-10</a>
+                <span class="report-date">报告_20260404-20260410.html</span>
+            </div>
         </div>
     </div>
-    
-    <script>
-        // 报告列表（手动维护）
-        const reports = [
-            { file: '报告_20260425-20260501.html', title: '2026-04-25 ~ 2026-05-01' },
-            { file: '报告_20260418-20260424.html', title: '2026-04-18 ~ 2026-04-24' },
-            { file: '报告_20260411-20260417.html', title: '2026-04-11 ~ 2026-04-17' },
-            { file: '报告_20260404-20260410.html', title: '2026-04-04 ~ 2026-04-10' }
-        ];
-        
-        const listEl = document.getElementById('reportList');
-        
-        if (reports.length === 0) {
-            listEl.innerHTML = '<div class="empty">暂无报告</div>';
-        } else {
-            listEl.innerHTML = reports.map(r => `
-                <div class="report-item">
-                    <a href="${r.file}" target="_blank">📄 ${r.title}</a>
-                    <span class="report-date">${r.file}</span>
-                </div>
-            `).join('');
-        }
-    </script>
 </body>
 </html>
