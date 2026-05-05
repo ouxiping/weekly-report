@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>线上问题分析报告 20260425-20260501</title>
+<style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f0f2f5; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        h1 { text-align: center; color: #1a1a2e; margin-bottom: 8px; }
+        .period { text-align: center; color: #666; margin-bottom: 24px; }
+        .section-card { background: #fff; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden; }
+        .section-header { padding: 16px 24px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+        .section-header.blue { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
+        .section-header.green { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: #fff; }
+        .section-header.orange { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: #fff; }
+        .section-header.purple { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
+        .section-icon { font-size: 24px; }
+        .section-title { font-size: 18px; font-weight: bold; }
+        .section-desc { font-size: 13px; opacity: 0.85; }
+        .section-body { padding: 20px 24px; }
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
+        .stat-card { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border-radius: 10px; padding: 16px; text-align: center; }
+        .stat-card .num { font-size: 32px; font-weight: bold; color: #1a1a2e; }
+        .stat-card .label { font-size: 13px; color: #666; margin-top: 4px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        th { background: #fafafa; padding: 10px 12px; text-align: left; font-size: 13px; color: #555; border-bottom: 2px solid #e8e8e8; }
+        td { padding: 10px 12px; font-size: 13px; border-bottom: 1px solid #f0f0f0; }
+        tr:hover { background: #f8f9ff; }
+        .bug-id { color: #4361ee; text-decoration: none; font-weight: 500; }
+        .bug-id:hover { text-decoration: underline; }
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+        .tag-serious { background: #fff0f0; color: #e63946; }
+        .tag-high { background: #fff8e1; color: #f4a261; }
+        .tag-bug { background: #e8f4fd; color: #4361ee; }
+        .tag-history { background: #f0f0f0; color: #666; }
+        .patch-table { table-layout: auto; }
+        .patch-table th { white-space: nowrap; }
+        .patch-title { max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .intro-section { margin-bottom: 20px; }
+        .intro-section h4 { margin-bottom: 10px; color: #333; }
+        .patch-table-wrap { overflow-x: auto; }
+        .collapsible { margin-bottom: 8px; border: 1px solid #e8e8e8; border-radius: 8px; }
+        .collapsible-header { padding: 10px 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; background: #fafafa; border-radius: 8px; }
+        .collapsible-header:hover { background: #f0f0f0; }
+        .toggle-icon { font-size: 12px; transition: transform 0.2s; }
+        .collapsible-content { display: none; padding: 12px 16px; }
+        .collapsible.open .collapsible-content { display: block; }
+        .collapsible.open .toggle-icon { transform: rotate(90deg); }
+    
+</style>
+</head>
+<body>
+<div class="container">
+<h1>📊 线上问题分析报告</h1>
+<div class="period">统计周期：2026-04-25 ~ 2026-05-01</div>
+<div class="section-card">
+<div class="section-header blue">
+<div class="section-icon">📈</div>
+<div class="section-info"><div class="section-title">执行摘要</div><div class="section-desc">核心指标一览</div></div>
+</div>
+<div class="section-body">
+<div class="stat-grid">
+<div class="stat-card"><div class="num">0</div><div class="label">问题总览</div></div>
+<div class="stat-card"><div class="num">0</div><div class="label">本期新增</div></div>
+<div class="stat-card"><div class="num">0</div><div class="label">本期已解决</div></div>
+<div class="stat-card"><div class="num">0</div><div class="label">本期已关闭</div></div>
+<div class="stat-card"><div class="num">121</div><div class="label">引入问题</div></div>
+<div class="stat-card"><div class="num">0</div><div class="label">严重问题</div></div>
+</div></div></div>
+<div class="section-card">
+<div class="section-header green">
+<div class="section-icon">🔧</div>
+<div class="section-info"><div class="section-title">补丁执行情况</div><div class="section-desc">Bug修复 2 条 / 紧急需求 0 条</div></div>
+</div>
+<div class="section-body">
+<div class="intro-section">
+<h4>Bug修复补丁（2 条）</h4>
+<div class="patch-table-wrap">
+<table class="patch-table">
+<thead><tr><th>补丁日期</th><th>Bug/需求编号</th><th>问题描述/需求名称</th><th>产品</th><th>补丁版本</th><th>补丁范围</th></tr></thead>
+<tbody>
+<tr><td>2026-04-29</td><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39870.html" target="_blank">39870</a></td><td class="patch-title" title="【智信云枢-童话谷】供应商21586登录SCM， 有审核发货权限，但是操作不了审核发货，没有发货按钮">【智信云枢-童话谷】供应商21586登录SCM， 有审核发货权限，但是操作不了审核发货，没有发货按钮</td><td>ERP</td><td>8.29</td><td>童话谷</td></tr>
+<tr><td>2026-04-30</td><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39882.html" target="_blank">39882</a></td><td class="patch-title" title="【智信云枢-直营环境】9000甘清总仓，操作移除控货商品，移除不成功，以8809523280935为例">【智信云枢-直营环境】9000甘清总仓，操作移除控货商品，移除不成功，以8809523280935为例</td><td>ERP</td><td>9.16</td><td>陕西小飞象</td></tr>
+</tbody></table></div></div>
+</div></div>
+<div class="section-card">
+<div class="section-header orange">
+<div class="section-icon">⚠️</div>
+<div class="section-info"><div class="section-title">引入问题根因分析</div><div class="section-desc">共 121 条引入问题，加强根因分类总结</div></div>
+</div>
+<div class="section-body">
+<div class="intro-section"><h4>需求开发引入（76 条）</h4>
+<div class="patch-table-wrap"><table class="patch-table">
+<thead><tr><th>编号</th><th>标题</th><th>产品</th><th>引入版本</th><th>根因说明</th></tr></thead>
+<tbody>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39882.html" target="_blank">39882</a></td><td title="【智信云枢-直营环境】9000甘清总仓，操作移除控货商品，移除不成功，以8809523280935为例">【智信云枢-直营环境】9000甘清总仓，操作移除控货商品，移除不成功，以8809</td><td>ERP</td><td>8.38</td><td><p><span>2024年5月份从老页面迁移到新前端时引入，</span><span style=</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39877.html" target="_blank">39877</a></td><td title="【基线主干】升级后，仓储单据详情中，商品名称为黑色，升级前是蓝色，为引导客户可以点击">【基线主干】升级后，仓储单据详情中，商品名称为黑色，升级前是蓝色，为引导客户可以</td><td>ERP</td><td>8.37</td><td><p><span>8.37版本6823需求开发引入：将a标签的颜色置为了黑色， 导致原本table中</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39530.html" target="_blank">39530</a></td><td title="【智信云枢-中台】采购在PRM改价的时候报错了，提示系统运行异常，检查到空指针，可能是数据未正确初始化引用对象为空（何荀已定位出原因）">【智信云枢-中台】采购在PRM改价的时候报错了，提示系统运行异常，检查到空指针，</td><td>ERP</td><td>9.16</td><td><p><span>9.16版本6691需求开发引入，ERP的最低售价非必填，PRM同步ERP的商品信</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39519.html" target="_blank">39519</a></td><td title="【智信云枢-直营环境】6954665213517这个商品在直营环境改了发货价，但是没有同步到中台（何荀已定位出原因）">【智信云枢-直营环境】6954665213517这个商品在直营环境改了发货价，但</td><td>ERP</td><td>9.16</td><td><p><span>9.16版本6691需求开发引入，</span><span style="colo</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39477.html" target="_blank">39477</a></td><td title="【智信云枢-直营环境】大转盘每页显示的数据和选择展示的条数不对等，客户反馈的活动数据应该比显示的要多。">【智信云枢-直营环境】大转盘每页显示的数据和选择展示的条数不对等，客户反馈的活动</td><td>ERP</td><td>8.35</td><td><p>8.35版本6180需求开发引入，换分页组件没考虑分页接口的传值问题</p><p>基线8.38</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39470.html" target="_blank">39470</a></td><td title="【123baby】新增强制返厂单，模板导入商品显示默认返厂价和表格填写的返厂价一致，没有取档案里的价格。">【123baby】新增强制返厂单，模板导入商品显示默认返厂价和表格填写的返厂价一</td><td>ERP</td><td>8.38</td><td><p><span>8.1</span><span>7版本 5453 需求开发引入，</span><s</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39424.html" target="_blank">39424</a></td><td title="【合生元】【中山宝贝屋】POS销售录入了物料的序列号，但是识别为非在库码">【合生元】【中山宝贝屋】POS销售录入了物料的序列号，但是识别为非在库码</td><td>ERP</td><td>8.37</td><td><p>8.37版本6797需求开发引入</p><p>8.38版本解决：<span style="co</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39408.html" target="_blank">39408</a></td><td title="【君乐宝】【123baby】君乐宝老客下单联合新客，校验通过了（应该提示老客不允许参加活动）">【君乐宝】【123baby】君乐宝老客下单联合新客，校验通过了（应该提示老客不允</td><td>ERP</td><td>8.38</td><td><p><span>8.38版本6884需求开发引入，新客判断逻辑存在问题</span></p></td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39402.html" target="_blank">39402</a></td><td title="【君乐宝】【123baby】下单君乐宝联合新客订单，店员操作提货，同步君乐宝失败。">【君乐宝】【123baby】下单君乐宝联合新客订单，店员操作提货，同步君乐宝失败</td><td>ERP</td><td>8.38</td><td><p><span>8.38版本6884需求开发引入，4月16日补丁时漏了脚本，已补丁修复</span</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39381.html" target="_blank">39381</a></td><td title="【6400】沃伦母婴(南亚店)3月23日创建的南亚26.03盘点，负库存未录清零设置的是【否】，以6922577740681为例，存盘为-4，实盘为0，但是盘点审核后，在计划盘点盈亏查询表上此商品显示是【未盘】，导致该商品的库存在还是-4，这种情况的商品不止一个，请查看处理。">【6400】沃伦母婴(南亚店)3月23日创建的南亚26.03盘点，负库存未录清零</td><td>ERP</td><td>8.35</td><td><p>8.35版本6658需求开发引入，人工盘0时负库存数据没有清零</p><p>8.38版本解决并</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39352.html" target="_blank">39352</a></td><td title="【襄阳童泰】员工管理修改密码修改类型选择默认密码，以0613工号为例，提示【加密失败】，测试环境可以复现。">【襄阳童泰】员工管理修改密码修改类型选择默认密码，以0613工号为例，提示【加密</td><td>ERP</td><td>8.37</td><td><p><span>8.37版本6663需求开发引入，重置默认密码传入的参数错误导致</span></</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39287.html" target="_blank">39287</a></td><td title="【谷城小飞象】6972183442097订货时报错，商品已进行关联">【谷城小飞象】6972183442097订货时报错，商品已进行关联</td><td>ERP</td><td>9.17</td><td><p><span>9.</span><span>16版本6657需求开发引入，</span><spa</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39280.html" target="_blank">39280</a></td><td title="【合生元】当输入的序列号是物料时，通过物流码同步日志查询功能重新同步，依然显示不在库码">【合生元】当输入的序列号是物料时，通过物流码同步日志查询功能重新同步，依然显示不</td><td>ERP</td><td>8.37</td><td><p>8.37版本6797需求开发引入</p><p>8.38版本解决：<span style="co</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39244.html" target="_blank">39244</a></td><td title="【伊利】123连锁上线了伊利外场活动一键双注册，在ERP 新客统计菜单 来源途径缺少“伊利活动”，会员360视图中没有来源途径信息">【伊利】123连锁上线了伊利外场活动一键双注册，在ERP 新客统计菜单 来源途径</td><td>ERP</td><td>8.37</td><td><p><span>3月31日8.37版本6906需求引入，补丁脚本漏执行</span></p></td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39232.html" target="_blank">39232</a></td><td title="【巴中昂橙】小时达运费模版功能无法正常配置">【巴中昂橙】小时达运费模版功能无法正常配置</td><td>ERP</td><td>8.33</td><td><p>8.33版本6521需求开发引入</p><p>8.38版本解决，已合并8.37分支，昂橙已补丁</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39203.html" target="_blank">39203</a></td><td title="【巴布豆】升级到37版本后，寄存单据管理修改取货门店，寄存提货门店范围无法选择">【巴布豆】升级到37版本后，寄存单据管理修改取货门店，寄存提货门店范围无法选择</td><td>ERP</td><td>8.37</td><td><p><span>8.37版本6828需求开发引入，为了统一整改弹窗的居中效果，修改改了style-</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39099.html" target="_blank">39099</a></td><td title="【江苏宝诺丽婴】批发销售退货查询，相同时间，相同批发客户，单查1915门店和查所有门店显示的成本数据不一致。">【江苏宝诺丽婴】批发销售退货查询，相同时间，相同批发客户，单查1915门店和查所</td><td>ERP</td><td>7.29</td><td><p>7.29版本2137需求开发引入，按批发部门汇总页签，子查询是按批发客户汇总的</p><p>8</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39077.html" target="_blank">39077</a></td><td title="【妈仔谷】配送查询：代采服务费金额的统计逻辑麻烦确认下。比如配送单：ID202603154205140600 这一单取的是实际发货的代采服务金额，不是整单的。ID202603134205134944  这个一单的代采服务金额是整单的。麻烦确认">【妈仔谷】配送查询：代采服务费金额的统计逻辑麻烦确认下。比如配送单：ID2026</td><td>ERP</td><td>8.35</td><td><p>26年1月8.35版本6739 【妈仔谷】订货宝（指掌天下）代采服务费对接 需求引入</p><</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38876.html" target="_blank">38876</a></td><td title="【智信云枢-小飞象直营】销售费补批量导入时不展示销售费补金额">【智信云枢-小飞象直营】销售费补批量导入时不展示销售费补金额</td><td>ERP</td><td>9.15</td><td><p><span>9.15版本6742需求开发引入，字段取值错误</span></p><p><spa</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38410.html" target="_blank">38410</a></td><td title="【123baby】客户反馈订货管理有一批商品通过商品编码订货，显示：该商品的状态不允许做此单据!。使用条形码查询是可以查看到的。比如商品编码：202009，条形码：6952413105015。麻烦核实">【123baby】客户反馈订货管理有一批商品通过商品编码订货，显示：该商品的状态</td><td>ERP</td><td>8.21</td><td><p><span style="color:rgb(48,57,74);font-size:13px</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38371.html" target="_blank">38371</a></td><td title="【子母孕婴】仓库：[1100]退货换货仓库  客户在12月31日晚上9点多在系统库存查询把库存导出了，这个仓库的库存总数是89个，但是进销存的数量现在查询是92个，数据不一致，麻烦核实">【子母孕婴】仓库：[1100]退货换货仓库  客户在12月31日晚上9点多在系统</td><td>ERP</td><td>8.36</td><td><p><span>19年</span><span style="color:rgb(60,67,83</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38304.html" target="_blank">38304</a></td><td title="【陕西宝宝天下】客户批发退货收货的时候报错：WS20260212220010003817操作收货提示空指针，无法操作收货">【陕西宝宝天下】客户批发退货收货的时候报错：WS2026021222001000</td><td>ERP</td><td>8.32</td><td><p><span>8.32版本</span><span style="color:rgb(48,57</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38286.html" target="_blank">38286</a></td><td title="【陕西小飞象-直营环境】商品条码：9421903887245,245904032500,245904032600,08000364,09000030,2824504017000、仓库：3000，巨沃和ERP库存不一致，麻烦核实">【陕西小飞象-直营环境】商品条码：9421903887245,245904032</td><td>ERP</td><td>7.38</td><td><p><span style="color:rgb(48,57,74);font-size:13px</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38259.html" target="_blank">38259</a></td><td title="【河南商丘小飞象】工号331302有订货单收货权限，点击去收货没有收货按钮">【河南商丘小飞象】工号331302有订货单收货权限，点击去收货没有收货按钮</td><td>ERP</td><td>9.13</td><td><p><span>9.13版本6569需求开发引入，PRM订单按单收货使用了仓库的收货权限，需求开发</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38155.html" target="_blank">38155</a></td><td title="【物流码补录】-pos零售销退、寄取录的物流码信息，不需要补录进码库">【物流码补录】-pos零售销退、寄取录的物流码信息，不需要补录进码库</td><td>ERP</td><td>8.35</td><td><p><span>8.35版本6644需求开发引入</span></p><p><span style</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38051.html" target="_blank">38051</a></td><td title="【眉山奈特天使】批发销售单： WS2026013090081001396   WMS没有操作发货，但是ARM里面已经发货了，麻烦核实">【眉山奈特天使】批发销售单： WS2026013090081001396   W</td><td>ERP</td><td>8.0</td><td><p><span style="color:rgb(48,57,74);font-size:13px</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37932.html" target="_blank">37932</a></td><td title="【陕西小飞象-直营】时间：上周、门店：616008703在静态码往来账查询报表展示的期末余额不正确">【陕西小飞象-直营】时间：上周、门店：616008703在静态码往来账查询报表展</td><td>ERP</td><td>8.35</td><td><p><span>问题原因：</span><span style="color:rgb(48,57,</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37698.html" target="_blank">37698</a></td><td title="【小飞象】【现网问题】在直营系统，在仓库开启了wms时，批发销售中，点击批发销售单后的取消，能直接调用到wms，应该限制">【小飞象】【现网问题】在直营系统，在仓库开启了wms时，批发销售中，点击批发销售</td><td>ERP</td><td>9.13</td><td><p><span>问题</span><span>原因：9.13版本引入， “ERP禁止取消中台批发销</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37694.html" target="_blank">37694</a></td><td title="【智信云枢中台】导入合伙人商品报错：导入数据失败:com.arm.prm.business.supplier.mapper.BpSupplierGoodsPriceRuleMapper.insert (batch index #1) failed.">【智信云枢中台】导入合伙人商品报错：导入数据失败:com.arm.prm.bus</td><td>ERP</td><td>9.14</td><td><p><span>问题原因：批量移除操作未删除价格信息，后续再次关联同一商品时触发数据库的唯一索引校</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37655.html" target="_blank">37655</a></td><td title="【陕西小飞象】配送单操作批量导入，配送数量、和配送条数导入不正确">【陕西小飞象】配送单操作批量导入，配送数量、和配送条数导入不正确</td><td>ERP</td><td>7.45</td><td><p>1、4000仓的补给仓是3000仓</p><p>2、138007699、138007775门店</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37618.html" target="_blank">37618</a></td><td title="【智信云枢-四川内江威远小飞象】app提交订货单报错：收货地址区域不能为空。   后台 门店信息有完善详细地址">【智信云枢-四川内江威远小飞象】app提交订货单报错：收货地址区域不能为空。  </td><td>ERP</td><td>9.13</td><td><p>问题原因：客员通订货在9.13版本未兼容PRM拆单逻辑，PRM拆单时缺少行政区域ID，导致拆单</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37553.html" target="_blank">37553</a></td><td title="【妈仔谷】批发客户管理导入的模板，下载文件内容是乱码，8050环境下载模板是正常的">【妈仔谷】批发客户管理导入的模板，下载文件内容是乱码，8050环境下载模板是正常</td><td>ERP</td><td></td><td><p><span>8.33开发需求引入:6496&nbsp;【123baby】【金蝶对接】批发客户增</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37473.html" target="_blank">37473</a></td><td title="【格瑞丽家】【A+】会员18795085544，在会员卡日志查询报表中，1.14有一笔task 单据修复的记录，此时会员卡金额变更为0，但1.15新增一笔卡退费后余额不正确，麻烦定位下原因并修复金额">【格瑞丽家】【A+】会员18795085544，在会员卡日志查询报表中，1.14</td><td>ERP</td><td>7.35</td><td><p><span>问题原因：7.35版本3188需求开发引入，在MySQL中0等于空，由于修改会员余</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37467.html" target="_blank">37467</a></td><td title="【123baby】侧边菜单栏选择竞价销售申请点击查询展示的内容包含非竞价销售审批数据">【123baby】侧边菜单栏选择竞价销售申请点击查询展示的内容包含非竞价销售审批</td><td>ERP</td><td></td><td><p><span>功能开启脚本未包含审批根节点导致，生产环境已修复，8.35已重新归档功能开启脚本<</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37466.html" target="_blank">37466</a></td><td title="【123baby】竞价销售单申请的短信发送在营销短信发送查询报表的发送号码展示的是工号">【123baby】竞价销售单申请的短信发送在营销短信发送查询报表的发送号码展示的</td><td>ERP</td><td>8.34</td><td><p>问题原因：8.34版本6567需求开发引入，审批短信是发给员工的，需要获取最终接收对象即 fi</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37464.html" target="_blank">37464</a></td><td title="【123baby】【A+】客户用superarm在竞价商品配置页面导入文件，一直提示“接口请求超时，请刷新页面重试!”，但现在系统中导入了两批一样的数据。">【123baby】【A+】客户用superarm在竞价商品配置页面导入文件，一直</td><td>ERP</td><td>8.35</td><td><p><span>问题原因：前端导入只有1分钟时间 就自动断开连接，后端数据还在导入重复导入就会有重</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37461.html" target="_blank">37461</a></td><td title="【小飞象】【现网问题】小飞象反馈收货后，入库单中的商品详情为空">【小飞象】【现网问题】小飞象反馈收货后，入库单中的商品详情为空</td><td>ERP</td><td></td><td></td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37443.html" target="_blank">37443</a></td><td title="【小飞象】【现网问题】订货单审批通过，生成了批发销售单，又点击重新拆单，生成了一个新的批发销售单">【小飞象】【现网问题】订货单审批通过，生成了批发销售单，又点击重新拆单，生成了一</td><td>ERP</td><td></td><td></td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37442.html" target="_blank">37442</a></td><td title="【小飞象】【现网问题】单据审核通过，支付成功后，订货单仍然为待审核状态">【小飞象】【现网问题】单据审核通过，支付成功后，订货单仍然为待审核状态</td><td>ERP</td><td></td><td></td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37226.html" target="_blank">37226</a></td><td title="【秦皇岛好妈妈】-商品评价查询，明细页签里有1490导购，但是导购汇总（订单级），又没有这个导购">【秦皇岛好妈妈】-商品评价查询，明细页签里有1490导购，但是导购汇总（订单级）</td><td>ERP</td><td>8.35</td><td><p><span>1、[评价明细]页签，导购查询条件与展示不一致的问题</span></p><p><</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37102.html" target="_blank">37102</a></td><td title="【甘肃天水海阳baby】【宁夏银川百分百】客户在批发客户下载模版的时候报错">【甘肃天水海阳baby】【宁夏银川百分百】客户在批发客户下载模版的时候报错</td><td>ERP</td><td>8.34</td><td><p><span style="color:rgb(48,57,74);font-size:13px</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-35436.html" target="_blank">35436</a></td><td title="【昂橙】【A+】新建配送分货时在商品信息中直接填写商品信息搜索结果，和批量添加中填写相同的商品信息的搜索结果不一致。如都搜索‘“飞鹤”，外面查询后商品数量为497，批量添加里面查询后商品数量为667.">【昂橙】【A+】新建配送分货时在商品信息中直接填写商品信息搜索结果，和批量添加中</td><td>ERP</td><td>8.21</td><td><p><span>8.21版本5740需求开发引入，单个查询模糊查询最多查询500个sku，8.36</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39602.html" target="_blank">39602</a></td><td title="【河北曲周爱尚婴】版本更新为37后寄存界面显示不合理">【河北曲周爱尚婴】版本更新为37后寄存界面显示不合理</td><td>POS</td><td>8.37</td><td><p>8.37版本6829需求开发引入，8.38版本解决并已合入8.37分支</p></td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39557.html" target="_blank">39557</a></td><td title="【智信云枢-直营环境】S26011683230115720021（原销售单号），退货提示：保存退款单据失败:本单赠送礼品卡状态已变更，请重新发起退款，避免门店损失。">【智信云枢-直营环境】S26011683230115720021（原销售单号），</td><td>POS</td><td>9.16</td><td><p><span style="color:rgb(48,57,74);font-size:13px</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39401.html" target="_blank">39401</a></td><td title="【爱婴之家】运行pos蓝屏，无法登录，重新安装pos也是蓝屏">【爱婴之家】运行pos蓝屏，无法登录，重新安装pos也是蓝屏</td><td>POS</td><td>8.37</td><td><p>8.37版本6829需求开发引入：solution_param参数缓存未获取导致</p></td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39369.html" target="_blank">39369</a></td><td title="【格瑞丽家】客户反馈昨晚升级之后，门店POS双屏视频及图片都不显示了">【格瑞丽家】客户反馈昨晚升级之后，门店POS双屏视频及图片都不显示了</td><td>POS</td><td>8.37</td><td><p><span>8.37版本6829需求开发引入，</span><span style="colo</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39177.html" target="_blank">39177</a></td><td title="【智信云枢-直营环境】参数销售单退货失败是否允许继续退货是开启的，销售单号：S26040498690216710019操作退货提示：当前销售单已生成了一笔退货单，需要先处理完 退货单才能继续退货">【智信云枢-直营环境】参数销售单退货失败是否允许继续退货是开启的，销售单号：S2</td><td>POS</td><td>9.16</td><td><p>9.16版本6770需求开发引入，赠送礼品券的单据必须处理完上一笔退货单才允许继续部分退</p</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38902.html" target="_blank">38902</a></td><td title="【乐贝家】寄存单据页面：输入防伪码然后点击确认，POS就卡住了。">【乐贝家】寄存单据页面：输入防伪码然后点击确认，POS就卡住了。</td><td>POS</td><td>8.32</td><td><p>8.32版本6362需求开发引入，存在循环截取防伪码的逻辑，导致确认卡住</p><p>8.37</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38586.html" target="_blank">38586</a></td><td title="【河北保定爱达宝】pos升级到8.36版本，在团购核销界面，弹出新增会员的弹框，点击新增会员按钮没反应">【河北保定爱达宝】pos升级到8.36版本，在团购核销界面，弹出新增会员的弹框，</td><td>POS</td><td>8.35</td><td><p><span style="color:rgb(48,57,74);font-size:13px</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38585.html" target="_blank">38585</a></td><td title="【阿贝阿妈】8011门店在使用工行扫码的在线支付方式结算时很卡，扫了授权码之后要很久才会弹出结算成功">【阿贝阿妈】8011门店在使用工行扫码的在线支付方式结算时很卡，扫了授权码之后要</td><td>POS</td><td>8.33</td><td><p>8.33版本6461需求开发引入，局点未开启品牌商促销功能时仍查询了品牌促销活动会员认证记录表</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38427.html" target="_blank">38427</a></td><td title="【基线】报表订单来源都有竞价销售字典，请屏蔽相关字典">【基线】报表订单来源都有竞价销售字典，请屏蔽相关字典</td><td>POS</td><td>8.34</td><td><p><span>8.34版本6567需求开发引入，8.36版本优化</span></p></td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38374.html" target="_blank">38374</a></td><td title="【秦皇岛好妈妈】POS点击发送短信，提示【短信验证码发送失败】，昨天升了35版本。">【秦皇岛好妈妈】POS点击发送短信，提示【短信验证码发送失败】，昨天升了35版本</td><td>POS</td><td></td><td><p>1、<span style="color:rgb(48,57,74);font-size:13</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38138.html" target="_blank">38138</a></td><td title="【优比熊】前台点击新增会员无反应">【优比熊】前台点击新增会员无反应</td><td>POS</td><td>8.35</td><td><p><span>8.35版本6661需求开发引入</span></p><p><span>系统参数”</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37619.html" target="_blank">37619</a></td><td title="【格瑞丽家】会员18794228771账本“”预付款账本”充值退款失败 点重试报错：更新支付单据失败,失败原因为:null">【格瑞丽家】会员18794228771账本“”预付款账本”充值退款失败 点重试报</td><td>POS</td><td>8.35</td><td><p>问题原因：8.34开发6567需求引入，竞价销售功能在线支付时，字段没有判空，导致充值退款执行</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38738.html" target="_blank">38738</a></td><td title="【乐贝家】任务列表-任务类型选发货，订单号粘贴不上，点击查询按钮后，粘贴的内容又正常展示，操作视频见附件">【乐贝家】任务列表-任务类型选发货，订单号粘贴不上，点击查询按钮后，粘贴的内容又</td><td>小程序-商城</td><td>3.69</td><td><p><span>3.69版本小程序框架优化引入</span></p><p><span>3.71版本</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38416.html" target="_blank">38416</a></td><td title="【广东佛山优比熊】5211这个工号ARM后台3.2号上午10点重新操作了入职，下午5点多注册了员工通道，但是小程序后台在职状态展示的是离职，导致员工进入不了员工通道，一直提示员工已离职">【广东佛山优比熊】5211这个工号ARM后台3.2号上午10点重新操作了入职，下</td><td>小程序-商城</td><td></td><td><p><span style="color:rgb(48,57,74);font-size:13px</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38408.html" target="_blank">38408</a></td><td title="【眉山奈特天使】订单号：26030219150000023839  是整单退货但是有报错： 商品使用了微信单品营销，不支持部分退款">【眉山奈特天使】订单号：26030219150000023839  是整单退货但</td><td>小程序-商城</td><td>3.62</td><td><p><span>3.62版本</span><span style="color:rgb(0,0,0</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38307.html" target="_blank">38307</a></td><td title="【四川南充孕婴新天地】营促 /营销工具 /分享领红包活动，扫码不能支付">【四川南充孕婴新天地】营促 /营销工具 /分享领红包活动，扫码不能支付</td><td>小程序-商城</td><td>3.69</td><td><p>1、3.69版本需求6671开发数组未判空引入扫码不能支付的问题</p><p>2、赠品后台写死</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37608.html" target="_blank">37608</a></td><td title="【巴中昂橙】小程序商品：【咨询客服更优惠】皇家美素佳儿较大婴儿配方奶粉2段（6-12月龄）800g    页面显示的送货上门的库存是2144，门店自提的订单是13个。我选择14个库存，选择送货上门，显示：请注意，部分商品缺货，无法配送。麻烦核实">【巴中昂橙】小程序商品：【咨询客服更优惠】皇家美素佳儿较大婴儿配方奶粉2段（6-</td><td>小程序-商城</td><td>3.69</td><td><p><span>问题原因：做代客下单/一口价促销需求的时候引发的，判断不可购买的时候有误</spa</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37494.html" target="_blank">37494</a></td><td title="【华婴阳光】26011610000000042520在小程序后台操作退款提示【订单全部退时，需退回满团赠品，请勾选满团赠品】，实际界面上满团赠品勾选按钮是置灰状态无法勾选。">【华婴阳光】26011610000000042520在小程序后台操作退款提示【订</td><td>小程序-商城</td><td></td><td></td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37294.html" target="_blank">37294</a></td><td title="【常州婴之坊】盘点扫码添加商品时不能连扫，扫完一个商品需要手工点击到条码输入框才能再次扫下一个商品">【常州婴之坊】盘点扫码添加商品时不能连扫，扫完一个商品需要手工点击到条码输入框才</td><td>PDA</td><td></td><td></td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37229.html" target="_blank">37229</a></td><td title="【襄阳童泰】返仓单扫码添加商品时不能连扫，扫完一个商品需要手工点击到条码输入框才能再次扫下一个商品">【襄阳童泰】返仓单扫码添加商品时不能连扫，扫完一个商品需要手工点击到条码输入框才</td><td>PDA</td><td></td><td></td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38688.html" target="_blank">38688</a></td><td title="【内丘爱尚婴】已经注册过的会员，能够通过扫客员通的会员注册码再次注册，提示会员注册成功。实际会员信息没有发生更新。（输入手机号时会提示会员已经存在）">【内丘爱尚婴】已经注册过的会员，能够通过扫客员通的会员注册码再次注册，提示会员注</td><td>客员通APP</td><td>8.33</td><td><p>8.33版本6461需求开发引入</p><p>8.37版本解决：重复调用注册接口，合生元和伊利</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38455.html" target="_blank">38455</a></td><td title="【迁安爸妈和我】0001李新工号ERP后台有一条待我审批的其它入库审批流程单，但是客员通没有显示待审批单据。">【迁安爸妈和我】0001李新工号ERP后台有一条待我审批的其它入库审批流程单，但</td><td>客员通APP</td><td>34.10</td><td><p><span>问题原因：8.34.10版本123baby做了竟价审批需求，APP对接了审批，这个</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38328.html" target="_blank">38328</a></td><td title="【亲子园】ERP配置了很多会员标签，在客员通APP上给会员打标签时，看不到ERP设置的标签">【亲子园】ERP配置了很多会员标签，在客员通APP上给会员打标签时，看不到ERP</td><td>客员通APP</td><td>8.35</td><td><p><span style="color:rgb(48,57,74);font-size:13px</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38156.html" target="_blank">38156</a></td><td title="【邢台小儿郎】门店员工使用客员通app新建单据提示【请联系管理员，升级ERP系统再 操作溯源单据，或回退APP到 v6.3.0版本】">【邢台小儿郎】门店员工使用客员通app新建单据提示【请联系管理员，升级ERP系统</td><td>客员通APP</td><td>8.35</td><td><p>8.35版本开发6643需求引入，客员通未对ERP版本进行兼容，导致客员通升级后溯源功能无法正</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37350.html" target="_blank">37350</a></td><td title="【南京爱上城】工号【100302】客员通个人提成——商品销售提成——单品提成下的提货导购提成和单品提成查询——寄存提货明细页签不一致，麻烦核实，">【南京爱上城】工号【100302】客员通个人提成——商品销售提成——单品提成下的</td><td>客员通APP</td><td></td><td></td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-35899.html" target="_blank">35899</a></td><td title="【优比熊】11月份销售概况门店排名的销售额与折扣明细查询的金额不一致，例如【211100】盐步骏颖店，商品折扣明细是237390.9399999985，但是客员通是241090.65，另外商品折扣明细的其他合计金额字段都是保留两位小数，含购券费分摊字段没有保留两位小数">【优比熊】11月份销售概况门店排名的销售额与折扣明细查询的金额不一致，例如【21</td><td>客员通APP</td><td></td><td><p><span style="color:rgb(48,57,74);font-size:13px</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39286.html" target="_blank">39286</a></td><td title="【伊利】【123baby】SCRM 伊利活动出现了重复标签，且标签对应的会员数据不正确">【伊利】【123baby】SCRM 伊利活动出现了重复标签，且标签对应的会员数据</td><td>SCRM</td><td>8.37</td><td><p><span>8.37版本6906需求开发引入，升级前以补丁形式执行了需求脚本，升级又执行了一次</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39063.html" target="_blank">39063</a></td><td title="【江西爱婴宝】商品标签如果设置了在会员画像中不展示，在客群的会员标签规则因子也不会展示该标签">【江西爱婴宝】商品标签如果设置了在会员画像中不展示，在客群的会员标签规则因子也不</td><td>SCRM</td><td>1.50</td><td><p><span>26年1月1.50版本6712 【河北王子羊】SCRM+客员通+企微侧边栏：标签支</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39259.html" target="_blank">39259</a></td><td title="【美素】【妈仔谷】大部分美素同步失败的订单重试，提示操作成功，但是提交时间和响应时间没有变，美素反馈没有收到请求">【美素】【妈仔谷】大部分美素同步失败的订单重试，提示操作成功，但是提交时间和响应</td><td>SRM品牌商</td><td>7.52</td><td><p><span>7.52版本4847需求开发引入，8.38版本解决：</span><span st</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38247.html" target="_blank">38247</a></td><td title="【合生元】【【需求6678】SRM “库存数据上报日志”菜单点击后，一分钟内未查询到数据，最终提示“网络请求错误”。此菜单计划提供给品牌方使用，库存数据量大，性能需要提升。">【合生元】【【需求6678】SRM “库存数据上报日志”菜单点击后，一分钟内未查</td><td>SRM品牌商</td><td>8.35</td><td><p><span style="color:rgb(48,57,74);font-size:13px</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38244.html" target="_blank">38244</a></td><td title="【合生元】【机关】【需求6678】SRM “销售数据上报日志”菜单是计划开放给品牌方使用，当前3万多数据，加载需要9秒多。以后数据量会更大，需要提升性能">【合生元】【机关】【需求6678】SRM “销售数据上报日志”菜单是计划开放给品</td><td>SRM品牌商</td><td>8.35</td><td><p><span style="color:rgb(48,57,74);font-size:13px</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38722.html" target="_blank">38722</a></td><td title="【智信云枢-PRM】相同查询条件，商品销售汇总和门店商品销售汇总，展示的销售门店不一致。">【智信云枢-PRM】相同查询条件，商品销售汇总和门店商品销售汇总，展示的销售门店</td><td>PRM加盟商</td><td>9.15</td><td><p>9.15版本6781需求引入，<span style="color:rgb(48,57,74)</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38528.html" target="_blank">38528</a></td><td title="【智信云枢-PRM】订货管理商品明细批量导入提示:批发仓库ID未用，未能查询到商品库存信息">【智信云枢-PRM】订货管理商品明细批量导入提示:批发仓库ID未用，未能查询到商</td><td>PRM加盟商</td><td>9.16</td><td><p><span>25年12月版本6569需求开发引入，</span><span style="co</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38523.html" target="_blank">38523</a></td><td title="【智信云枢-PRM】账号：3511在账号管理配置的权限是公司数据（福建公司），但是在销售流水查询报表筛选700福建公司查询出来的数据展示了非福建合伙人数据">【智信云枢-PRM】账号：3511在账号管理配置的权限是公司数据（福建公司），但</td><td>PRM加盟商</td><td>9.15</td><td><p><span>26年1月9.15版本6781需求开发引入，用户的数据权限配置为公司数据时会导致数</td></tr>
+</tbody></table></div></div>
+<div class="intro-section"><h4>修改bug引入（35 条）</h4>
+<div class="patch-table-wrap"><table class="patch-table">
+<thead><tr><th>编号</th><th>标题</th><th>产品</th><th>引入版本</th><th>根因说明</th></tr></thead>
+<tbody>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39528.html" target="_blank">39528</a></td><td title="【123baby】输入条码和关键字搜索促销单，系统会提示搜索结果过多，避免页面卡顿，需要手动输入开始时间和截止时间，希望这里不要手动选择时间，默认个时间上去，比如三个月">【123baby】输入条码和关键字搜索促销单，系统会提示搜索结果过多，避免页面卡</td><td>ERP</td><td>8.36</td><td><p>8.36版本38413bug修改引入</p></td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39258.html" target="_blank">39258</a></td><td title="【浙江义乌爱因宝】打印商品标签导入的方式带不出超级会员价格  一个个手动输入正常">【浙江义乌爱因宝】打印商品标签导入的方式带不出超级会员价格  一个个手动输入正常</td><td>ERP</td><td>7.47</td><td><p>7.47版本20940bug修改引入，导入获取超级会员价的商品ID是取的goodsId，导入传</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39220.html" target="_blank">39220</a></td><td title="【江西爱婴宝】服务套盒中的商品6973846780877新进销存流水中3月14日有一条销售出库记录数量显示1，同一时间还有一条退货数量显示1的记录">【江西爱婴宝】服务套盒中的商品6973846780877新进销存流水中3月14日</td><td>ERP</td><td>8.25</td><td><p><span>问题原因：8.25版本31087bug修改引入，</span><span>POS购</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39170.html" target="_blank">39170</a></td><td title="【喜阳阳】-做门店调出单据时候，调出一部分，提交后复制新增，门店库存数据没变，但是到门店库存查询，库存数是第一次提交调拨单据之后的库存，具体见视频，测试环境已复现">【喜阳阳】-做门店调出单据时候，调出一部分，提交后复制新增，门店库存数据没变，但</td><td>ERP</td><td>8.34</td><td><p><span> 8.34版本</span><span>36401bug修改引入，</span><</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39060.html" target="_blank">39060</a></td><td title="【承德领婴宝贝】升级8.36版本后打印商品标签界面，选择扫码累加模式，输入条码之后，还要手动选择商品，客户之前是8.30版本，是不用手动确定的">【承德领婴宝贝】升级8.36版本后打印商品标签界面，选择扫码累加模式，输入条码之</td><td>ERP</td><td>8.36</td><td><p><span>8.36版本38348bug修改引入，前端识别查询结果总条数，用的count字段判</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38997.html" target="_blank">38997</a></td><td title="【奈特天使】升级到36版本后，P20240227000101150836点击复制然后设置互斥，选不到P20240227000101150836促销">【奈特天使】升级到36版本后，P20240227000101150836点击复制</td><td>ERP</td><td>8.36</td><td><p>8.36版本<span style="color:rgb(48,57,74);font-siz</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38801.html" target="_blank">38801</a></td><td title="【山西吕梁谷子】返厂查询，按单据汇总查询，点击对应的单号无法进行跳转提示没有配置跳转链接">【山西吕梁谷子】返厂查询，按单据汇总查询，点击对应的单号无法进行跳转提示没有配置</td><td>ERP</td><td></td><td><p>与38290问题重复，<span style="color:rgb(48,57,74);fon</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38657.html" target="_blank">38657</a></td><td title="【南充孕婴新天地】昨晚升级之后，今天的配送单单据不能发货了。参数设置的是校验可用库存，比如配送单号：ID202603162100105506。 条形码：	 9421037861920。实际库存是2个，发货数量也是2个。预占库存2个也是这单占用的，但是不能发货。">【南充孕婴新天地】昨晚升级之后，今天的配送单单据不能发货了。参数设置的是校验可用</td><td>ERP</td><td>8.36</td><td><p><span style="color:rgb(48,57,74);font-size:13px</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38561.html" target="_blank">38561</a></td><td title="【洛阳伊川爱贝孕婴】价格调整，选择门店例外价格，输入任意一个条码，输入会员价1，再添加一行时，会自动带入进价、配送价、零售价、会员价1为0，麻烦核实">【洛阳伊川爱贝孕婴】价格调整，选择门店例外价格，输入任意一个条码，输入会员价1，</td><td>ERP</td><td>8.36</td><td><p>8.36版本修改38394bug引入：之前为了处理导出的金额能合计&nbsp;&nbsp;&n</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38538.html" target="_blank">38538</a></td><td title="【涞水爱尚婴】新增商品资料报错，异常信息 : ### Error updating database. Cause: java.sql.SQLIntegrityConstraintViolationException: Column &#039;pur（昨晚升了36版本）">【涞水爱尚婴】新增商品资料报错，异常信息 : ### Error updatin</td><td>ERP</td><td>8.36</td><td><p><span>8.36版本问题,</span><span style="color:rgb(48</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38533.html" target="_blank">38533</a></td><td title="【广东乖宝儿】升级8.36版本后，新增促销时促销价这里默认金额为0，当客户需要按0元来设置促销价时，这个默认促销价0元不能直接提交，提交报错：第1行优惠折扣或促销价存在没有填写的数据!">【广东乖宝儿】升级8.36版本后，新增促销时促销价这里默认金额为0，当客户需要按</td><td>ERP</td><td>8.36</td><td><p><span style="color:rgb(48,57,74);font-size:13px</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38527.html" target="_blank">38527</a></td><td title="【妈仔谷】工号：88026 配送管理 只要点击查询，这个页面就会一直转，查看不到数据。">【妈仔谷】工号：88026 配送管理 只要点击查询，这个页面就会一直转，查看不到</td><td>ERP</td><td>8.35</td><td><p>8.35版本37554修改引入</p><p><span>8.37版本解决，妈仔谷已补丁还原37</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38491.html" target="_blank">38491</a></td><td title="【童智汇】供应商结算单B202602271066141部分结算过，还存在未结算金额。目前做供应商结算的时候找不到这一笔单据继续结算">【童智汇】供应商结算单B202602271066141部分结算过，还存在未结算金</td><td>ERP</td><td>8.34</td><td><p><span>8.34版本36693bug修改引入，</span><span style="co</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38461.html" target="_blank">38461</a></td><td title="【佛山亲子坊】返仓查询汇总显示返仓毛利是正数，下方汇总出来的是负数，麻烦查一下是什么原因">【佛山亲子坊】返仓查询汇总显示返仓毛利是正数，下方汇总出来的是负数，麻烦查一下是</td><td>ERP</td><td>8.14</td><td><p><span style="color:rgb(48,57,74);font-size:13px</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38434.html" target="_blank">38434</a></td><td title="【郴州多乐宝贝】客户反馈昨晚升级到v8.35后，客员通没有切换登录设备，但是登录时提示“登录设备变更,请先联系管理员解 绑，”系统参数ARM用户登录客员通时安全校验规则‘’系统参数是打开的，但工号6100的员工反馈没有切换登录设备，昨天还用现在这个手机登录了客员通">【郴州多乐宝贝】客户反馈昨晚升级到v8.35后，客员通没有切换登录设备，但是登录</td><td>ERP</td><td>8.35</td><td><p>8.35版本37669bug修改引入，割接时未区分已删除的参数</p></td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38403.html" target="_blank">38403</a></td><td title="【贵阳美联和】客户反馈上周升级之后，配送管理操作很慢，我这边做了测试用客户提供的工号来查，721条配送单据查了15秒才查询出来，但是同样的操作用管理员的工号2-3秒就查出来了，且管理员查出来是4k多条数据，查询与取消的操作同样很慢才能加载完">【贵阳美联和】客户反馈上周升级之后，配送管理操作很慢，我这边做了测试用客户提供的</td><td>ERP</td><td></td><td><p><span style="color:rgb(48,57,74);font-size:13px</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38290.html" target="_blank">38290</a></td><td title="【恩施爱尚新天地】-8.34版本，返厂查询，明细查询页签，点击蓝色单号可以跳转，单据汇总页签点击蓝色单号不能跳转，已测试8.30，31，32版本可以跳转">【恩施爱尚新天地】-8.34版本，返厂查询，明细查询页签，点击蓝色单号可以跳转，</td><td>ERP</td><td>8.33</td><td><p><span>8.33版本35622bug修改引入，</span><span style="co</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38277.html" target="_blank">38277</a></td><td title="【广东佛山优比熊】3742这个门店的员工，按单收货可以操作非门本店之外的其它门店的单据进行收货，检查了用户的数据权限：所在部门数据设置的是所在部门数据，往来数据权限设置的是所在公司，员工是通过ARM后台操作的收货，但是现在用该员工的工号登录后台查看是只能查看本门店的单据">【广东佛山优比熊】3742这个门店的员工，按单收货可以操作非门本店之外的其它门店</td><td>ERP</td><td>8.36</td><td><p><span>8.22修改bug27628引入</span></p><p>8.36版本解决：弱网</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38128.html" target="_blank">38128</a></td><td title="【123baby】【A+】工号10292创建了我的门店分组，但是在待我审批》我的分组中没有内容，使用superarm账号没有这个问题，测试环境也没有复现，影响客户供应链审批单据了，麻烦优先处理下">【123baby】【A+】工号10292创建了我的门店分组，但是在待我审批》我的</td><td>ERP</td><td></td><td><p>37234bug修改引入</p><p>问题原因：我的门店分组从不受权限控制修改为受权限控制，树</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38125.html" target="_blank">38125</a></td><td title="【123baby】【A+】升级8.35后，工号：10292在促销管理页面选择促销后点击批量复制按钮报错">【123baby】【A+】升级8.35后，工号：10292在促销管理页面选择促销</td><td>ERP</td><td></td><td><p>37234bug修改引入</p><p>问题原因：我的门店分组从不受权限控制修改为受权限控制，树</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37978.html" target="_blank">37978</a></td><td title="【乐贝家】券包：新店权益卡  设置券销售额比例 设置好之后点击确认没有反应，麻烦核实">【乐贝家】券包：新店权益卡  设置券销售额比例 设置好之后点击确认没有反应，麻烦</td><td>ERP</td><td>8.34</td><td><p><span style="color:rgb(48,57,74);font-size:13px</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37668.html" target="_blank">37668</a></td><td title="【涿州爱婴房】门店1008，机器号：100801，商品：2026011401。前后端库存对不上">【涿州爱婴房】门店1008，机器号：100801，商品：2026011401。前</td><td>ERP</td><td></td><td><p><span>与37522问题重复，已补丁修复</span></p></td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37659.html" target="_blank">37659</a></td><td title="【杭州心聚心】通用门店设置的参数标签打印限制状态全部都去掉，在打印商品标签中搜商品报错提示空指针">【杭州心聚心】通用门店设置的参数标签打印限制状态全部都去掉，在打印商品标签中搜商</td><td>ERP</td><td></td><td><p><span>问题原因：7.12.10bug修改引入，sys_office_config表没有配</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37522.html" target="_blank">37522</a></td><td title="【邢台小儿郎】6945709961952  pos上商品库存和后台不一致">【邢台小儿郎】6945709961952  pos上商品库存和后台不一致</td><td>ERP</td><td>8.29</td><td><p>问题原因：<span style="color:rgb(48,57,74);font-size</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37401.html" target="_blank">37401</a></td><td title="【格瑞丽家】【8050测试环境】测试环境工号：1127 没有删除删除其他员工的导出任务的权限，然后在我的导出里面，操作区域的删除可以删除自己的，批量删除不能删除自己的。麻烦核实">【格瑞丽家】【8050测试环境】测试环境工号：1127 没有删除删除其他员工的导</td><td>ERP</td><td>8.34</td><td><p><span>问题原因：8.34版本修改36798bug引入，判断逻辑错误导致自己无法批量删除自</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39651.html" target="_blank">39651</a></td><td title="【海安爱婴房】输入商品后，商品格和标题格对不齐，展示的标题行有13格，商品行只有12格，麻烦核实">【海安爱婴房】输入商品后，商品格和标题格对不齐，展示的标题行有13格，商品行只有</td><td>POS</td><td>8.37</td><td><p><span style="color:rgb(51,54,57);font-size:12px</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39197.html" target="_blank">39197</a></td><td title="【123baby】很多门店出现前台POS提示有未提交的缴款单，从日志里面提示的未提交的缴款单实际是已经提交了的">【123baby】很多门店出现前台POS提示有未提交的缴款单，从日志里面提示的未</td><td>POS</td><td>8.37</td><td><p>8.37版本<span style="color:rgb(48,57,74);font-siz</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38347.html" target="_blank">38347</a></td><td title="【湛江乖宝儿】升级之后，pos寄存提货看不见“搜索”按钮，要往右拉才可以看见，但是之前不用右拉也可以展示出来的">【湛江乖宝儿】升级之后，pos寄存提货看不见“搜索”按钮，要往右拉才可以看见，但</td><td>POS</td><td>8.35</td><td><p>8.35版本37497bug修改引入，8.36版本优化</p></td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37548.html" target="_blank">37548</a></td><td title="【海口海葆】pos局点注册后登录提示“当前网络异常，可正常收银，但部分功能受限”">【海口海葆】pos局点注册后登录提示“当前网络异常，可正常收银，但部分功能受限”</td><td>POS</td><td>8.28</td><td><p><span>问题原因：8.28版本修改32514问题引入，启动POS时，使用了缓存的base_</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37995.html" target="_blank">37995</a></td><td title="【乐贝家】【营山东华国际店】活动-新店开业福利礼包  下单支付报错：业务信息不存在，请核实">【乐贝家】【营山东华国际店】活动-新店开业福利礼包  下单支付报错：业务信息不存</td><td>小程序-商城</td><td></td><td><p>问题原因：37861bug修改引入，开启单品营销后，如果存在多个商品，且有的商品id不存在时，</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37371.html" target="_blank">37371</a></td><td title="【朔州谷子】订单列表，不展示订单归属门店。点开订单详情是有业绩归属门店的（之前是展示的）">【朔州谷子】订单列表，不展示订单归属门店。点开订单详情是有业绩归属门店的（之前是</td><td>小程序-商城</td><td></td><td></td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38537.html" target="_blank">38537</a></td><td title="【阿贝阿妈】升级到8.36版本后，客员通查看业绩-日商品销售报错，例如工号6090">【阿贝阿妈】升级到8.36版本后，客员通查看业绩-日商品销售报错，例如工号609</td><td>客员通APP</td><td>8.36</td><td><p><span style="color:rgb(48,57,74);font-size:13px</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37304.html" target="_blank">37304</a></td><td title="【南昌麦芽宝贝】 工号：100109  活动：优惠券到期提醒 没有过期，但是再客员通里面显示已过期。麻烦核实">【南昌麦芽宝贝】 工号：100109  活动：优惠券到期提醒 没有过期，但是再客</td><td>客员通APP</td><td></td><td></td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37651.html" target="_blank">37651</a></td><td title="【三宝孕婴】活动30003900000309已失效，无待跟踪任务，转化期已过，在app回访任务列表中还是进行中的状态，需要剔除">【三宝孕婴】活动30003900000309已失效，无待跟踪任务，转化期已过，在</td><td>SCRM</td><td></td><td><p><span>问题原因：BUG37404改为了</span><span>【已结束】要同时满足以下</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39417.html" target="_blank">39417</a></td><td title="【江苏童爸】客户PRM模块授权商品，在PRM总部系统中体现的数据不一致。">【江苏童爸】客户PRM模块授权商品，在PRM总部系统中体现的数据不一致。</td><td>PRM加盟商</td><td>2.12</td><td><p><span>2.12版本37436bug修改引入，PRM总部系统从ERP抽取加盟商销售数据时，</td></tr>
+</tbody></table></div></div>
+<div class="intro-section"><h4>51,37（1 条）</h4>
+<div class="patch-table-wrap"><table class="patch-table">
+<thead><tr><th>编号</th><th>标题</th><th>产品</th><th>引入版本</th><th>根因说明</th></tr></thead>
+<tbody>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39206.html" target="_blank">39206</a></td><td title="【义乌爱因宝】服务卡支付查询，同一个查询条件，不同的页签，查询出来显示的金额不一样，详情看截图">【义乌爱因宝】服务卡支付查询，同一个查询条件，不同的页签，查询出来显示的金额不一</td><td>ERP</td><td>8.35</td><td><p><span style="color:rgb(48,57,74);font-size:13px</td></tr>
+</tbody></table></div></div>
+<div class="intro-section"><h4>68,37（2 条）</h4>
+<div class="patch-table-wrap"><table class="patch-table">
+<thead><tr><th>编号</th><th>标题</th><th>产品</th><th>引入版本</th><th>根因说明</th></tr></thead>
+<tbody>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39140.html" target="_blank">39140</a></td><td title="【山西晋中童灿母婴】后台做了订货单IO202604022700100135，填写了生产批号信息，保存为草稿状态，采购员在客员通直接入库，再在后台查这笔单，生产批号信息没有了。">【山西晋中童灿母婴】后台做了订货单IO202604022700100135，填写</td><td>ERP</td><td>7.40</td><td><p>7.40版本1074需求开发引入，在ARM填写了生产批次信息，再在APP操作直接入库，没有将A</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38838.html" target="_blank">38838</a></td><td title="【中山宝贝屋】小程序后台设置了快递不校验库存，但是在手机选择快递到家显示没有库存">【中山宝贝屋】小程序后台设置了快递不校验库存，但是在手机选择快递到家显示没有库存</td><td>小程序-商城</td><td>3.24</td><td><p><span>3.24版本3247需求引入，</span><span style="color:</td></tr>
+</tbody></table></div></div>
+<div class="intro-section"><h4>67,37（1 条）</h4>
+<div class="patch-table-wrap"><table class="patch-table">
+<thead><tr><th>编号</th><th>标题</th><th>产品</th><th>引入版本</th><th>根因说明</th></tr></thead>
+<tbody>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38767.html" target="_blank">38767</a></td><td title="【大小美】单品库存成本调整：排量导入，报错：异常信息:部门商品库存信息不存在。这个提示需要明确是哪个部门商品库存不存在，要不然表格都不知道修改哪里。">【大小美】单品库存成本调整：排量导入，报错：异常信息:部门商品库存信息不存在。这</td><td>ERP</td><td>8.37</td><td><p><span>8.</span><span>35版本6734需求开发引入，</span><spa</td></tr>
+</tbody></table></div></div>
+<div class="intro-section"><h4>67,36（1 条）</h4>
+<div class="patch-table-wrap"><table class="patch-table">
+<thead><tr><th>编号</th><th>标题</th><th>产品</th><th>引入版本</th><th>根因说明</th></tr></thead>
+<tbody>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38470.html" target="_blank">38470</a></td><td title="【格瑞丽家】1.1修改了会员等级升级规则，并且重置了全部会员等级至L1。会员16697053515在1.1后有消费，不满足钻石卡的升级条件，但是目前是钻石卡等级，等级没有手动编辑过 。其他会员也有这种情况，请统一排查">【格瑞丽家】1.1修改了会员等级升级规则，并且重置了全部会员等级至L1。会员16</td><td>ERP</td><td>8.30</td><td><p><span>8.30版本33533bug修改引入</span></p><p>8.38版本解决：</td></tr>
+</tbody></table></div></div>
+<div class="intro-section"><h4>24,36（1 条）</h4>
+<div class="patch-table-wrap"><table class="patch-table">
+<thead><tr><th>编号</th><th>标题</th><th>产品</th><th>引入版本</th><th>根因说明</th></tr></thead>
+<tbody>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-37610.html" target="_blank">37610</a></td><td title="【江西卓源供应链】批发销售选择对接PRM的批发客户JS报错，不展示批发客户收货部门字段">【江西卓源供应链】批发销售选择对接PRM的批发客户JS报错，不展示批发客户收货部</td><td>ERP</td><td></td><td><p><span>问题原因：</span></p><p><span>1、33639问题修改引入，启用</td></tr>
+</tbody></table></div></div>
+<div class="intro-section"><h4>37,67（1 条）</h4>
+<div class="patch-table-wrap"><table class="patch-table">
+<thead><tr><th>编号</th><th>标题</th><th>产品</th><th>引入版本</th><th>根因说明</th></tr></thead>
+<tbody>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39169.html" target="_blank">39169</a></td><td title="【智信云枢一直营环境】销售单号：S26020880490314020055   通过授权的方式去操作这个退货提示：订单赠送的券已被使用:礼品卡18张价值为:234元。线上问题已处理（线上问题处理的方式：给收银员退款的权限，然后进行的退款）">【智信云枢一直营环境】销售单号：S26020880490314020055   </td><td>POS</td><td>9.16</td><td><p>9.16版本6770需求开发引入，销售赠送的礼品券已经被使用，不允许退货，收银员无权限需要授权</td></tr>
+</tbody></table></div></div>
+<div class="intro-section"><h4>37,51（2 条）</h4>
+<div class="patch-table-wrap"><table class="patch-table">
+<thead><tr><th>编号</th><th>标题</th><th>产品</th><th>引入版本</th><th>根因说明</th></tr></thead>
+<tbody>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39292.html" target="_blank">39292</a></td><td title="【皇家贝贝】线上环境已升级到37版本，但是小程序后台没有员工变更日志功能">【皇家贝贝】线上环境已升级到37版本，但是小程序后台没有员工变更日志功能</td><td>小程序-商城</td><td>3.71</td><td><p>3.71版本6873需求开发引入，版本发布脚本漏提交，已补充</p></td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39248.html" target="_blank">39248</a></td><td title="【韶关孕婴世家】工号：0701输入会员手机号15219964373查询会员提示：The used SELECT statements have a different number of columns">【韶关孕婴世家】工号：0701输入会员手机号15219964373查询会员提示：</td><td>客员通APP</td><td>1.52</td><td><p>1.52版本6888需求开发引入，只勾选了会员查询的组织会员和个人会员权限时，查询会报错</p</td></tr>
+</tbody></table></div></div>
+<div class="intro-section"><h4>24,37（1 条）</h4>
+<div class="patch-table-wrap"><table class="patch-table">
+<thead><tr><th>编号</th><th>标题</th><th>产品</th><th>引入版本</th><th>根因说明</th></tr></thead>
+<tbody>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-38332.html" target="_blank">38332</a></td><td title="【中山宝贝屋】合生元溯源业务需要在明天开启，但是中箱码扫码2个参数缺失">【中山宝贝屋】合生元溯源业务需要在明天开启，但是中箱码扫码2个参数缺失</td><td>SRM品牌商</td><td>8.35</td><td><p><span>8.35版本6644需求开发引入，高级功能开发新功能点后未默认开启</span><</td></tr>
+</tbody></table></div></div>
+<div class="intro-section" style="margin-top:20px;padding:16px;background:#fff8e1;border-radius:8px;">
+<h4>💡 改进措施建议</h4>
+<ul style="margin-top:8px;padding-left:20px;line-height:2;">
+<li>加强代码审查，重点关注修改历史和关联需求</li>
+<li>引入问题需在Bug中填写 <code>cause</code> 字段，便于追踪根因</li>
+<li>对高频引入模块增加单元测试覆盖</li>
+</ul>
+</div>
+</div></div>
+<div class="section-card">
+<div class="section-header purple">
+<div class="section-icon">📋</div>
+<div class="section-info"><div class="section-title">未解决问题看板</div><div class="section-desc">按维度查看（共 0 条）</div></div>
+</div>
+<div class="section-body">
+<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+<button class="tab-btn" style="padding:8px 16px;border:none;border-radius:6px;cursor:pointer;background:#4361ee;color:#fff;" onclick="showPendingTab('product', this)">产品</button>
+<button class="tab-btn" style="padding:8px 16px;border:none;border-radius:6px;cursor:pointer;background:#f0f0f0;color:#333;" onclick="showPendingTab('dept', this)">部门</button>
+<button class="tab-btn" style="padding:8px 16px;border:none;border-radius:6px;cursor:pointer;background:#f0f0f0;color:#333;" onclick="showPendingTab('type', this)">类型</button>
+<button class="tab-btn" style="padding:8px 16px;border:none;border-radius:6px;cursor:pointer;background:#f0f0f0;color:#333;" onclick="showPendingTab('severity', this)">严重程度</button>
+<button class="tab-btn" style="padding:8px 16px;border:none;border-radius:6px;cursor:pointer;background:#f0f0f0;color:#333;" onclick="showPendingTab('status', this)">状态</button>
+<button class="tab-btn" style="padding:8px 16px;border:none;border-radius:6px;cursor:pointer;background:#f0f0f0;color:#333;" onclick="showPendingTab('handler', this)">处理人</button>
+</div>
+<div id="pending-tab-product" style="display:block;">
+</div>
+<div id="pending-tab-dept" style="display:none;">
+</div>
+<div id="pending-tab-type" style="display:none;">
+</div>
+<div id="pending-tab-severity" style="display:none;">
+</div>
+<div id="pending-tab-status" style="display:none;">
+</div>
+<div id="pending-tab-handler" style="display:none;">
+</div>
+</div></div>
+<div class="section-card">
+<div class="section-header blue">
+<div class="section-icon">🆕</div>
+<div class="section-info"><div class="section-title">本周新增问题列表（0 条）</div><div class="section-desc">点击展开查看详情</div></div>
+</div>
+<div class="section-body">
+</div></div>
+<div style="text-align:center;color:#999;font-size:12px;margin-top:20px;">报告生成时间：2026-05-05 13:30:07</div>
+</div>
+
+    <script>
+    function toggleCollapse(el) {
+        el.classList.toggle('open');
+    }
+    function showPendingTab(dim, btn) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.style.background='#f0f0f0', b.style.color='#333');
+        btn.style.background='#4361ee';
+        btn.style.color='#fff';
+        document.querySelectorAll('[id^="pending-tab-"]').forEach(d => d.style.display='none');
+        document.getElementById('pending-tab-'+dim).style.display='block';
+    }
+    </script>
+    
+</body></html>
