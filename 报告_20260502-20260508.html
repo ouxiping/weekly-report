@@ -525,7 +525,7 @@
         .patch-table { table-layout: auto; width: 100%; background: #fff; border-collapse: collapse; }
         .patch-table th,
         .patch-table td { padding: 6px 8px; vertical-align: middle; border: 1px solid #e9ecef; }
-        .patch-table th { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: 600; white-space: nowrap; text-align: center; }
+        .patch-table th { background: #f8f9fa; font-weight: 600; white-space: nowrap; text-align: center; }
         .patch-table td { text-align: left; }
         .patch-table td.center { text-align: center; }
         .patch-table td.nowrap { white-space: nowrap; }
@@ -591,11 +591,11 @@
             <div class="merged-conclusions">
                 <div class="merged-concl concl-blue">
                     <div class="concl-label">📈 整体情况</div>
-                    <div class="concl-text">新增<span class="c-highlight">36</span>（含<span class="c-highlight">2个严重问题</span>），处理率<span class="c-pos">69%</span>，平均解决<span class="c-pos">80.7h</span>（严重<span class="c-pos">72.0h</span>）</div>
+                    <div class="concl-text">新增<span class="c-highlight">36</span>（含<span class="c-highlight">2个严重问题</span>），处理率<span class="c-pos">69%</span>，平均解决<span class="c-pos">10.6h</span>（严重<span class="c-pos">0.0h</span>）</div>
                 </div>
                 <div class="merged-concl concl-orange ">
                     <div class="concl-label">⚠️ 风险聚焦</div>
-                    <div class="concl-text">引入<span class="c-warn">6个</span>问题，需求引入占67%，8.37版本为重灾区（1个）</div>
+                    <div class="concl-text">引入<span class="c-warn">6个</span>问题，需求引入占67%，无明确重灾区</div>
                 </div>
                 <div class="merged-concl concl-green">
                     <div class="concl-label">📉 积压清理</div>
@@ -768,8 +768,8 @@
                                 <table class="intro-detail-table">
                                     <thead><tr><th>编号</th><th>问题描述</th><th>产品</th><th>引入版本</th><th>严重程度</th><th>处理状态</th><th>关联问题</th><th>根因分析</th></tr></thead>
                                     <tbody>
-<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39917.html" target="_blank">39917</a></td><td class="desc-cell" title="【喜阳阳】客户升级到37版本后，自动要货生成的订货单据没有年月日。">【喜阳阳】客户升级到37版本后，自动要货生成的订货单据没有年...</td><td>ERP</td><td>8.37版本</td><td><span class="tag ">一般</span></td><td>已解决<td><span class="tag tag-bug">问题 38270</span><br><span style="color:#666;font-size:11px;">【南京爱上城】自动要货界面，3297条数据全选然后点击生成单据，一直没反应</span></td><td class="cause-cell">8.37版本38270修改引入，8.38版本解决</td></tr>
-<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39746.html" target="_blank">39746</a></td><td class="desc-cell" title="【棒棒糖】升级以后，部分退货输入数量，点击删除，数量自动变成1，无法删除，只能键盘修改数量或者鼠标全选中数量再删除">【棒棒糖】升级以后，部分退货输入数量，点击删除，数量自动变成...</td><td>POS</td><td>8.34版本</td><td><span class="tag ">一般</span></td><td>已解决<td><span class="tag tag-bug">问题 36621</span><br><span style="color:#666;font-size:11px;">【基线主干】商品销售数量输入1.5后变成115</span></td><td class="cause-cell">8.34版本36621bug修改引入，8.38版本解决</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39917.html" target="_blank">39917</a></td><td class="desc-cell" title="【喜阳阳】客户升级到37版本后，自动要货生成的订货单据没有年月日。">【喜阳阳】客户升级到37版本后，自动要货生成的订货单据没有年...</td><td>ERP</td><td>8.37版本</td><td><span class="tag ">一般</span></td><td>已解决</td><td><span class="tag tag-bug">问题 38270</span><br><span style="color:#666;font-size:11px;">【南京爱上城】自动要货界面，3297条数据全选然后点击生成单据，一直没反应</span></td><td class="cause-cell">8.37版本38270修改引入，8.38版本解决</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39746.html" target="_blank">39746</a></td><td class="desc-cell" title="【棒棒糖】升级以后，部分退货输入数量，点击删除，数量自动变成1，无法删除，只能键盘修改数量或者鼠标全选中数量再删除">【棒棒糖】升级以后，部分退货输入数量，点击删除，数量自动变成...</td><td>POS</td><td>8.34版本</td><td><span class="tag ">一般</span></td><td>已解决</td><td><span class="tag tag-bug">问题 36621</span><br><span style="color:#666;font-size:11px;">【基线主干】商品销售数量输入1.5后变成115</span></td><td class="cause-cell">8.34版本36621bug修改引入，8.38版本解决</td></tr>
                                     </tbody></table>
                             </div>
                         </div>
@@ -780,10 +780,10 @@
                                 <table class="intro-detail-table">
                                     <thead><tr><th>编号</th><th>问题描述</th><th>产品</th><th>引入版本</th><th>严重程度</th><th>处理状态</th><th>关联需求</th><th>根因分析</th></tr></thead>
                                     <tbody>
-<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39933.html" target="_blank">39933</a></td><td class="desc-cell" title="【昂橙】批发客户管理，导入模板显示未获取字典值，不能正常使用。">【昂橙】批发客户管理，导入模板显示未获取字典值，不能正常使用...</td><td>ERP</td><td>8.35版本</td><td><span class="tag ">一般</span></td><td>已解决<td><span class="tag tag-req">需求 6496</span><br><span style="color:#666;font-size:11px;">【123baby】【金蝶对接】批发客户增加结算归属组织、联行号、收款条件</span></td><td class="cause-cell">6496需求开发引入，下载模板时缺少字典报错8.35版本优化：字典不存在时模板可以正常下载，动态导出时如果字典不存在或字典项都被删除导致无法匹配时，不再抛出异常而是该列不再设置下拉项</td></tr>
-<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39902.html" target="_blank">39902</a></td><td class="desc-cell" title="【三宝】POS支付时提示品牌方校验接口返回，但是商品没有任何对接品牌方的商品，电脑重启又好了，怀疑是支付渠道未返回，请验证。">【三宝】POS支付时提示品牌方校验接口返回，但是商品没有任何...</td><td>POS</td><td>8.33版本</td><td><span class="tag ">一般</span></td><td>已解决<td><span class="tag tag-req">需求 6461</span><br><span style="color:#666;font-size:11px;">【合生元】POS参加品牌联合新客活动</span></td><td class="cause-cell">8.33版本6461需求开发引入，方法默认先建立远程链接，还没到校验品牌活动，所以直接报错了8.38版本解决：先判断是否有品牌促销活动，然后再建立远程链接</td></tr>
-<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39949.html" target="_blank">39949</a></td><td class="desc-cell" title="【伊利】【123连锁】仓库扫码数据从5.7开始没有收到校验结果，伊利定位反馈没有收到扫码数据">【伊利】【123连锁】仓库扫码数据从5.7开始没有收到校验结...</td><td>SRM品牌商</td><td>8.38版本</td><td><span class="tag ">一般</span></td><td>已解决<td><span class="tag tag-req">需求 6912</span><br><span style="color:#666;font-size:11px;">【伊利】美驰系统配送上报接口优化，增加数据签收校验结果回传接口及页面</span></td><td class="cause-cell">8.38版本6912需求修改引入，伊利租户的sys_tenant_erp_config存在多条数据，查询时未根据连锁id查询导致溯源物流码同步任务定时任务执行报错</td></tr>
-<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39935.html" target="_blank">39935</a></td><td class="desc-cell" title="【合生元】【亲子坊】仓库扫2个箱码，提示查询不到，仓库配送卡住">【合生元】【亲子坊】仓库扫2个箱码，提示查询不到，仓库配送卡...</td><td>SRM品牌商</td><td>2.12版本</td><td><span class="tag tag-high">严重</span></td><td>已解决<td><span class="tag tag-req">需求 6920</span><br><span style="color:#666;font-size:11px;">【合生元】进销存数据上报</span></td><td class="cause-cell">2.12版本6920需求开发引入，合生元物流码拉取使用的是csv文件，SRM解析CSV文件使用的是easyexcel，easyexcel本身依赖了commons-csv-1.8，由于commons-csv-1.8版本比较低，合生元溯源数据拉取与业务数据上报-门店出入库调整时引入了commons-csv-1.14.1的版本，easyexcel无法调用common-csv-1.14.1的api2.18版本解决：commons-csv-1.14.1版本降级为1.10.0</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39933.html" target="_blank">39933</a></td><td class="desc-cell" title="【昂橙】批发客户管理，导入模板显示未获取字典值，不能正常使用。">【昂橙】批发客户管理，导入模板显示未获取字典值，不能正常使用...</td><td>ERP</td><td>8.35版本</td><td><span class="tag ">一般</span></td><td>已解决</td><td><span class="tag tag-req">需求 6496</span><br><span style="color:#666;font-size:11px;">【123baby】【金蝶对接】批发客户增加结算归属组织、联行号、收款条件</span></td><td class="cause-cell">6496需求开发引入，下载模板时缺少字典报错8.35版本优化：字典不存在时模板可以正常下载，动态导出时如果字典不存在或字典项都被删除导致无法匹配时，不再抛出异常而是该列不再设置下拉项</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39902.html" target="_blank">39902</a></td><td class="desc-cell" title="【三宝】POS支付时提示品牌方校验接口返回，但是商品没有任何对接品牌方的商品，电脑重启又好了，怀疑是支付渠道未返回，请验证。">【三宝】POS支付时提示品牌方校验接口返回，但是商品没有任何...</td><td>POS</td><td>8.33版本</td><td><span class="tag ">一般</span></td><td>已解决</td><td><span class="tag tag-req">需求 6461</span><br><span style="color:#666;font-size:11px;">【合生元】POS参加品牌联合新客活动</span></td><td class="cause-cell">8.33版本6461需求开发引入，方法默认先建立远程链接，还没到校验品牌活动，所以直接报错了8.38版本解决：先判断是否有品牌促销活动，然后再建立远程链接</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39949.html" target="_blank">39949</a></td><td class="desc-cell" title="【伊利】【123连锁】仓库扫码数据从5.7开始没有收到校验结果，伊利定位反馈没有收到扫码数据">【伊利】【123连锁】仓库扫码数据从5.7开始没有收到校验结...</td><td>SRM品牌商</td><td>8.38版本</td><td><span class="tag ">一般</span></td><td>已解决</td><td><span class="tag tag-req">需求 6912</span><br><span style="color:#666;font-size:11px;">【伊利】美驰系统配送上报接口优化，增加数据签收校验结果回传接口及页面</span></td><td class="cause-cell">8.38版本6912需求修改引入，伊利租户的sys_tenant_erp_config存在多条数据，查询时未根据连锁id查询导致溯源物流码同步任务定时任务执行报错</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-39935.html" target="_blank">39935</a></td><td class="desc-cell" title="【合生元】【亲子坊】仓库扫2个箱码，提示查询不到，仓库配送卡住">【合生元】【亲子坊】仓库扫2个箱码，提示查询不到，仓库配送卡...</td><td>SRM品牌商</td><td>2.12版本</td><td><span class="tag tag-high">严重</span></td><td>已解决</td><td><span class="tag tag-req">需求 6920</span><br><span style="color:#666;font-size:11px;">【合生元】进销存数据上报</span></td><td class="cause-cell">2.12版本6920需求开发引入，合生元物流码拉取使用的是csv文件，SRM解析CSV文件使用的是easyexcel，easyexcel本身依赖了commons-csv-1.8，由于commons-csv-1.8版本比较低，合生元溯源数据拉取与业务数据上报-门店出入库调整时引入了commons-csv-1.14.1的版本，easyexcel无法调用common-csv-1.14.1的api2.18版本解决：commons-csv-1.14.1版本降级为1.10.0</td></tr>
                                     </tbody></table>
                             </div>
                         </div>
@@ -965,14 +965,14 @@
             <div class="section-header" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;">
                 <div class="section-icon">🛠️</div>
                 <div class="section-info">
-                    <div class="section-title">补丁执行（8 条）</div>
-                    <div class="section-desc">本周共上线 5 个Bug修复补丁、3 个紧急需求补丁</div>
+                    <div class="section-title">补丁执行（1 条）</div>
+                    <div class="section-desc">本周共上线 1 个Bug修复补丁、0 个紧急需求补丁</div>
                 </div>
             </div>
             <div class="section-body">
                 <!-- Bug修复（仅在有数据时显示）-->
                 <div class="intro-section">
-                    <h4>Bug修复补丁（5 条）</h4>
+                    <h4>Bug修复补丁（1 条）</h4>
                     <div class="patch-table-wrap">
                         <table class="patch-table">
                             <thead>
@@ -986,32 +986,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><td class="center nowrap">2026-04-20</td><td class="center nowrap"><a href="http://zentao.hckj.cn/bug-view-39258.html" target="_blank">39258</a></td><td title="【浙江义乌爱因宝】打印商品标签导入的方式带不出超级会员价格 一个个手动输入正常">【浙江义乌爱因宝】打印商品标签导入的方式带不出超级会员价格 一个个手动输入正常</td><td>ERP</td><td class="center version-col">8.35</td><td class="center range-col">义乌爱因宝</td></tr><tr><td class="center nowrap">2026-04-20</td><td class="center nowrap"><a href="http://zentao.hckj.cn/bug-view-39424.html" target="_blank">39424</a></td><td title="【合生元】【中山宝贝屋】POS销售录入了物料的序列号，但是识别为非在库码">【合生元】【中山宝贝屋】POS销售录入了物料的序列号，但是识别为非在库码</td><td>ERP</td><td class="center version-col">8.37</td><td class="center range-col">中山宝贝屋</td></tr><tr><td class="center nowrap">2026-04-21</td><td class="center nowrap"><a href="http://zentao.hckj.cn/bug-view-39424.html" target="_blank">39424</a></td><td title="【合生元】【中山宝贝屋】POS销售录入了物料的序列号，但是识别为非在库码">【合生元】【中山宝贝屋】POS销售录入了物料的序列号，但是识别为非在库码</td><td>ERP</td><td class="center version-col">8.37</td><td class="center range-col">所有局点</td></tr><tr><td class="center nowrap">2026-04-21</td><td class="center nowrap"><a href="http://zentao.hckj.cn/bug-view-39177.html" target="_blank">39177</a></td><td title="【智信云枢-直营环境】参数销售单退货失败是否允许继续退货是开启的，销售单号：S26040498690216710019操作退货提示：当前销售单已生成了一笔退货单，需要先处理完 退货单才能继续退货">【智信云枢-直营环境】参数销售单退货失败是否允许继续退货是开启的，销售单号：S26040498690216710019操...</td><td>POS</td><td class="center version-col">9.16</td><td class="center range-col">陕西小飞象</td></tr><tr><td class="center nowrap">2026-04-22</td><td class="center nowrap"><a href="http://zentao.hckj.cn/bug-view-39530.html" target="_blank">39530</a></td><td title="【智信云枢-中台】采购在PRM改价的时候报错了，提示系统运行异常，检查到空指针，可能是数据未正确初始化引用对象为空 问题修复">【智信云枢-中台】采购在PRM改价的时候报错了，提示系统运行异常，检查到空指针，可能是数据未正确初始化引用对象为空 问题...</td><td>PRM</td><td class="center version-col">9.16</td><td class="center range-col">智信云枢中台</td></tr>
+                                <tr><td class="center nowrap"></td><td class="center nowrap">-</td><td title="请在 补丁导入_YYYYMMDD-YYYYMMDD.xlsx 中添加补丁数据">请在 补丁导入_YYYYMMDD-YYYYMMDD.xlsx 中添加补丁数据</td><td></td><td class="center version-col"></td><td class="center range-col"></td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <!-- 紧急需求（仅在有数据时显示）-->
-                <div class="intro-section">
-                    <h4>紧急需求补丁（3 条）</h4>
-                    <div class="patch-table-wrap">
-                        <table class="patch-table">
-                            <thead>
-                                <tr>
-                                    <th>补丁日期</th>
-                                    <th>需求编号</th>
-                                    <th>需求名称</th>
-                                    <th>产品</th>
-                                    <th>补丁版本</th>
-                                    <th>补丁范围</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td class="center nowrap">2026-04-20</td><td class="center nowrap"><a href="http://zentao.hckj.cn/story-view-6912.html" target="_blank">6912</a></td><td title="【伊利】美驰系统配送上报接口优化，增加数据签收校验结果回传接口及页面">【伊利】美驰系统配送上报接口优化，增加数据签收校验结果回传接口及页面</td><td>SRM</td><td class="center version-col">2.17</td><td class="center range-col">所有局点</td></tr><tr><td class="center nowrap">2026-04-21</td><td class="center nowrap"><a href="http://zentao.hckj.cn/story-view-6875.html" target="_blank">6875</a></td><td title="【格瑞丽家】顾客消费开发票">【格瑞丽家】顾客消费开发票</td><td>ERP</td><td class="center version-col">8.37</td><td class="center range-col">格瑞丽家</td></tr><tr><td class="center nowrap">2026-04-23</td><td class="center nowrap"><a href="http://zentao.hckj.cn/story-view-39596.html" target="_blank">39596</a></td><td title="对接顺丰WMS，需要匹配WMS渠道与接口渠道，优化成自定义配置，后续对接其它第三方不需要二次开发改造">对接顺丰WMS，需要匹配WMS渠道与接口渠道，优化成自定义配置，后续对接其它第三方不需要二次开发改造</td><td>ERP</td><td class="center version-col">8.35</td><td class="center range-col">妈仔谷</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                
 
         <!-- ========== 第七章：附录（本周问题明细） ========== -->
         <div class="section-card collapsed" id="section7">
