@@ -520,12 +520,19 @@
         .mini-table th { background: #fef3c7; padding: 6px 10px; text-align: left; color: #92400e; }
         .mini-table td { padding: 6px 10px; border-top: 1px solid #f3f4f6; color: #374151; }
         .mini-table tr:hover { background: #fffbeb; }
-        /* ========== 补丁表格专属样式 ========== */
+        /* ========== 补丁表格专属样式（对照严重问题列表更新） ========== */
         .patch-table-wrap { border-radius: 8px; border: 1px solid #e9ecef; margin-bottom: 15px; overflow-x: auto; }
         .patch-table { table-layout: auto; width: 100%; background: #fff; border-collapse: collapse; }
         .patch-table th,
         .patch-table td { padding: 6px 8px; vertical-align: middle; border: 1px solid #e9ecef; }
-        .patch-table th { background: #f8f9fa; font-weight: 600; white-space: nowrap; text-align: center; }
+        .patch-table th { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: white; 
+            font-weight: 600; 
+            white-space: nowrap; 
+            text-align: center; 
+            padding: 10px 8px;
+        }
         .patch-table td { text-align: left; }
         .patch-table td.center { text-align: center; }
         .patch-table td.nowrap { white-space: nowrap; }
