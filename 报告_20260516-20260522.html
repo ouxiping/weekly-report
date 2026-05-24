@@ -57,6 +57,8 @@
         .concl-danger { border-left: 3px solid #f59e0b; }
         .concl-green { background: linear-gradient(90deg, #e8f5e9 0%, transparent 100%); }
         .concl-green .concl-label { color: #2e7d32; }
+        .concl-purple { background: linear-gradient(90deg, #f3e5f5 0%, transparent 100%); }
+        .concl-purple .concl-label { color: #7b1fa2; }
         .c-highlight { color: #1a73e8; font-weight: 600; }
         .c-pos { color: #10b981; font-weight: 600; }
         .c-warn { color: #f59e0b; font-weight: 600; }
@@ -608,6 +610,10 @@
                     <div class="concl-label">📉 积压清理</div>
                     <div class="concl-text">净增加<span class="c-pos">12个</span>，历史积压消化<span class="c-pos">41条</span>，待解决增至<span class="c-pos">492</span></div>
                 </div>
+                <div class="merged-concl concl-purple">
+                    <div class="concl-label">🔧 维优处理</div>
+                    <div class="concl-text">工程能力部本期解决<span class="c-pos">0</span>个问题，当前待解决<span class="c-warn">83</span>个（共83个）</div>
+                </div>
             </div>
         </div>
 
@@ -642,7 +648,7 @@
                     <h4>📊 本周问题分析结论</h4>
                     <p>
                         本周新增<span class="highlight">48条</span>，其中严重问题<span class="warning">6个（1个待处理）</span>。
-                        引入问题<span class="warning">2个</span>（Bug引入0+需求引入2），
+                        引入问题<span class="warning">2个</span>（需求引入2），
                         致命/严重<span class="highlight">1条</span>。
                         重点版本：8.37版本、8.38版本，建议针对性回归测试。
                     </p>
@@ -685,7 +691,7 @@
                     <div class="collapsible-header">
                         <div class="toggle-icon">▶</div>
                         <div class="section-title">引入问题（2 条）</div>
-                        <div class="section-meta"><span class="traffic-light-label light-yellow">Bug 0 + 需求 2</span></div>
+                        <div class="section-meta"><span class="traffic-light-label light-yellow">需求 2</span></div>
                     </div>
                     <div class="collapsible-content">
                         <!-- 产品×版本横表 -->
