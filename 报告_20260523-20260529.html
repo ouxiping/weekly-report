@@ -267,6 +267,33 @@
         .improvement-list { list-style: none; padding: 0; margin: 0; }
         .improvement-list li { color: #047857; font-size: 13px; padding: 5px 0; padding-left: 20px; position: relative; }
         .improvement-list li::before { content: "✓"; position: absolute; left: 0; color: #10b981; font-weight: bold; }
+        /* ========== 分层聚焦式改进建议样式 ========== */
+        .improve-tier { margin-bottom: 20px; }
+        .tier-header { display: flex; align-items: center; gap: 10px; padding: 12px 20px; border-radius: 12px 12px 0 0; border-bottom: 3px solid; }
+        .tier-header.urgent { background: linear-gradient(135deg, #fef2f2, #fee2e2); border-color: #ef4444; }
+        .tier-header.ongoing { background: linear-gradient(135deg, #eff6ff, #dbeafe); border-color: #3b82f6; }
+        .tier-icon { font-size: 22px; }
+        .tier-title { font-size: 16px; font-weight: 700; }
+        .tier-header.urgent .tier-title { color: #991b1b; }
+        .tier-header.ongoing .tier-title { color: #1e40af; }
+        .tier-badge { font-size: 12px; padding: 3px 10px; border-radius: 20px; background: #ef4444; color: white; font-weight: 600; white-space: nowrap; }
+        .tier-list { list-style: none; padding: 0; margin: 0; }
+        .tier-item { display: flex; gap: 12px; padding: 14px 20px; border-bottom: 1px solid #f3f4f6; line-height: 1.7; }
+        .tier-item:last-child { border-bottom: none; }
+        .urgent-item { background: #fff5f5; }
+        .ongoing-item { background: #f8faff; }
+        .item-tag { font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 4px; white-space: nowrap; height: fit-content; }
+        .urgent-item .item-tag { background: #fee2e2; color: #991b1b; }
+        .ongoing-item .item-tag { background: #dbeafe; color: #1e40af; }
+        .item-content { font-size: 13px; color: #374151; }
+        .item-content b { color: #111827; }
+        .item-content em { display: block; margin-top: 4px; font-size: 12px; color: #6b7280; font-style: normal; }
+        .c-neg { color: #ef4444; }
+        .c-pos { color: #10b981; }
+        @media (max-width: 768px) {
+            .tier-item { flex-direction: column; gap: 6px; padding: 12px 15px; }
+            .item-tag { align-self: flex-start; }
+        }
         .intro-table-container { margin-bottom: 15px; overflow-x: auto; }
         .intro-version-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
         .intro-version-table th { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 12px; text-align: left; font-weight: 500; }
@@ -499,8 +526,9 @@
             .intro-version-table { font-size: 12px; }
             .intro-version-table th, .intro-version-table td { padding: 8px 6px; }
             .chart-title { font-size: 13px; }
-            .improvement-box { padding: 12px 15px; }
-            .improvement-list li { font-size: 12px; }
+            .improve-tier .tier-header { padding: 10px 15px; }
+            .tier-item { padding: 12px 15px; }
+            .item-content { font-size: 12px; }
             .toc-nav { overflow-x: auto; }
             .toc-nav ul { flex-wrap: nowrap; }
             /* 合并版核心结论移动端适配 */
@@ -682,7 +710,7 @@
                             <table>
                                 <thead><tr><th>编号</th><th>标题</th><th>产品</th><th>问题类型</th><th>严重程度</th><th>处理状态</th><th>责任部门</th><th>创建时间</th><th>根因分析</th></tr></thead>
                                 <tbody>
-<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-40471.html" target="_blank">40471</a></td><td title="【山西晋中童灿母婴】小程序投票活动上传视频 小程序报错：请您输入参赛视频">【山西晋中童灿母婴】小程序投票活动上传视频 小程序报错：请您输入参赛视...</td><td>小程序-商城</td><td>代码错误</td><td><span class="tag tag-high">严重</span></td><td>已解决</td><td>研发</td><td>2026-05-28</td><td>22023年3月3.36版本4560需求开发引入，当时为支持视频上传功能，开发者移除了视频key中的.png后缀（因视频并非PNG格式），但未补充正确的视频扩展名（如.mp4），导致key完全缺失扩展名。自2023年7月31日起，通过OSS控制台上传文件时会校验文件头部特征码，文件后缀与实际类型不符的情况将被拦截。3.73版本解决并合入3.72分支，生产环境已补丁修复</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-40435.html" target="_blank">40435</a></td><td title="【杭州心聚心】的海博退款单金额大于了整单销售金额，在ERP销售单成功了需要核实">【杭州心聚心】的海博退款单金额大于了整单销售金额，在ERP销售单成功了...</td><td>ERP</td><td>代码错误</td><td><span class="tag tag-high">严重</span></td><td>激活</td><td>研发</td><td>2026-05-28</td><td>系统未能有效阻止金额异常的退款单生成，导致海博平台的退款金额超过了原始销售订单的总金额</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-40390.html" target="_blank">40390</a></td><td title="【喜阳阳】 | S26052626120115100175   | ERR   | 会员不存在,memberId:264201   |  麻烦核实处理。">【喜阳阳】 | S26052626120115100175   | E...</td><td>ERP</td><td>代码错误</td><td><span class="tag tag-high">严重</span></td><td>激活</td><td>研发</td><td>2026-05-27</td><td>员工误将会员手机号输成了导购的手机号，但是单据上记录的是导购的员工ID，导致单据处理时查询不到会员信息。生产环境已根据门店反馈的手机号修复单据，具体问题待分析</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-40343.html" target="_blank">40343</a></td><td title="【奈特天使】优惠券T20000108，筛选生效时间大于今天的券实例，左下角点击全选查询结果 批量修改到期日期，结果未使用的全部优惠券都被修改了到期日期，在测试环境可以复现">【奈特天使】优惠券T20000108，筛选生效时间大于今天的券实例，左...</td><td>ERP</td><td>代码错误</td><td><span class="tag tag-high">严重</span></td><td>已解决</td><td>研发</td><td>2026-05-26</td><td>全选查询结果修改时没有带上生效时间、失效时间、创建时间3个查询条件。8.39版本解决： 查询条件生效时间、失效时间、创建时间3个查询条件，传到后台查询再批量修改</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-40238.html" target="_blank">40238</a></td><td title="【格瑞丽家】顾客实际支付成功，没有生成销售单，待支付里面也没记录">【格瑞丽家】顾客实际支付成功，没有生成销售单，待支付里面也没记录...</td><td>ERP</td><td>代码错误</td><td><span class="tag tag-high">严重</span></td><td>已解决</td><td>研发</td><td>2026-05-23</td><td>顾客扫码后未及时输入密码或者密码输入错误，2026-05-23 09:42:25才支付成功，但2026-05-23 09:41:01门店取消了订单。8.39解决：点击取消后，如果支付平台没有返回成功，但是返回了支付中，则把信息提示出来，不允许取消，需要等待支付平台返回支付失败才能去取消</td></tr>                                </tbody></table>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-40471.html" target="_blank">40471</a></td><td title="【山西晋中童灿母婴】小程序投票活动上传视频 小程序报错：请您输入参赛视频">【山西晋中童灿母婴】小程序投票活动上传视频 小程序报错：请您输入参赛视...</td><td>小程序-商城</td><td>代码错误</td><td><span class="tag tag-high">严重</span></td><td>已解决</td><td>研发</td><td>2026-05-28</td><td>2023年3月3.36版本4560需求开发引入，当时为支持视频上传功能，移除了视频key中的.png后缀（因视频并非PNG格式），但未补充正确的视频扩展名（如.mp4），导致key完全缺失扩展名。自2023年7月31日起，OSS上传文件时会校验文件头部特征码，文件后缀与实际类型不符的情况被拦截。3.73版本解决并合入3.72分支，生产环境已补丁修复</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-40435.html" target="_blank">40435</a></td><td title="【杭州心聚心】的海博退款单金额大于了整单销售金额，在ERP销售单成功了需要核实">【杭州心聚心】的海博退款单金额大于了整单销售金额，在ERP销售单成功了...</td><td>ERP</td><td>代码错误</td><td><span class="tag tag-high">严重</span></td><td>激活</td><td>研发</td><td>2026-05-28</td><td>系统未能有效阻止金额异常的退款单生成，导致海博平台的退款金额超过了原始销售订单的总金额</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-40390.html" target="_blank">40390</a></td><td title="【喜阳阳】 | S26052626120115100175   | ERR   | 会员不存在,memberId:264201   |  麻烦核实处理。">【喜阳阳】 | S26052626120115100175   | E...</td><td>ERP</td><td>代码错误</td><td><span class="tag tag-high">严重</span></td><td>激活</td><td>研发</td><td>2026-05-27</td><td>员工误将会员手机号输成了导购的手机号，但是单据上记录的是导购的员工ID，导致单据处理时查询不到会员信息。生产环境已根据门店反馈的手机号修复单据，具体问题待分析</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-40343.html" target="_blank">40343</a></td><td title="【奈特天使】优惠券T20000108，筛选生效时间大于今天的券实例，左下角点击全选查询结果 批量修改到期日期，结果未使用的全部优惠券都被修改了到期日期，在测试环境可以复现">【奈特天使】优惠券T20000108，筛选生效时间大于今天的券实例，左...</td><td>ERP</td><td>代码错误</td><td><span class="tag tag-high">严重</span></td><td>已解决</td><td>研发</td><td>2026-05-26</td><td>全选查询结果修改时没有带上生效时间、失效时间、创建时间3个查询条件。8.39版本解决： 查询条件生效时间、失效时间、创建时间3个查询条件，传到后台查询再批量修改</td></tr><tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-40238.html" target="_blank">40238</a></td><td title="【格瑞丽家】顾客实际支付成功，没有生成销售单，待支付里面也没记录">【格瑞丽家】顾客实际支付成功，没有生成销售单，待支付里面也没记录...</td><td>ERP</td><td>代码错误</td><td><span class="tag tag-high">严重</span></td><td>已解决</td><td>研发</td><td>2026-05-23</td><td>顾客扫码后未及时输入密码或者密码输入错误，2026-05-23 09:42:25才支付成功，但2026-05-23 09:41:01门店取消了订单。8.39解决：点击取消后，如果支付平台没有返回成功，但是返回了支付中，则把信息提示出来，不允许取消，需要等待支付平台返回支付失败才能去取消</td></tr>                                </tbody></table>
                         </div>
                     </div>
                 </div>
@@ -757,7 +785,7 @@
                                 <table class="intro-detail-table">
                                     <thead><tr><th>编号</th><th>问题描述</th><th>产品</th><th>引入版本</th><th>严重程度</th><th>处理状态</th><th>关联需求</th><th>根因分析</th></tr></thead>
                                     <tbody>
-<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-40471.html" target="_blank">40471</a></td><td class="desc-cell" title="【山西晋中童灿母婴】小程序投票活动上传视频 小程序报错：请您输入参赛视频">【山西晋中童灿母婴】小程序投票活动上传视频 小程序报错：请您...</td><td>小程序-商城</td><td>3.36版本</td><td><span class="tag tag-high">严重</span></td><td>已解决</td><td><span class="tag tag-req">需求 22023</span><br><span style="color:#666;font-size:11px;">未找到需求名称</span></td><td class="cause-cell">22023年3月3.36版本4560需求开发引入，当时为支持视频上传功能，开发者移除了视频key中的.png后缀（因视频并非PNG格式），但未补充正确的视频扩展名（如.mp4），导致key完全缺失扩展名。自2023年7月31日起，通过OSS控制台上传文件时会校验文件头部特征码，文件后缀与实际类型不符的情况将被拦截。3.73版本解决并合入3.72分支，生产环境已补丁修复</td></tr>
+<tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-40471.html" target="_blank">40471</a></td><td class="desc-cell" title="【山西晋中童灿母婴】小程序投票活动上传视频 小程序报错：请您输入参赛视频">【山西晋中童灿母婴】小程序投票活动上传视频 小程序报错：请您...</td><td>小程序-商城</td><td>3.36版本</td><td><span class="tag tag-high">严重</span></td><td>已解决</td><td><span class="tag tag-req">需求 2023</span><br><span style="color:#666;font-size:11px;">商品货号不允许重复</span></td><td class="cause-cell">2023年3月3.36版本4560需求开发引入，当时为支持视频上传功能，移除了视频key中的.png后缀（因视频并非PNG格式），但未补充正确的视频扩展名（如.mp4），导致key完全缺失扩展名。自2023年7月31日起，OSS上传文件时会校验文件头部特征码，文件后缀与实际类型不符的情况被拦截。3.73版本解决并合入3.72分支，生产环境已补丁修复</td></tr>
                                     </tbody></table>
                             </div>
                         </div>
@@ -917,19 +945,84 @@
                 </div>
             </div>
             <div class="section-body">
-                <div class="summary-grid">
-                    <div class="summary-item" style="background: linear-gradient(135deg, #fee2e2, #fecaca); border: 1px solid #ef4444;">
-                        <div class="summary-label">🔴 严重问题处理</div>
-                        <div class="summary-value" style="color: #991b1b;">仍有2个待处理，需优先跟进，建议及时完成复盘</div>
+                <!-- ⚡️ 紧急行动 -->
+                <div class="improve-tier">
+                    <div class="tier-header urgent">
+                        <span class="tier-icon">⚡️</span>
+                        <span class="tier-title">紧急行动</span>
+                        <span class="tier-badge">本周必须完成</span>
                     </div>
-                    <div class="summary-item" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); border: 1px solid #3b82f6;">
-                        <div class="summary-label">🔵 引入问题管控</div>
-                        <div class="summary-value" style="color: #1e40af;">共2个引入问题，建议针对性回归测试</div>
+                    <ul class="tier-list">
+                        <li class="tier-item urgent-item">
+                            <div class="item-tag">【严重问题】</div>
+                            <div class="item-content">
+                                <b>请完成 5 个严重问题的逐一复盘</b>，于本周五前提交复盘报告，明确根因与改进措施，<br>
+                                交付物：<em>严重问题复盘报告（含根因分析 + 改进措施 + 责任人）</em>
+                            </div>
+                        </li>
+                        <li class="tier-item urgent-item">
+                            <div class="item-tag">【严重问题】</div>
+                            <div class="item-content">
+                                <b>仍有 2 个严重问题待处理</b>，请相关责任人于本周三前给出处理方案与预计完成时间，<br>
+                                交付物：<em>严重问题处理计划表（含编号 + 方案 + 预计完成日）</em>
+                            </div>
+                        </li>
+                        <li class="tier-item urgent-item">
+                            <div class="item-tag">【引入问题】</div>
+                            <div class="item-content">
+                                本周新增 2 个引入问题（Bug 1 + 需求 1），请针对 2.18版本 进行复盘，<br>
+                                于本周五前补充测试用例到回归测试集，<br>
+                                交付物：<em>引入问题复盘记录 + 补充测试用例清单</em>
+                            </div>
+                        </li>
+                        <li class="tier-item urgent-item">
+                            <div class="item-tag">【积压消解】</div>
+                            <div class="item-content">
+                                本周积压净增 <b class="c-neg">32 条</b>（新增 52 条，关闭 20 条），处理率仅 81%，<br>
+                                请各产品负责人于下周一对积压进行分级梳理，优先处理严重问题与处理时长超过30天的未解决问题，<br>
+                                交付物：<em>积压分级清单（含优先级 + 预计解决时间）</em>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 🔄 持续优化 -->
+                <div class="improve-tier">
+                    <div class="tier-header ongoing">
+                        <span class="tier-icon">🔄</span>
+                        <span class="tier-title">持续优化（纳入流程）</span>
                     </div>
-                    <div class="summary-item" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); border: 1px solid #10b981;">
-                        <div class="summary-label">🟢 版本质量提升</div>
-                        <div class="summary-value" style="color: #065f46;">高频问题版本需重点复盘，完善发布前checklist</div>
-                    </div>
+                    <ul class="tier-list">
+                        <li class="tier-item ongoing-item">
+                            <div class="item-tag">【引入问题管控】</div>
+                            <div class="item-content">
+                                <b>建议优化发布前质量评估流程</b>，将 2.18版本 涉及的引入问题根因补充到《发布前checklist》，<br>
+                                执行：<em>于发布评审时逐项确认，避免同类引入问题再次发生</em>
+                            </div>
+                        </li>
+                        <li class="tier-item ongoing-item">
+                            <div class="item-tag">【高发产品质量】</div>
+                            <div class="item-content">
+                                <b>建议聚焦 ERP 系统</b>（积压 286 条，占总量 55%），加强代码评审与质量把控，<br>
+                                执行：<em>将 ERP 纳入月度质量专项巡检，每月输出质量报告</em>
+                            </div>
+                        </li>
+                        <li class="tier-item ongoing-item">
+                            <div class="item-tag">【补丁回归测试】</div>
+                            <div class="item-content">
+                                本周平均解决时长 27.1 小时（严重问题 43.7 小时），<br>
+                                <b>建议纳入补丁发布规范</b>：每次补丁发布前强制执行核心场景冒烟测试，<br>
+                                执行：<em>补充冒烟测试用例集，纳入补丁发布SOP</em>
+                            </div>
+                        </li>
+                        <li class="tier-item ongoing-item">
+                            <div class="item-tag">【补丁流程标准化】</div>
+                            <div class="item-content">
+                                <b>建议牵头制定补丁发布的标准化流程</b>：包括补丁评估→测试验证→灰度发布→全量上线→效果确认，<br>
+                                执行：<em>输出《补丁发布标准操作流程》文档并完成团队培训</em>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
