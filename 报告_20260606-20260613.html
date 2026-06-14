@@ -59,6 +59,8 @@
         .concl-green .concl-label { color: #2e7d32; }
         .concl-purple { background: linear-gradient(90deg, #f3e5f5 0%, transparent 100%); }
         .concl-purple .concl-label { color: #7b1fa2; }
+        .concl-amber { background: linear-gradient(90deg, #fff8e1 0%, transparent 100%); }
+        .concl-amber .concl-label { color: #f57f17; }
         .c-highlight { color: #1a73e8; font-weight: 600; }
         .c-pos { color: #10b981; font-weight: 600; }
         .c-warn { color: #f59e0b; font-weight: 600; }
@@ -619,6 +621,10 @@
                     <div class="concl-label">🔧 维优处理</div>
                     <div class="concl-text">本期解决<span class="c-pos">23</span>个问题，其中本周新增已解决<span class="c-pos">16</span>个，历史问题解决<span class="c-pos">7</span>个</div>
                 </div>
+                <div class="merged-concl concl-amber">
+                    <div class="concl-label">🛠️ 补丁执行</div>
+                    <div class="concl-text">本期上线<span class="c-pos">2</span>个补丁（Bug修复2 + 紧急需求0），验收通过<span class="c-pos">2</span>，已闭环<span class="c-pos">2</span></div>
+                </div>
             </div>
         </div>
 
@@ -1009,10 +1015,15 @@
                                     <th>产品</th>
                                     <th>补丁版本</th>
                                     <th>补丁范围</th>
+                                    <th>验收状态</th>
+                                    <th>验收人</th>
+                                    <th>二次补丁</th>
+                                    <th>闭环状态</th>
+                                    <th>闭环日期</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><td class="center nowrap">2026-06-08</td><td class="center nowrap"><a href="http://zentao.hckj.cn/bug-view-40642.html" target="_blank">40642</a></td><td title="【123baby】换货需要添加门店分账开启之前时间的单据不允许换货的控制">【123baby】换货需要添加门店分账开启之前时间的单据不允许换货的控制</td><td>ERP</td><td class="center version-col">8.39</td><td class="center range-col">123baby</td></tr><tr><td class="center nowrap">2026-06-10</td><td class="center nowrap"><a href="http://zentao.hckj.cn/bug-view-40714.html" target="_blank">40714</a></td><td title="【格瑞丽家】两个赠券活动，目标客群是模板导入的，导入成功。但是活动下发 活动看板批次明细内为空">【格瑞丽家】两个赠券活动，目标客群是模板导入的，导入成功。但是活动下发 活动看板批次明细内为空</td><td>SCRM</td><td class="center version-col">1.54</td><td class="center range-col">所有局点</td></tr>
+                                <tr><td class="center nowrap">2026-06-08</td><td class="center nowrap"><a href="http://zentao.hckj.cn/bug-view-40642.html" target="_blank">40642</a></td><td title="【123baby】换货需要添加门店分账开启之前时间的单据不允许换货的控制">【123baby】换货需要添加门店分账开启之前时间的单据不允许换货的控制</td><td>ERP</td><td class="center version-col">8.39</td><td class="center range-col">123baby</td><td class="center">验收通过</td><td class="center">欧细平</td><td class="center">否</td><td class="center">已闭环</td><td class="center nowrap">2026-06-09 00:00:00</td></tr><tr><td class="center nowrap">2026-06-10</td><td class="center nowrap"><a href="http://zentao.hckj.cn/bug-view-40714.html" target="_blank">40714</a></td><td title="【格瑞丽家】两个赠券活动，目标客群是模板导入的，导入成功。但是活动下发 活动看板批次明细内为空">【格瑞丽家】两个赠券活动，目标客群是模板导入的，导入成功。但是活动下发 活动看板批次明细内为空</td><td>SCRM</td><td class="center version-col">1.54</td><td class="center range-col">所有局点</td><td class="center">验收通过</td><td class="center">黄嘉琪</td><td class="center">否</td><td class="center">已闭环</td><td class="center nowrap">2026-06-10 00:00:00</td></tr>
                             </tbody>
                         </table>
                     </div>
