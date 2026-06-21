@@ -1577,8 +1577,8 @@
         new Chart(document.getElementById('seriousStatusChart'), {
             type: 'doughnut',
             data: {
-                labels: {_serious_status_labels_json},
-                datasets: [{ data: {_serious_status_data_json}, backgroundColor: ['#dc3545', '#ffc107', '#28a745', '#17a2b8'] }]
+                labels: ["激活", "已解决", "已关闭"],
+                datasets: [{ data: [6, 5, 5], backgroundColor: ['#dc3545', '#ffc107', '#28a745', '#17a2b8'] }]
             },
             options: chartOptions
         });
@@ -1586,10 +1586,10 @@
         new Chart(document.getElementById('seriousTypeChart'), {
             type: 'doughnut',
             data: {
-                labels: {_serious_type_labels_json},
+                labels: ["数据问题", "代码错误", "性能问题", "平台问题"],
                 datasets: [{
                     label: '问题数量',
-                    data: {_serious_type_data_json},
+                    data: [3, 10, 2, 1],
                     backgroundColor: '#dc3544'
                 }]
             },
