@@ -617,6 +617,11 @@
                     <div class="concl-text">净减少<span class="c-pos">41个</span>，历史积压消化<span class="c-pos">97条</span>，待解决降至<span class="c-pos">489</span></div>
                 </div>
 
+                <div class="merged-concl concl-blue">
+                    <div class="concl-label">📜 迭代内历史问题</div>
+                    <div class="concl-text">周期内历史来源问题共<span class="c-highlight">25</span>条（本周新增19/已解决14/已关闭7），状态：激活 9条、已解决 8条、已关闭 8条；严重程度：严重 1条、一般 22条、提示 2条</div>
+                </div>
+
                 <div class="merged-concl concl-purple">
                     <div class="concl-label">🔧 维优处理</div>
                     <div class="concl-text">本期解决<span class="c-pos">25</span>个问题，其中本周新增已解决<span class="c-pos">15</span>个，历史问题解决<span class="c-pos">10</span>个</div>
@@ -1281,72 +1286,100 @@ SCRM1.55</td>
         </div>
     </div>
 
-        <!-- ========== 附录：历史来源问题统计 ========== -->
+        <!-- ========== 附录：迭代内历史问题明细 ========== -->
         <div class="section-card collapsed" id="section-his-source">
             <div class="section-header blue" onclick="toggleSectionCollapse(this.parentElement)">
                 <div class="section-icon">📜</div>
                 <div class="section-info">
                     <div class="section-title">附录：迭代内历史问题明细</div>
-                    <div class="section-desc">统计周期（2026年7月11日 ~ 2026年7月17日）内来源为"历史"的问题单（开启/解决/关闭任一在周期内，去重 25 条，点击展开）</div>
+                    <div class="section-desc">统计周期（2026年7月11日 ~ 2026年7月17日）内来源为"历史"的问题单，按本周新增/已解决/已关闭分类（点击展开）</div>
                 </div>
                 <div class="section-badge">25 条</div>
             </div>
             <div class="section-body">
-                <div class="stats-grid">
-                    <div class="stat-card"><div class="stat-card-value">9</div><div class="stat-card-label">激活</div></div>
-                    <div class="stat-card"><div class="stat-card-value">8</div><div class="stat-card-label">已解决</div></div>
-                    <div class="stat-card"><div class="stat-card-value">8</div><div class="stat-card-label">已关闭</div></div>
-                </div>
-                <div class="conclusion-block" style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;">
-                    <div class="concl-purple" style="flex:1;min-width:200px;">
-                        <div class="concl-label">状态分布</div>
-                        <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
-                            <span class="tag tag-history">激活 9</span>
-                            <span class="tag tag-history">已解决 8</span>
-                            <span class="tag tag-history">已关闭 8</span>
+                <div class="collapsible" onclick="toggleCollapse(this)">
+                    <div class="collapsible-header">
+                        <div class="toggle-icon">▶</div>
+                        <div class="section-title">本周新增问题列表（19 条）</div>
+                    </div>
+                    <div class="collapsible-content">
+                        <div class="table-container">
+                            <table>
+                                <thead><tr><th>编号</th><th>标题</th><th>产品</th><th>问题类型</th><th>严重程度</th><th>责任部门</th><th>创建时间</th></tr></thead>
+                                <tbody>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41597.html" target="_blank">41597</a></td><td title="【历史问题】开启批发往来方，新增订货单保存草稿（需供应商审核发货默认为是），在订货单列表界面点击编辑进入详情界面，未带出”需供应商审核发货“的值 导致提交不了了 如图">【历史问题】开启批发往来方，新增订货单保存草稿（需供应商审核发货默认为是），在订...</td><td>ERP</td><td>代码错误</td><td><span class="tag tag-high">严重</span></td><td>研发</td><td>2026-07-17</td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41572.html" target="_blank">41572</a></td><td title="【基线主干】【提成查询（员工）】【单品提成查询】两个报表的【销售/提成门店】查询条件对【寄存提成明细】页签不生效，请产品确认评估历史原因">【基线主干】【提成查询（员工）】【单品提成查询】两个报表的【销售/提成门店】查询...</td><td>ERP</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-07-17</td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41561.html" target="_blank">41561</a></td><td title="【智信云枢】【POS】订单结算，支付方式间距过大">【智信云枢】【POS】订单结算，支付方式间距过大</td><td>POS</td><td>优化需求</td><td><span class="tag ">一般</span></td><td>产品</td><td>2026-07-16</td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41560.html" target="_blank">41560</a></td><td title="【智信云枢】【POS】订单结算，送货信息 默认样式错乱">【智信云枢】【POS】订单结算，送货信息 默认样式错乱</td><td>POS</td><td>优化需求</td><td><span class="tag ">一般</span></td><td>产品</td><td>2026-07-16</td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41547.html" target="_blank">41547</a></td><td title="【历史问题】订货管理的备注信息被按钮覆盖了 详情如图">【历史问题】订货管理的备注信息被按钮覆盖了 详情如图</td><td>ERP</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-07-16</td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41542.html" target="_blank">41542</a></td><td title="特殊机型问题，点击加入购物车，页面置灰，但是没有弹出加入购物车的弹窗，在返回时会闪现购物车弹窗。">特殊机型问题，点击加入购物车，页面置灰，但是没有弹出加入购物车的弹窗，在返回时会...</td><td>小程序-商城</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-07-16</td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41532.html" target="_blank">41532</a></td><td title="【历史问题】（提示信息优化）指定A成员群发消息给B，C，D；其中B有添加归属导购对应归属成员E，下发后失败信息显示的客户无归属成员（实际归属成员是E）">【历史问题】（提示信息优化）指定A成员群发消息给B，C，D；其中B有添加归属导购...</td><td>ERP</td><td>代码错误</td><td><span class="tag ">提示</span></td><td>研发</td><td>2026-07-16</td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41525.html" target="_blank">41525</a></td><td title="【智信云枢】【POS】缴款单样式问题">【智信云枢】【POS】缴款单样式问题</td><td>POS</td><td>优化需求</td><td><span class="tag ">一般</span></td><td>产品</td><td>2026-07-16</td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41519.html" target="_blank">41519</a></td><td title="【智信云枢】【代码迁移】 前提：node20版本里面迁移  基线迁移到智信云枢   格式化代码工具">【智信云枢】【代码迁移】 前提：node20版本里面迁移  基线迁移到智信云枢 ...</td><td>小程序-商城</td><td>优化需求</td><td><span class="tag ">一般</span></td><td>产品</td><td>2026-07-16</td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41501.html" target="_blank">41501</a></td><td title="【历史问题】当用户的商品数据权限限制了只有A，B品类时，在ARM做批发销售单没有限制商品范围但是在APP做单时限制了商品范围；导致在App做单时与ARM做单时的商品取值逻辑不一致">【历史问题】当用户的商品数据权限限制了只有A，B品类时，在ARM做批发销售单没有...</td><td>ERP</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-07-15</td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41494.html" target="_blank">41494</a></td><td title="【历史问题】客员通APP，输入框弹窗展示最多200个字，但是提交时又变成了200个字符，字和字符要统一，提示也要统一">【历史问题】客员通APP，输入框弹窗展示最多200个字，但是提交时又变成了200...</td><td>ERP</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-07-15</td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41475.html" target="_blank">41475</a></td><td title="【历史问题】SCRM后端-在素材管理菜单新增话术，插入小程序选中预置的页签，提示操作成功，但是还是有请输入页面  详情如图">【历史问题】SCRM后端-在素材管理菜单新增话术，插入小程序选中预置的页签，提示...</td><td>SCRM</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-07-14</td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41473.html" target="_blank">41473</a></td><td title="【智信云枢】【POS】查询输入框样式优化">【智信云枢】【POS】查询输入框样式优化</td><td>POS</td><td>优化需求</td><td><span class="tag ">一般</span></td><td>产品</td><td>2026-07-14</td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41470.html" target="_blank">41470</a></td><td title="【智信云枢】【POS】table两个的写法错误改造">【智信云枢】【POS】table两个的写法错误改造</td><td>POS</td><td>优化需求</td><td><span class="tag ">一般</span></td><td>产品</td><td>2026-07-14</td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41455.html" target="_blank">41455</a></td><td title="【基线主干】【历史问题】现在srm销售数据上报里面没有返厂、返仓、配送、库存等业务了，以前业务数据上报的时候是有的，后面6185需求改造后就只有销售和退货了，所以srm相关报表希望能屏蔽">【基线主干】【历史问题】现在srm销售数据上报里面没有返厂、返仓、配送、库存等业...</td><td>SRM品牌商</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-07-14</td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41452.html" target="_blank">41452</a></td><td title="【基线主干】【优化问题】商城没有默认模板，小程序员工端分享时长功能不可用">【基线主干】【优化问题】商城没有默认模板，小程序员工端分享时长功能不可用</td><td>小程序-商城</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-07-14</td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41449.html" target="_blank">41449</a></td><td title="【基线】【智信云枢】【node20】持续性优化">【基线】【智信云枢】【node20】持续性优化</td><td>小程序-商城</td><td>优化需求</td><td><span class="tag ">一般</span></td><td>产品</td><td>2026-07-14</td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41448.html" target="_blank">41448</a></td><td title="[历史问题]在场景中搜素主题并搜素，然后清掉输入框的值，直接点击搜素，最后3个场景没有加载出来">[历史问题]在场景中搜素主题并搜素，然后清掉输入框的值，直接点击搜素，最后3个场...</td><td>SCRM</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-07-14</td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41433.html" target="_blank">41433</a></td><td title="【基线主干】【历史问题】小程序未启用付费会员，在领券活动配置页面可以勾选付费会员">【基线主干】【历史问题】小程序未启用付费会员，在领券活动配置页面可以勾选付费会员</td><td>小程序-商城</td><td>代码错误</td><td><span class="tag ">一般</span></td><td>研发</td><td>2026-07-13</td></tr>
+                                </tbody></table>
                         </div>
                     </div>
-                    <div class="concl-amber" style="flex:1;min-width:200px;">
-                        <div class="concl-label">严重程度分布</div>
-                        <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
-                            <span class="tag tag-high">严重 1</span>
-                            <span class="tag tag-history">一般 22</span>
-                            <span class="tag tag-history">提示 2</span>
+                </div>
+
+                <div class="collapsible" onclick="toggleCollapse(this)">
+                    <div class="collapsible-header">
+                        <div class="toggle-icon">▶</div>
+                        <div class="section-title">本期已解决问题列表（14 条）</div>
+                    </div>
+                    <div class="collapsible-content">
+                        <div class="table-container">
+                            <table>
+                                <thead><tr><th>编号</th><th>标题</th><th>产品</th><th>问题类型</th><th>创建时间</th><th>解决时间</th><th>来源</th></tr></thead>
+                                <tbody>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41519.html" target="_blank">41519</a></td><td title="【智信云枢】【代码迁移】 前提：node20版本里面迁移  基线迁移到智信云枢   格式化代码工具">【智信云枢】【代码迁移】 前提：node20版本里面迁移  基线迁移到智信云枢 ...</td><td>小程序-商城</td><td>优化需求</td><td>2026-07-16</td><td>2026-07-17</td><td><span class="tag tag-history">本周已解决</span></td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41561.html" target="_blank">41561</a></td><td title="【智信云枢】【POS】订单结算，支付方式间距过大">【智信云枢】【POS】订单结算，支付方式间距过大</td><td>POS</td><td>优化需求</td><td>2026-07-16</td><td>2026-07-16</td><td><span class="tag tag-history">本周已解决</span></td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41560.html" target="_blank">41560</a></td><td title="【智信云枢】【POS】订单结算，送货信息 默认样式错乱">【智信云枢】【POS】订单结算，送货信息 默认样式错乱</td><td>POS</td><td>优化需求</td><td>2026-07-16</td><td>2026-07-16</td><td><span class="tag tag-history">本周已解决</span></td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41542.html" target="_blank">41542</a></td><td title="特殊机型问题，点击加入购物车，页面置灰，但是没有弹出加入购物车的弹窗，在返回时会闪现购物车弹窗。">特殊机型问题，点击加入购物车，页面置灰，但是没有弹出加入购物车的弹窗，在返回时会...</td><td>小程序-商城</td><td>代码错误</td><td>2026-07-16</td><td>2026-07-16</td><td><span class="tag tag-history">本周已解决</span></td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41525.html" target="_blank">41525</a></td><td title="【智信云枢】【POS】缴款单样式问题">【智信云枢】【POS】缴款单样式问题</td><td>POS</td><td>优化需求</td><td>2026-07-16</td><td>2026-07-16</td><td><span class="tag tag-history">本周已解决</span></td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41494.html" target="_blank">41494</a></td><td title="【历史问题】客员通APP，输入框弹窗展示最多200个字，但是提交时又变成了200个字符，字和字符要统一，提示也要统一">【历史问题】客员通APP，输入框弹窗展示最多200个字，但是提交时又变成了200...</td><td>ERP</td><td>代码错误</td><td>2026-07-15</td><td>2026-07-15</td><td><span class="tag tag-history">本周已解决</span></td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41475.html" target="_blank">41475</a></td><td title="【历史问题】SCRM后端-在素材管理菜单新增话术，插入小程序选中预置的页签，提示操作成功，但是还是有请输入页面  详情如图">【历史问题】SCRM后端-在素材管理菜单新增话术，插入小程序选中预置的页签，提示...</td><td>SCRM</td><td>代码错误</td><td>2026-07-14</td><td>2026-07-15</td><td><span class="tag tag-history">本周已解决</span></td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41342.html" target="_blank">41342</a></td><td title="【历史问题】在ERP配置资料完善模板，在SCRM的营销活动中关联任务时引用模板，宝宝信息中未带出资料项 如图">【历史问题】在ERP配置资料完善模板，在SCRM的营销活动中关联任务时引用模板，...</td><td>SCRM</td><td>代码错误</td><td>2026-07-08</td><td>2026-07-14</td><td><span class="tag tag-history">本周已解决</span></td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41452.html" target="_blank">41452</a></td><td title="【基线主干】【优化问题】商城没有默认模板，小程序员工端分享时长功能不可用">【基线主干】【优化问题】商城没有默认模板，小程序员工端分享时长功能不可用</td><td>小程序-商城</td><td>代码错误</td><td>2026-07-14</td><td>2026-07-14</td><td><span class="tag tag-history">本周已解决</span></td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41330.html" target="_blank">41330</a></td><td title="【历史问题】导购排名：选中一个营销活动10000200001124，从对应的数值跳转到回访任务明细，数据不正确  如图">【历史问题】导购排名：选中一个营销活动10000200001124，从对应的数值...</td><td>SCRM</td><td>产品缺陷</td><td>2026-07-07</td><td>2026-07-14</td><td><span class="tag tag-history">本周已解决</span></td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41448.html" target="_blank">41448</a></td><td title="[历史问题]在场景中搜素主题并搜素，然后清掉输入框的值，直接点击搜素，最后3个场景没有加载出来">[历史问题]在场景中搜素主题并搜素，然后清掉输入框的值，直接点击搜素，最后3个场...</td><td>SCRM</td><td>代码错误</td><td>2026-07-14</td><td>2026-07-14</td><td><span class="tag tag-history">本周已解决</span></td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41364.html" target="_blank">41364</a></td><td title="7126-会员卡日志-查看储值卡分组存在有分组与配置页展示不一样">7126-会员卡日志-查看储值卡分组存在有分组与配置页展示不一样</td><td>ERP</td><td>代码错误</td><td>2026-07-08</td><td>2026-07-14</td><td><span class="tag tag-history">本周已解决</span></td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41433.html" target="_blank">41433</a></td><td title="【基线主干】【历史问题】小程序未启用付费会员，在领券活动配置页面可以勾选付费会员">【基线主干】【历史问题】小程序未启用付费会员，在领券活动配置页面可以勾选付费会员</td><td>小程序-商城</td><td>代码错误</td><td>2026-07-13</td><td>2026-07-13</td><td><span class="tag tag-history">本周已解决</span></td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41404.html" target="_blank">41404</a></td><td title="【历史问题】新增会员-会员的联系人信息备注字段过长时，提示信息需要优化   比如：会员的联系人信息的备注字段超过设定长度">【历史问题】新增会员-会员的联系人信息备注字段过长时，提示信息需要优化   比如...</td><td>ERP</td><td>代码错误</td><td>2026-07-10</td><td>2026-07-13</td><td><span class="tag tag-history">本周已解决</span></td></tr>
+                                </tbody></table>
                         </div>
                     </div>
                 </div>
-                <div class="table-container" style="margin-top:16px;">
-                    <h4 style="margin:0 0 8px 0;color:#333;">迭代内历史问题明细（25 条）</h4>
-                    <table class="intro-detail-table">
-                        <thead><tr><th>编号</th><th>问题描述</th><th>产品</th><th>严重程度</th><th>状态</th><th>开启日期</th><th>解决日期</th><th>关闭日期</th></tr></thead>
-                        <tbody>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41597.html" target="_blank">41597</a></td><td class="desc-cell" title="【历史问题】开启批发往来方，新增订货单保存草稿（需供应商审核发货默认为是），在订货单列表界面点击编辑进入详情界面，未带出”需供应商审核发货“的值 导致提交不了了 如图">【历史问题】开启批发往来方，新增订货单保存草稿（需供应商审核发货默认为是），在订...</td><td>ERP</td><td><span class="tag tag-high">严重</span></td><td>激活</td><td>2026-07-17</td><td></td><td></td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41572.html" target="_blank">41572</a></td><td class="desc-cell" title="【基线主干】【提成查询（员工）】【单品提成查询】两个报表的【销售/提成门店】查询条件对【寄存提成明细】页签不生效，请产品确认评估历史原因">【基线主干】【提成查询（员工）】【单品提成查询】两个报表的【销售/提成门店】查询...</td><td>ERP</td><td><span class="tag ">一般</span></td><td>激活</td><td>2026-07-17</td><td></td><td></td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41561.html" target="_blank">41561</a></td><td class="desc-cell" title="【智信云枢】【POS】订单结算，支付方式间距过大">【智信云枢】【POS】订单结算，支付方式间距过大</td><td>POS</td><td><span class="tag ">一般</span></td><td>已解决</td><td>2026-07-16</td><td>2026-07-16</td><td></td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41560.html" target="_blank">41560</a></td><td class="desc-cell" title="【智信云枢】【POS】订单结算，送货信息 默认样式错乱">【智信云枢】【POS】订单结算，送货信息 默认样式错乱</td><td>POS</td><td><span class="tag ">一般</span></td><td>已解决</td><td>2026-07-16</td><td>2026-07-16</td><td></td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41547.html" target="_blank">41547</a></td><td class="desc-cell" title="【历史问题】订货管理的备注信息被按钮覆盖了 详情如图">【历史问题】订货管理的备注信息被按钮覆盖了 详情如图</td><td>ERP</td><td><span class="tag ">一般</span></td><td>激活</td><td>2026-07-16</td><td></td><td></td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41542.html" target="_blank">41542</a></td><td class="desc-cell" title="特殊机型问题，点击加入购物车，页面置灰，但是没有弹出加入购物车的弹窗，在返回时会闪现购物车弹窗。">特殊机型问题，点击加入购物车，页面置灰，但是没有弹出加入购物车的弹窗，在返回时会...</td><td>小程序-商城</td><td><span class="tag ">一般</span></td><td>已解决</td><td>2026-07-16</td><td>2026-07-16</td><td></td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41532.html" target="_blank">41532</a></td><td class="desc-cell" title="【历史问题】（提示信息优化）指定A成员群发消息给B，C，D；其中B有添加归属导购对应归属成员E，下发后失败信息显示的客户无归属成员（实际归属成员是E）">【历史问题】（提示信息优化）指定A成员群发消息给B，C，D；其中B有添加归属导购...</td><td>ERP</td><td><span class="tag ">提示</span></td><td>激活</td><td>2026-07-16</td><td></td><td></td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41525.html" target="_blank">41525</a></td><td class="desc-cell" title="【智信云枢】【POS】缴款单样式问题">【智信云枢】【POS】缴款单样式问题</td><td>POS</td><td><span class="tag ">一般</span></td><td>已关闭</td><td>2026-07-16</td><td>2026-07-16</td><td>2026-07-17</td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41519.html" target="_blank">41519</a></td><td class="desc-cell" title="【智信云枢】【代码迁移】 前提：node20版本里面迁移  基线迁移到智信云枢   格式化代码工具">【智信云枢】【代码迁移】 前提：node20版本里面迁移  基线迁移到智信云枢 ...</td><td>小程序-商城</td><td><span class="tag ">一般</span></td><td>已解决</td><td>2026-07-16</td><td>2026-07-17</td><td></td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41501.html" target="_blank">41501</a></td><td class="desc-cell" title="【历史问题】当用户的商品数据权限限制了只有A，B品类时，在ARM做批发销售单没有限制商品范围但是在APP做单时限制了商品范围；导致在App做单时与ARM做单时的商品取值逻辑不一致">【历史问题】当用户的商品数据权限限制了只有A，B品类时，在ARM做批发销售单没有...</td><td>ERP</td><td><span class="tag ">一般</span></td><td>激活</td><td>2026-07-15</td><td></td><td></td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41494.html" target="_blank">41494</a></td><td class="desc-cell" title="【历史问题】客员通APP，输入框弹窗展示最多200个字，但是提交时又变成了200个字符，字和字符要统一，提示也要统一">【历史问题】客员通APP，输入框弹窗展示最多200个字，但是提交时又变成了200...</td><td>ERP</td><td><span class="tag ">一般</span></td><td>已关闭</td><td>2026-07-15</td><td>2026-07-15</td><td>2026-07-16</td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41475.html" target="_blank">41475</a></td><td class="desc-cell" title="【历史问题】SCRM后端-在素材管理菜单新增话术，插入小程序选中预置的页签，提示操作成功，但是还是有请输入页面  详情如图">【历史问题】SCRM后端-在素材管理菜单新增话术，插入小程序选中预置的页签，提示...</td><td>SCRM</td><td><span class="tag ">一般</span></td><td>已解决</td><td>2026-07-14</td><td>2026-07-15</td><td></td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41473.html" target="_blank">41473</a></td><td class="desc-cell" title="【智信云枢】【POS】查询输入框样式优化">【智信云枢】【POS】查询输入框样式优化</td><td>POS</td><td><span class="tag ">一般</span></td><td>激活</td><td>2026-07-14</td><td></td><td></td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41470.html" target="_blank">41470</a></td><td class="desc-cell" title="【智信云枢】【POS】table两个的写法错误改造">【智信云枢】【POS】table两个的写法错误改造</td><td>POS</td><td><span class="tag ">一般</span></td><td>激活</td><td>2026-07-14</td><td></td><td></td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41455.html" target="_blank">41455</a></td><td class="desc-cell" title="【基线主干】【历史问题】现在srm销售数据上报里面没有返厂、返仓、配送、库存等业务了，以前业务数据上报的时候是有的，后面6185需求改造后就只有销售和退货了，所以srm相关报表希望能屏蔽">【基线主干】【历史问题】现在srm销售数据上报里面没有返厂、返仓、配送、库存等业...</td><td>SRM品牌商</td><td><span class="tag ">一般</span></td><td>激活</td><td>2026-07-14</td><td></td><td></td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41452.html" target="_blank">41452</a></td><td class="desc-cell" title="【基线主干】【优化问题】商城没有默认模板，小程序员工端分享时长功能不可用">【基线主干】【优化问题】商城没有默认模板，小程序员工端分享时长功能不可用</td><td>小程序-商城</td><td><span class="tag ">一般</span></td><td>已关闭</td><td>2026-07-14</td><td>2026-07-14</td><td>2026-07-14</td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41449.html" target="_blank">41449</a></td><td class="desc-cell" title="【基线】【智信云枢】【node20】持续性优化">【基线】【智信云枢】【node20】持续性优化</td><td>小程序-商城</td><td><span class="tag ">一般</span></td><td>激活</td><td>2026-07-14</td><td></td><td></td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41448.html" target="_blank">41448</a></td><td class="desc-cell" title="[历史问题]在场景中搜素主题并搜素，然后清掉输入框的值，直接点击搜素，最后3个场景没有加载出来">[历史问题]在场景中搜素主题并搜素，然后清掉输入框的值，直接点击搜素，最后3个场...</td><td>SCRM</td><td><span class="tag ">一般</span></td><td>已解决</td><td>2026-07-14</td><td>2026-07-14</td><td></td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41433.html" target="_blank">41433</a></td><td class="desc-cell" title="【基线主干】【历史问题】小程序未启用付费会员，在领券活动配置页面可以勾选付费会员">【基线主干】【历史问题】小程序未启用付费会员，在领券活动配置页面可以勾选付费会员</td><td>小程序-商城</td><td><span class="tag ">一般</span></td><td>已关闭</td><td>2026-07-13</td><td>2026-07-13</td><td>2026-07-13</td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41404.html" target="_blank">41404</a></td><td class="desc-cell" title="【历史问题】新增会员-会员的联系人信息备注字段过长时，提示信息需要优化   比如：会员的联系人信息的备注字段超过设定长度">【历史问题】新增会员-会员的联系人信息备注字段过长时，提示信息需要优化   比如...</td><td>ERP</td><td><span class="tag ">提示</span></td><td>已关闭</td><td>2026-07-10</td><td>2026-07-13</td><td>2026-07-19</td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41400.html" target="_blank">41400</a></td><td class="desc-cell" title="6798-SRM【品牌商商品关联】合生元关联商品，合生元品牌商5下点击自动匹配未展示匹配结果">6798-SRM【品牌商商品关联】合生元关联商品，合生元品牌商5下点击自动匹配未...</td><td>SRM品牌商</td><td><span class="tag ">一般</span></td><td>已关闭</td><td>2026-07-10</td><td>2026-07-10</td><td>2026-07-14</td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41364.html" target="_blank">41364</a></td><td class="desc-cell" title="7126-会员卡日志-查看储值卡分组存在有分组与配置页展示不一样">7126-会员卡日志-查看储值卡分组存在有分组与配置页展示不一样</td><td>ERP</td><td><span class="tag ">一般</span></td><td>已关闭</td><td>2026-07-08</td><td>2026-07-14</td><td>2026-07-17</td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41342.html" target="_blank">41342</a></td><td class="desc-cell" title="【历史问题】在ERP配置资料完善模板，在SCRM的营销活动中关联任务时引用模板，宝宝信息中未带出资料项 如图">【历史问题】在ERP配置资料完善模板，在SCRM的营销活动中关联任务时引用模板，...</td><td>SCRM</td><td><span class="tag ">一般</span></td><td>已解决</td><td>2026-07-08</td><td>2026-07-14</td><td></td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41330.html" target="_blank">41330</a></td><td class="desc-cell" title="【历史问题】导购排名：选中一个营销活动10000200001124，从对应的数值跳转到回访任务明细，数据不正确  如图">【历史问题】导购排名：选中一个营销活动10000200001124，从对应的数值...</td><td>SCRM</td><td><span class="tag ">一般</span></td><td>已解决</td><td>2026-07-07</td><td>2026-07-14</td><td></td></tr>
-                            <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41227.html" target="_blank">41227</a></td><td class="desc-cell" title="【基线主干】入库单的收货明细，最下面的合计字段，订货数量合计（最小单位）展示错误，取的是入库单的默认收货，如果入库单由SCM发货，少发的情况，会造成订货数量合计（最小单位）取的正品发货数量">【基线主干】入库单的收货明细，最下面的合计字段，订货数量合计（最小单位）展示错误...</td><td>ERP</td><td><span class="tag ">一般</span></td><td>已关闭</td><td>2026-07-01</td><td>2026-07-01</td><td>2026-07-17</td></tr>
-                        </tbody>
-                    </table>
+
+                <div class="collapsible" onclick="toggleCollapse(this)">
+                    <div class="collapsible-header">
+                        <div class="toggle-icon">▶</div>
+                        <div class="section-title">本期已关闭问题列表（7 条）</div>
+                    </div>
+                    <div class="collapsible-content">
+                        <div class="table-container">
+                            <table>
+                                <thead><tr><th>编号</th><th>标题</th><th>产品</th><th>问题类型</th><th>创建时间</th><th>关闭时间</th><th>来源</th></tr></thead>
+                                <tbody>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41364.html" target="_blank">41364</a></td><td title="7126-会员卡日志-查看储值卡分组存在有分组与配置页展示不一样">7126-会员卡日志-查看储值卡分组存在有分组与配置页展示不一样</td><td>ERP</td><td>代码错误</td><td>2026-07-08</td><td>2026-07-17</td><td><span class="tag tag-history">本周已关闭</span></td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41525.html" target="_blank">41525</a></td><td title="【智信云枢】【POS】缴款单样式问题">【智信云枢】【POS】缴款单样式问题</td><td>POS</td><td>优化需求</td><td>2026-07-16</td><td>2026-07-17</td><td><span class="tag tag-history">本周已关闭</span></td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41227.html" target="_blank">41227</a></td><td title="【基线主干】入库单的收货明细，最下面的合计字段，订货数量合计（最小单位）展示错误，取的是入库单的默认收货，如果入库单由SCM发货，少发的情况，会造成订货数量合计（最小单位）取的正品发货数量">【基线主干】入库单的收货明细，最下面的合计字段，订货数量合计（最小单位）展示错误...</td><td>ERP</td><td>代码错误</td><td>2026-07-01</td><td>2026-07-17</td><td><span class="tag tag-history">本周已关闭</span></td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41494.html" target="_blank">41494</a></td><td title="【历史问题】客员通APP，输入框弹窗展示最多200个字，但是提交时又变成了200个字符，字和字符要统一，提示也要统一">【历史问题】客员通APP，输入框弹窗展示最多200个字，但是提交时又变成了200...</td><td>ERP</td><td>代码错误</td><td>2026-07-15</td><td>2026-07-16</td><td><span class="tag tag-history">本周已关闭</span></td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41400.html" target="_blank">41400</a></td><td title="6798-SRM【品牌商商品关联】合生元关联商品，合生元品牌商5下点击自动匹配未展示匹配结果">6798-SRM【品牌商商品关联】合生元关联商品，合生元品牌商5下点击自动匹配未...</td><td>SRM品牌商</td><td>代码错误</td><td>2026-07-10</td><td>2026-07-14</td><td><span class="tag tag-history">本周已关闭</span></td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41452.html" target="_blank">41452</a></td><td title="【基线主干】【优化问题】商城没有默认模板，小程序员工端分享时长功能不可用">【基线主干】【优化问题】商城没有默认模板，小程序员工端分享时长功能不可用</td><td>小程序-商城</td><td>代码错误</td><td>2026-07-14</td><td>2026-07-14</td><td><span class="tag tag-history">本周已关闭</span></td></tr>
+                                    <tr><td><a class="bug-id" href="http://zentao.hckj.cn/bug-view-41433.html" target="_blank">41433</a></td><td title="【基线主干】【历史问题】小程序未启用付费会员，在领券活动配置页面可以勾选付费会员">【基线主干】【历史问题】小程序未启用付费会员，在领券活动配置页面可以勾选付费会员</td><td>小程序-商城</td><td>代码错误</td><td>2026-07-13</td><td>2026-07-13</td><td><span class="tag tag-history">本周已关闭</span></td></tr>
+                                </tbody></table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
