@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>线上问题分析报告（20261010-20261016）</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        if (typeof Chart === 'undefined') {
+            document.write('<script src="https://cdn.bootcdn.net/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"><\/script>');
+        }
+    </script>
+    <script>
+        if (typeof Chart === 'undefined') {
+            document.write('<script src="https://cdn.staticfile.net/Chart.js/4.4.1/chart.umd.min.js"><\/script>');
+        }
+    </script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Microsoft YaHei', Arial, sans-serif; background: #6c757d; min-height: 100vh; color: #333; line-height: 1.6; }
@@ -629,7 +639,7 @@
 
                 <div class="merged-concl concl-amber">
                     <div class="concl-label">🛠️ 补丁执行</div>
-                    <div class="concl-text">本期无补丁上线</div>
+                    <div class="concl-text">本期上线<span class="c-pos">8</span>个补丁（均为Bug修复），验收通过0个，已闭环8个</div>
                 </div>
 
             </div>
@@ -1059,12 +1069,140 @@
             <div class="section-header" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;">
                 <div class="section-icon">🛠️</div>
                 <div class="section-info">
-                    <div class="section-title">补丁执行（0 条）</div>
-                    <div class="section-desc">本周共上线 </div>
+                    <div class="section-title">补丁执行（8 条）</div>
+                    <div class="section-desc">本周共上线 8 个Bug修复补丁</div>
                 </div>
             </div>
             <div class="section-body">
-<div style="padding:16px;margin:8px 0;background:#fff7ed;border:1px dashed #f59e0b;color:#9a3412;border-radius:8px;">请在 <b>补丁导入_YYYYMMDD-YYYYMMDD.xlsx</b> 中添加本期补丁数据（本期补丁明细待补充）</div>
+<div class="intro-section">
+                    <h4>Bug修复补丁（8 条）</h4>
+                    <div class="patch-table-wrap">
+                        <table class="patch-table">
+                            <thead>
+                                <tr>
+                                    <th>补丁日期</th>
+                                    <th>Bug编号</th>
+                                    <th>问题描述</th>
+                                    <th>产品</th>
+                                    <th>补丁版本</th>
+                                    <th>补丁范围</th>
+                                    <th>验收状态</th>
+                                    <th>验收人</th>
+                                    <th>二次补丁</th>
+                                    <th>闭环状态</th>
+                                    <th>闭环日期</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                    <tr>
+                                        <td class="center nowrap">2026-10-12</td>
+                                        <td class="center nowrap"><a href="http://zentao.hckj.cn/bug-view-43577.html" target="_blank">43577</a></td>
+                                        <td title="秦皇岛好妈妈,线上开店管理同步给海博的库存有误，导致商家门店超卖">秦皇岛好妈妈,线上开店管理同步给海博的库存有误，导致商家门店超卖</td>
+                                        <td>ERP</td>
+                                        <td class="center version-col">8.43</td>
+                                        <td class="center range-col">所有局点</td>
+                                        <td class="center">已验收</td>
+                                        <td class="center">曾小芳</td>
+                                        <td class="center">否</td>
+                                        <td class="center">已闭环</td>
+                                        <td class="center nowrap">2026-10-13</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center nowrap">2026-10-12</td>
+                                        <td class="center nowrap"><a href="http://zentao.hckj.cn/bug-view-43655.html" target="_blank">43655</a></td>
+                                        <td title="【秦皇岛好妈妈】品牌销售新客报表查询数据异常卡顿 数据导出不了">【秦皇岛好妈妈】品牌销售新客报表查询数据异常卡顿 数据导出不了</td>
+                                        <td>ERP</td>
+                                        <td class="center version-col">8.43</td>
+                                        <td class="center range-col">所有局点</td>
+                                        <td class="center">已验收</td>
+                                        <td class="center">刘彬</td>
+                                        <td class="center">否</td>
+                                        <td class="center">已闭环</td>
+                                        <td class="center nowrap">2026-10-13</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center nowrap">2026-10-13</td>
+                                        <td class="center nowrap"><a href="http://zentao.hckj.cn/bug-view-43568.html" target="_blank">43568</a></td>
+                                        <td title="【小飞象-直营系统】门店id为29686，code为146008468这个门店有静态充值1490元，但是在后台静态收款记录没有记录，让小芳在商户号查了收款记录，是有订单的">【小飞象-直营系统】门店id为29686，code为146008468这个门店有静态充值1490元，但是在后台静态收款记...</td>
+                                        <td>ERP</td>
+                                        <td class="center version-col">8.42、8.43</td>
+                                        <td class="center range-col">所有局点</td>
+                                        <td class="center">已验收</td>
+                                        <td class="center">李晓娟</td>
+                                        <td class="center">否</td>
+                                        <td class="center">已闭环</td>
+                                        <td class="center nowrap">2026-10-14</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center nowrap">2026-10-14</td>
+                                        <td class="center nowrap"><a href="http://zentao.hckj.cn/bug-view-43791.html" target="_blank">43791</a></td>
+                                        <td title="【智信云枢-直营】pos端选择优惠券页面，券效期时间显示的不对">【智信云枢-直营】pos端选择优惠券页面，券效期时间显示的不对</td>
+                                        <td>POS</td>
+                                        <td class="center version-col">9.22</td>
+                                        <td class="center range-col">所有局点</td>
+                                        <td class="center">已验收</td>
+                                        <td class="center">成慧萍</td>
+                                        <td class="center">否</td>
+                                        <td class="center">已闭环</td>
+                                        <td class="center nowrap">2026-10-15</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center nowrap">2026-10-15</td>
+                                        <td class="center nowrap"><a href="http://zentao.hckj.cn/bug-view-43717.html" target="_blank">43717</a></td>
+                                        <td title="【健瑞儿】服务卡退卡销售单S900351239209， 在销售支付查询查不到数据，销售支付查询(新)有数据。原销售单20260827084452002283是可以两边查到的">【健瑞儿】服务卡退卡销售单S900351239209， 在销售支付查询查不到数据，销售支付查询(新)有数据。原销售单20...</td>
+                                        <td>ERP</td>
+                                        <td class="center version-col">8.41</td>
+                                        <td class="center range-col">健瑞儿</td>
+                                        <td class="center">已验收</td>
+                                        <td class="center">李晓娟</td>
+                                        <td class="center">否</td>
+                                        <td class="center">已闭环</td>
+                                        <td class="center nowrap">2026-10-16</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center nowrap">2026-10-15</td>
+                                        <td class="center nowrap"><a href="http://zentao.hckj.cn/bug-view-43589.html" target="_blank">43589</a></td>
+                                        <td title="【江西爱婴宝】账本类型信息中20条数据，点查询后需要差不多20秒的时间才出数据，并弹出无响应的提示">【江西爱婴宝】账本类型信息中20条数据，点查询后需要差不多20秒的时间才出数据，并弹出无响应的提示</td>
+                                        <td>ERP</td>
+                                        <td class="center version-col">8.42</td>
+                                        <td class="center range-col">江西爱婴宝</td>
+                                        <td class="center">已验收</td>
+                                        <td class="center">成慧萍</td>
+                                        <td class="center">否</td>
+                                        <td class="center">已闭环</td>
+                                        <td class="center nowrap">2026-10-16</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center nowrap">2026-10-15</td>
+                                        <td class="center nowrap"><a href="http://zentao.hckj.cn/bug-view-43841.html" target="_blank">43841</a></td>
+                                        <td title="【小飞象优选+】26101515590000022309 ，26101515050000011858这两笔订单自动发货失败，请求结果： Call to a member function call() on null">【小飞象优选+】26101515590000022309 ，26101515050000011858这两笔订单自动发货失...</td>
+                                        <td>小程序</td>
+                                        <td class="center version-col">9.22</td>
+                                        <td class="center range-col">所有局点</td>
+                                        <td class="center">已验收</td>
+                                        <td class="center">李晓娟</td>
+                                        <td class="center">否</td>
+                                        <td class="center">已闭环</td>
+                                        <td class="center nowrap">2026-10-16</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center nowrap">2026-10-15</td>
+                                        <td class="center nowrap"><a href="http://zentao.hckj.cn/bug-view-43816.html" target="_blank">43816</a></td>
+                                        <td title="【爱尚婴PRM】PRM导出销售流水记录，会员的销售数据会员ID，直接在文件里面展示出来了">【爱尚婴PRM】PRM导出销售流水记录，会员的销售数据会员ID，直接在文件里面展示出来了</td>
+                                        <td>PRM</td>
+                                        <td class="center version-col">2.15</td>
+                                        <td class="center range-col">所有局点</td>
+                                        <td class="center">已验收</td>
+                                        <td class="center">徐观文</td>
+                                        <td class="center">否</td>
+                                        <td class="center">已闭环</td>
+                                        <td class="center nowrap">2026-10-16</td>
+                                    </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -1556,6 +1694,20 @@
         }
 
         // ========== 图表初始化 ==========
+        // 安全图表封装：Chart.js 加载失败（CDN 不可达）时不抛错、不中断后续脚本
+        // （部门/处理人树等 JS 渲染逻辑依赖脚本继续执行，不能被图表异常阻断）
+        function safeChart(ctx, cfg) {
+            if (typeof Chart === 'undefined') {
+                console.warn('Chart.js 未加载，跳过图表渲染');
+                return null;
+            }
+            try {
+                return new Chart(ctx, cfg);
+            } catch (e) {
+                console.error('图表渲染失败:', e);
+                return null;
+            }
+        }
         var colors = ['#4f46e5', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316', '#84cc16'];
         var chartFont = { family: "'Microsoft YaHei', Arial", size: 11 };
         var chartOptions = {
@@ -1572,7 +1724,7 @@
         };
 
         // ========== V2新增：趋势图 ==========
-        new Chart(document.getElementById('trendChart'), {
+        safeChart(document.getElementById('trendChart'), {
             type: 'line',
             data: {
                 labels: trendWeeks,
@@ -1615,7 +1767,7 @@
             console.error('renderDeptHandlerTree error:', e);
         }
 
-        new Chart(document.getElementById('seriousStatusChart'), {
+        safeChart(document.getElementById('seriousStatusChart'), {
             type: 'doughnut',
             data: {
                 labels: ["已关闭", "已解决"],
@@ -1624,7 +1776,7 @@
             options: chartOptions
         });
 
-        new Chart(document.getElementById('seriousTypeChart'), {
+        safeChart(document.getElementById('seriousTypeChart'), {
             type: 'doughnut',
             data: {
                 labels: ["性能问题", "代码错误", "重复问题"],
